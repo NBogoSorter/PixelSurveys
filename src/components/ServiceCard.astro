@@ -1,0 +1,121 @@
+---
+import { Image } from "astro:assets";
+import type { Service } from "../data/services";
+
+interface Props {
+  service: Service;
+}
+
+const { service } = Astro.props;
+---
+
+<article class="card">
+  {service.image ? (
+    <Image
+      src={service.image}
+      alt={service.imageAlt ?? ""}
+      widths={[320, 480, 640]}
+      sizes="(max-width: 520px) 100vw, (max-width: 860px) 50vw, 280px"
+      class="band"
+    />
+  ) : (
+    <div
+      class="band band-placeholder"
+      style={`--band-from: ${service.bandFrom}; --band-to: ${service.bandTo};`}
+      aria-hidden="true"
+    />
+  )}
+  <div class="body">
+    <h3 class="title">{service.title}</h3>
+    <ul class="list">
+      {service.items.map((item) => (
+        <li>{item}</li>
+      ))}
+    </ul>
+    <a href={service.href} class="learn">
+      Learn more <span aria-hidden="true">&gt;</span>
+      <span class="visually-hidden"> about {service.title}</span>
+    </a>
+  </div>
+</article>
+
+<style>
+  .card {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--color-border);
+    background: var(--color-bg);
+  }
+
+  .band {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+  }
+
+  .band-placeholder {
+    background: linear-gradient(135deg, var(--band-from), var(--band-to));
+  }
+
+  .body {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+    padding: 16px 16px 18px;
+  }
+
+  .title {
+    font-size: 15.5px;
+    font-weight: 600;
+    color: var(--color-ink);
+    border-bottom: 2px solid var(--color-accent);
+    padding-bottom: 8px;
+  }
+
+  .list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    flex: 1;
+  }
+
+  .list li {
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--color-text-muted);
+    padding-left: 12px;
+    position: relative;
+  }
+
+  .list li::before {
+    content: "\2013";
+    position: absolute;
+    left: 0;
+    color: var(--color-accent);
+  }
+
+  .learn {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-accent);
+  }
+
+  .learn:hover {
+    text-decoration: underline;
+  }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+</style>

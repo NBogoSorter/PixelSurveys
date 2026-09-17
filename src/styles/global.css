@@ -1,0 +1,73 @@
+/* Latin subset only - the site is English, so no need to ship Devanagari/latin-ext files. */
+@import "@fontsource/poppins/latin-400.css";
+@import "@fontsource/poppins/latin-500.css";
+@import "@fontsource/poppins/latin-600.css";
+@import "@fontsource/poppins/latin-700.css";
+
+:root {
+  color-scheme: light;
+
+  /* Brand palette - sampled from the Pixel Surveys logo (media/pixelsurveys_logo_large-scaled.png) */
+  --color-ink: #0c538d; /* wordmark navy */
+  --color-ink-soft: #1a6893;
+  --color-accent: #2f878a; /* mid-gradient teal */
+  --color-canopy: #43a57f; /* transitional stop between accent and accent-green */
+  --color-accent-green: #63ba78; /* gradient endpoint, sparing use */
+  --color-bg: #ffffff;
+  --color-border: #d7e3e4; /* neutral, biased toward the teal accent rather than flat grey */
+  --color-text-muted: #57727a;
+  --color-hero-overlay: rgba(12, 83, 141, 0.2);
+
+  /* Full 5-stop logo gradient, for decorative use (dividers, accents) */
+  --gradient-brand: linear-gradient(
+    90deg,
+    #0c538d 0%,
+    #1a6893 25%,
+    #2f878a 50%,
+    #43a57f 75%,
+    #63ba78 100%
+  );
+
+  --font-sans: "Poppins", system-ui, sans-serif;
+
+  --container-width: 1200px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-sans);
+  color: var(--color-ink);
+  background: var(--color-bg);
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.container {
+  width: 100%;
+  max-width: var(--container-width);
+  margin-inline: auto;
+  padding-inline: 24px;
+}

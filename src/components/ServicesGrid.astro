@@ -1,0 +1,86 @@
+---
+import { SERVICES } from "../data/services";
+import ServiceCard from "./ServiceCard.astro";
+
+interface Props {
+  /** Hide the "View All Services" button, e.g. on the services page itself. */
+  showCta?: boolean;
+}
+
+const { showCta = true } = Astro.props;
+---
+
+<section class="section">
+  <div class="container">
+    <h2 class="heading">Drone Surveying &amp; Data Services</h2>
+
+    <div class="grid">
+      {SERVICES.map((service) => (
+        <ServiceCard service={service} />
+      ))}
+    </div>
+
+    {showCta && (
+      <div class="cta">
+        <a href="/services/" class="cta-button">
+          View All Services
+        </a>
+      </div>
+    )}
+  </div>
+</section>
+
+<style>
+  .section {
+    padding-block: 24px 80px;
+  }
+
+  .heading {
+    font-size: clamp(24px, 3vw, 30px);
+    font-weight: 700;
+    color: var(--color-ink);
+    margin-bottom: 28px;
+    text-wrap: balance;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+
+  .cta {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 28px;
+  }
+
+  .cta-button {
+    background: var(--color-ink);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 13px 26px;
+  }
+
+  .cta-button:hover {
+    background: var(--color-ink-soft);
+  }
+
+  @media (max-width: 860px) {
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 520px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+
+    .cta-button {
+      flex: 1;
+      text-align: center;
+    }
+  }
+</style>

@@ -1,0 +1,72 @@
+name: Build & deploy
+
+# Pushes to main deploy to STAGING automatically.
+# Production is manual: Actions -> "Build & deploy" -> Run workflow -> target: production.
+#
+# Each target is a GitHub Environment holding its own secrets, pointing at a
+# dedicated cPanel FTP account scoped to that site's docroot:
+#   FTP_SERVER      e.g. ftp.pixelsurveys.com
+#   FTP_USERNAME    e.g. deploy-staging@pixelsurveys.com
+#   FTP_PASSWORD
+#   FTP_SERVER_DIR  path relative to the FTP account's root, ending in "/" (usually "./")
+#
+# FTPS rather than SFTP: VentraIP's SSH/SFTP is IP-whitelisted and GitHub's runner IPs change.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      target:
+        description: Where to deploy
+        type: choice
+        options: [staging, production]
+        default: staging
+
+concurrency:
+  group: deploy-${{ github.event.inputs.target || 'staging' }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      # astro check (types) + astro build -> dist/
+      - run: npm run build
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: dist
+          path: dist/
+          include-hidden-files: true # .htaccess
+          retention-days: 7
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.target || 'staging' }}
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          name: dist
+          path: dist/
+
+      - uses: SamKirkland/FTP-Deploy-Action@v4.4.0
+        with:
+          protocol: ftps
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          server-dir: ${{ secrets.FTP_SERVER_DIR }}
+          local-dir: ./dist/
+          # Syncs using a state file: only changed files upload, and only files this
+          # action previously uploaded are ever deleted. Never touches ~/server-config.

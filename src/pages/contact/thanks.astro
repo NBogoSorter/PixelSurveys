@@ -1,0 +1,28 @@
+---
+import PageHeader from "../../components/PageHeader.astro";
+import Base from "../../layouts/Base.astro";
+---
+
+{/* Redirect target for quote.php when the form is submitted without JavaScript. */}
+<Base title="Request sent">
+  <PageHeader
+    title="Thanks - your request has been sent"
+    lede="We've received your details."
+  />
+  <div class="container back">
+    <a href="/">Back to home</a>
+  </div>
+</Base>
+
+<style>
+  .back {
+    padding-bottom: 80px;
+  }
+
+  .back a {
+    font-weight: 600;
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+</style>

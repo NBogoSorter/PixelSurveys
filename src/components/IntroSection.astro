@@ -1,0 +1,48 @@
+---
+// Copy is the prototype's placeholder text - replace once the client supplies it.
+---
+
+<section class="section">
+  <div class="container grid">
+    <h2 class="heading">
+      This Can Be Secondary Heading Lorem ipsum dolor sit amet.
+    </h2>
+    <p class="subheading">Supporting Subheading</p>
+  </div>
+</section>
+
+<style>
+  .section {
+    padding-block: 56px 80px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 32px;
+    align-items: start;
+  }
+
+  .heading {
+    font-size: clamp(24px, 3vw, 30px);
+    font-weight: 700;
+    line-height: 1.35;
+    color: var(--color-ink);
+    text-wrap: balance;
+  }
+
+  .subheading {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--color-ink);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    padding-top: 6px;
+  }
+
+  @media (max-width: 720px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,19 @@
+node_modules/
+dist/
+.astro/
+
+# Real server config holds the quote form recipient - only the .example is committed.
+server-config/quote-config.php
+
+.env
+.env.*
+!.env.example
+
+*.log
+npm-debug.log*
+
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json

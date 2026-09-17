@@ -1,0 +1,36 @@
+---
+interface Props {
+  title: string;
+  lede?: string;
+}
+
+const { title, lede } = Astro.props;
+---
+
+<section class="page-header">
+  <div class="container">
+    <h1 class="title">{title}</h1>
+    {lede && <p class="lede">{lede}</p>}
+  </div>
+</section>
+
+<style>
+  .page-header {
+    padding-block: 56px 32px;
+  }
+
+  .title {
+    font-size: clamp(30px, 4.5vw, 42px);
+    font-weight: 700;
+    color: var(--color-ink);
+    text-wrap: balance;
+  }
+
+  .lede {
+    margin-top: 12px;
+    max-width: 62ch;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--color-text-muted);
+  }
+</style>

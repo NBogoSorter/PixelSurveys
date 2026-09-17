@@ -1,0 +1,27 @@
+---
+import PageHeader from "../components/PageHeader.astro";
+import Base from "../layouts/Base.astro";
+---
+
+<Base title="Page not found">
+  <PageHeader
+    title="Page not found"
+    lede="That page doesn't exist or has moved."
+  />
+  <div class="container back">
+    <a href="/">Back to home</a>
+  </div>
+</Base>
+
+<style>
+  .back {
+    padding-bottom: 80px;
+  }
+
+  .back a {
+    font-weight: 600;
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+</style>

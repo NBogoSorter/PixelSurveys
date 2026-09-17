@@ -1,0 +1,76 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="rule" aria-hidden="true"></div>
+  <div class="container inner">
+    <p class="brand">Pixel Surveys</p>
+    <nav aria-label="Footer">
+      <ul class="links">
+        <li>
+          <a href="/services/">Services</a>
+        </li>
+        <li>
+          <a href="/about/">About</a>
+        </li>
+        <li>
+          <a href="/contact/">Contact</a>
+        </li>
+      </ul>
+    </nav>
+    <p class="copyright">&copy; {year} Pixel Surveys</p>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background: var(--color-ink);
+    color: #fff;
+  }
+
+  .rule {
+    height: 4px;
+    background: var(--gradient-brand);
+  }
+
+  .inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px 32px;
+    padding-block: 28px;
+  }
+
+  .brand {
+    font-weight: 700;
+    font-size: 16px;
+  }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 24px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .links a {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  .links a:hover {
+    color: #fff;
+  }
+
+  .copyright {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.7);
+  }
+</style>
