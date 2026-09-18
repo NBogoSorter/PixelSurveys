@@ -24,7 +24,7 @@ ErrorDocument 404 /404.html
 
   # ---- Pre-launch gate ----
   # Public visitors get the "coming soon" page at /maintenance/. Whoever
-  # opens https://pixelsurveys.com/?preview=OuLztsE3olfNACnGdMVb64QG once
+  # opens https://pixelsurveys.com.au/?preview=OuLztsE3olfNACnGdMVb64QG once
   # gets a cookie that unlocks the real site on every visit after that -
   # send that link to the client, not the plain domain.
   #

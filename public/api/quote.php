@@ -7,12 +7,30 @@ declare(strict_types=1);
  *
  * Deployed at public_html/api/quote.php. Reads its settings from
  * ~/server-config/quote-config.php, which lives OUTSIDE the web root so the
- * recipient address and limits are never downloadable.
+ * recipient address and mailbox credentials are never downloadable.
  *
  * Responds with JSON when the request sends `Accept: application/json` (the
  * form's fetch() path); otherwise redirects to a static thanks/error page so
  * the form still works with JavaScript disabled.
+ *
+ * Sends via authenticated SMTP through Microsoft 365 (PHPMailer, vendored in
+ * ./lib/phpmailer/ - no Composer available on this host), not PHP's mail().
+ * pixelsurveys.com.au's SPF record is "v=spf1 include:spf.protection.outlook.com
+ * -all" - a hard fail - so mail sent any other way gets rejected as spoofed.
+ * The sending mailbox needs "Authenticated SMTP" enabled for it in the
+ * Microsoft 365 admin center (Users -> the mailbox -> Mail -> Manage email
+ * apps); most tenants ship with it off. If the tenant also enforces Security
+ * Defaults or a Conditional Access policy blocking basic auth entirely, this
+ * won't authenticate and needs OAuth2 (XOAUTH2) instead - more setup, cross
+ * that bridge only if plain SMTP AUTH turns out to be blocked.
  */
+
+require __DIR__ . '/lib/phpmailer/Exception.php';
+require __DIR__ . '/lib/phpmailer/SMTP.php';
+require __DIR__ . '/lib/phpmailer/PHPMailer.php';
+
+use PHPMailer\PHPMailer\Exception as MailException;
+use PHPMailer\PHPMailer\PHPMailer;
 
 const MIN_SECONDS_TO_SUBMIT = 3;
 
@@ -60,7 +78,7 @@ if (!is_readable($configPath)) {
     respond(false, 500, 'The form is not configured yet. Please email us directly.');
 }
 
-/** @var array{to_address: string, from_address: string, from_name: string, subject_prefix: string, allowed_origins: string[], rate_limit_dir: string, rate_limit_max: int, rate_limit_window: int} $config */
+/** @var array{to_address: string, from_address: string, from_name: string, subject_prefix: string, allowed_origins: string[], rate_limit_dir: string, rate_limit_max: int, rate_limit_window: int, smtp_host: string, smtp_port: int, smtp_username: string, smtp_password: string} $config */
 $config = require $configPath;
 
 // Reject cross-site posts. Browsers send Origin on POST; if it's present it must be ours.
@@ -134,9 +152,8 @@ if (mb_strlen($message) < 10) {
     respond(false, 422, 'Please add a few details about your project.');
 }
 
-// --- Send ---
+// --- Send (via Microsoft 365 SMTP - see the note at the top of this file) ---
 $subject = $config['subject_prefix'] . ' ' . $name . ($service !== '' ? ' - ' . $service : '');
-$encodedSubject = mb_encode_mimeheader($subject, 'UTF-8', 'B', "\r\n");
 
 $body = implode("\n", [
     'New quote request from the website',
@@ -153,20 +170,32 @@ $body = implode("\n", [
     'Sent ' . gmdate('Y-m-d H:i') . ' UTC from ' . $ip,
 ]);
 
-// From must be a real mailbox on this domain (deliverability/SPF). The visitor's
-// address only ever goes in Reply-To, and it has already passed FILTER_VALIDATE_EMAIL.
-$headers = implode("\r\n", [
-    'From: ' . mb_encode_mimeheader($config['from_name'], 'UTF-8', 'B') . ' <' . $config['from_address'] . '>',
-    'Reply-To: ' . $email,
-    'MIME-Version: 1.0',
-    'Content-Type: text/plain; charset=UTF-8',
-    'Content-Transfer-Encoding: 8bit',
-]);
+$mail = new PHPMailer(true);
 
-$sent = mail($config['to_address'], $encodedSubject, $body, $headers, '-f' . $config['from_address']);
+try {
+    $mail->isSMTP();
+    $mail->Host = $config['smtp_host'];
+    $mail->Port = $config['smtp_port'];
+    $mail->SMTPAuth = true;
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+    $mail->Username = $config['smtp_username'];
+    $mail->Password = $config['smtp_password'];
+    $mail->CharSet = PHPMailer::CHARSET_UTF8;
 
-if (!$sent) {
-    error_log('quote.php: mail() returned false');
+    // From must be a real, authenticated mailbox (deliverability/SPF). The
+    // visitor's address only ever goes in Reply-To, and it's already passed
+    // FILTER_VALIDATE_EMAIL above.
+    $mail->setFrom($config['from_address'], $config['from_name']);
+    $mail->addAddress($config['to_address']);
+    $mail->addReplyTo($email, $name);
+
+    $mail->isHTML(false);
+    $mail->Subject = $subject;
+    $mail->Body = $body;
+
+    $mail->send();
+} catch (MailException $e) {
+    error_log('quote.php: PHPMailer failed: ' . $mail->ErrorInfo);
     respond(false, 502, 'Your request could not be sent. Please email us directly.');
 }
 

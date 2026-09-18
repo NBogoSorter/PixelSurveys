@@ -5,8 +5,8 @@ name: Build & deploy
 #
 # Each target is a GitHub Environment holding its own secrets, pointing at a
 # dedicated cPanel FTP account scoped to that site's docroot:
-#   FTP_SERVER      e.g. ftp.pixelsurveys.com
-#   FTP_USERNAME    e.g. deploy-staging@pixelsurveys.com
+#   FTP_SERVER      e.g. ftp.pixelsurveys.com.au
+#   FTP_USERNAME    e.g. deploy-staging@pixelsurveys.com.au
 #   FTP_PASSWORD
 #   FTP_SERVER_DIR  path relative to the FTP account's root, ending in "/" (usually "./")
 #

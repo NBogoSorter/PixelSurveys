@@ -2,7 +2,7 @@
 import { defineConfig } from "astro/config";
 
 export default defineConfig({
-  site: "https://pixelsurveys.com",
+  site: "https://pixelsurveys.com.au",
   output: "static",
   // Emits /services/index.html etc. Apache serves these as /services/ with no
   // rewrite rules, and mod_dir redirects /services -> /services/ on its own.
