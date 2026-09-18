@@ -1,0 +1,95 @@
+---
+// Public-facing "coming soon" page shown to everyone except whoever has the
+// preview-access cookie (set via public/.htaccess when someone visits with
+// ?preview=<token>). See the "Pre-launch gate" section in README.md.
+//
+// Deliberately NOT using layouts/Base.astro - no header/nav/footer, so a
+// gated visitor can't browse into the rest of the unfinished site from here.
+import { Image } from "astro:assets";
+import logo from "../assets/logo.png";
+import { CONTACT_EMAIL } from "../data/contact-info";
+import "../styles/global.css";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Pixel Surveys</title>
+    <meta
+      name="description"
+      content="Drone survey & aerial mapping services - new site launching soon."
+    />
+    <meta name="robots" content="noindex, nofollow" />
+  </head>
+  <body>
+    <main class="wrap">
+      <Image src={logo} alt="Pixel Surveys" width={220} class="logo" />
+      <div class="rule" aria-hidden="true"></div>
+      <h1>Something new is on the way</h1>
+      <p>
+        We're putting the finishing touches on our new site. In the meantime,
+        get in touch directly and we'll get back to you.
+      </p>
+      <a href={`mailto:${CONTACT_EMAIL}`} class="cta">
+        {CONTACT_EMAIL}
+      </a>
+    </main>
+  </body>
+</html>
+
+<style>
+  body {
+    min-height: 100vh;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-bg);
+  }
+
+  .wrap {
+    text-align: center;
+    padding: 40px 24px;
+    max-width: 460px;
+  }
+
+  .logo {
+    margin-bottom: 24px;
+  }
+
+  .rule {
+    width: 48px;
+    height: 4px;
+    margin: 0 auto 24px;
+    background: var(--gradient-brand);
+  }
+
+  h1 {
+    color: var(--color-ink);
+    font-size: clamp(24px, 4vw, 32px);
+    font-weight: 700;
+    text-wrap: balance;
+  }
+
+  p {
+    margin-top: 14px;
+    color: var(--color-text-muted);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  .cta {
+    display: inline-block;
+    margin-top: 26px;
+    color: var(--color-ink);
+    font-weight: 600;
+    border-bottom: 2px solid var(--color-accent);
+    padding-bottom: 2px;
+  }
+
+  .cta:hover {
+    color: var(--color-accent);
+  }
+</style>

@@ -1,0 +1,261 @@
+---
+// Contact draft "B": full-bleed navy section, "Reach Us" sidebar, form in a
+// boxed white card. Same not-yet-wired note as ContactFormD5 - the file
+// upload field needs server-side handling quote.php doesn't have yet.
+import ServiceTypeField from "./ServiceTypeField.astro";
+import { CONTACT_EMAIL, CONTACT_PHONE } from "../data/contact-info";
+---
+
+<section class="panel">
+  <div class="container">
+    <div class="heading">
+      <h2>Let's Discuss Your Next Project</h2>
+      <p>
+        Fill out the form, or reach out directly to arrange a site visit or
+        consultation.
+      </p>
+    </div>
+
+    <div class="split">
+      <div class="reach">
+        <h3 class="reach-title">Reach Us</h3>
+        <div class="contact">
+          <div class="k">Email</div>
+          <div class="v link">{CONTACT_EMAIL}</div>
+        </div>
+        <div class="contact">
+          <div class="k">Phone</div>
+          <div class="v">{CONTACT_PHONE}</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <form class="form">
+          <div class="row2">
+            <div class="field">
+              <label for="b-name">
+                Full Name <span class="req">(required)</span>
+              </label>
+              <input
+                id="b-name"
+                name="name"
+                type="text"
+                autocomplete="name"
+                required
+              />
+            </div>
+            <div class="field">
+              <label for="b-email">
+                Email <span class="req">(required)</span>
+              </label>
+              <input
+                id="b-email"
+                name="email"
+                type="email"
+                autocomplete="email"
+                required
+              />
+            </div>
+          </div>
+          <div class="row2">
+            <div class="field">
+              <label for="b-phone">Phone</label>
+              <input id="b-phone" name="phone" type="tel" autocomplete="tel" />
+            </div>
+            <div class="field">
+              <label for="b-company">Company Name</label>
+              <input
+                id="b-company"
+                name="company"
+                type="text"
+                autocomplete="organization"
+              />
+            </div>
+          </div>
+          <div class="field">
+            <label id="b-service-label">Service type</label>
+            <ServiceTypeField id="b-service" name="services" />
+          </div>
+          <div class="field">
+            <label for="b-message">Message</label>
+            <p class="hint">
+              Any extra details e.g. site address, rough size or a quick outline
+              of the job, what the data's for, and when you need it.
+            </p>
+            <textarea
+              id="b-message"
+              name="message"
+              rows="5"
+              required
+            ></textarea>
+          </div>
+          <div class="field">
+            <label for="b-files">Upload photos or plans</label>
+            <input
+              id="b-files"
+              name="files"
+              type="file"
+              multiple
+              accept="image/*,.pdf"
+            />
+          </div>
+          <button type="submit" class="submit">
+            Request a Quote
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .panel {
+    background: var(--color-ink);
+    color: #fff;
+    padding-block: 64px;
+  }
+
+  .heading {
+    margin-bottom: 34px;
+  }
+
+  .heading h2 {
+    font-size: clamp(24px, 3.5vw, 32px);
+    font-weight: 700;
+    text-wrap: balance;
+  }
+
+  .heading p {
+    margin-top: 10px;
+    font-size: 14.5px;
+    color: rgba(255, 255, 255, 0.75);
+  }
+
+  .split {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 40px;
+    align-items: start;
+  }
+
+  .reach-title {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 18px;
+  }
+
+  .contact {
+    margin-bottom: 20px;
+  }
+
+  .contact .k {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.55);
+  }
+
+  .contact .v {
+    margin-top: 4px;
+    font-size: 14.5px;
+    font-weight: 600;
+  }
+
+  .contact .v.link {
+    color: var(--color-accent-green);
+  }
+
+  .card {
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    padding: 32px;
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .row2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  label {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--color-ink);
+  }
+
+  .hint {
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+    margin-top: -2px;
+  }
+
+  .req {
+    font-weight: 400;
+    font-size: 11px;
+    color: var(--color-text-faint);
+  }
+
+  input,
+  select,
+  textarea {
+    border: 1px solid var(--color-border);
+    background: var(--color-bg);
+    padding: 10px 12px;
+    font: inherit;
+    font-size: 14px;
+    color: var(--color-ink);
+    width: 100%;
+  }
+
+  input:focus,
+  select:focus,
+  textarea:focus {
+    outline: none;
+    border-color: var(--color-accent);
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 90px;
+  }
+
+  .submit {
+    background: var(--color-ink);
+    color: #fff;
+    border: none;
+    font-size: 13.5px;
+    font-weight: 600;
+    padding: 13px 24px;
+    cursor: pointer;
+    align-self: flex-start;
+  }
+
+  .submit:hover {
+    background: var(--color-accent);
+  }
+
+  @media (max-width: 760px) {
+    .split,
+    .row2 {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

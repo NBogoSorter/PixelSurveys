@@ -22,17 +22,18 @@ has `dist/` open on Windows can produce a page with no CSS.
 
 ## Project layout
 
-| Path                                   | What it is                                                          |
-| -------------------------------------- | ------------------------------------------------------------------- |
-| `src/pages/`                           | One file per URL (`services.astro` → `/services/`)                  |
-| `src/components/`                      | Header, footer, hero, service cards, quote form                     |
-| `src/data/services.ts`                 | Service categories and bullet copy. Edit copy here                  |
-| `src/styles/global.css`                | Brand tokens (colors sampled from the logo), base styles            |
-| `src/assets/`                          | Images optimized at build time (logo, later service/hero photos)    |
-| `public/.htaccess`                     | HTTPS/www redirects, security + cache headers, 404                  |
-| `public/api/quote.php`                 | Quote form handler                                                  |
-| `server-config/quote-config.example.php` | Template for the form's server-side settings (never deployed)     |
-| `media/`                               | Original source assets                                              |
+| Path                                     | What it is                                                       |
+| ---------------------------------------- | ---------------------------------------------------------------- |
+| `src/pages/`                             | One file per URL (`services.astro` → `/services/`)               |
+| `src/components/`                        | Header, footer, hero, service cards, quote form                  |
+| `src/data/services.ts`                   | Service categories and bullet copy. Edit copy here               |
+| `src/styles/global.css`                  | Brand tokens (colors sampled from the logo), base styles         |
+| `src/assets/`                            | Images optimized at build time (logo, later service/hero photos) |
+| `public/.htaccess`                       | HTTPS/www redirects, security + cache headers, 404, pre-launch gate |
+| `src/pages/maintenance.astro`            | The public "coming soon" page (see [Pre-launch gate](#pre-launch-gate)) |
+| `public/api/quote.php`                   | Quote form handler                                               |
+| `server-config/quote-config.example.php` | Template for the form's server-side settings (never deployed)    |
+| `media/`                                 | Original source assets                                           |
 
 ### Adding photos
 
@@ -69,6 +70,26 @@ Do these in cPanel, in order.
 
 Deploys only upload changed files, and only ever delete files a previous deploy uploaded.
 
+## Pre-launch gate
+
+Until the site is ready to go public, `public/.htaccess` shows everyone the "coming
+soon" page at `/maintenance/` instead of the real site - on **both** staging and
+production, since they run from the same build. Whoever opens
+`https://pixelsurveys.com/?preview=<token>` once gets a cookie that unlocks the real
+site in that browser from then on; the plain domain still shows the maintenance page
+for everyone else, including search engines (it's marked `noindex`).
+
+- **Send the client the `?preview=` link, not the plain domain**, while this is active.
+- **The token in `.htaccess` right now is only an example.** It's been sitting in this
+  chat and will be in git history the moment this file is committed - treat it as
+  already public. Before this goes anywhere near a real deploy, pick a new random
+  string and replace it in **both** places it appears in `public/.htaccess` (the
+  `RewriteCond` and the `Set-Cookie` header) - they have to match.
+- **To launch for real:** delete the whole "Pre-launch gate" block in
+  `public/.htaccess` (both directives), then redeploy.
+- This replaces the need for cPanel's separate "Password Protect Directories" feature
+  on staging - one link works for both.
+
 ### First production deploy (replacing WordPress)
 
 The deploy won't delete WordPress's files, because it didn't upload them. After the backup
@@ -84,3 +105,6 @@ immediately, but stale WordPress PHP stays reachable until those files are remov
 - [ ] A made-up URL shows the custom 404 page
 - [ ] Quote form delivers an email with Reply-To set to the visitor
 - [ ] Form works with JavaScript disabled (redirects to `/contact/thanks/`)
+- [ ] If the pre-launch gate is still active: the plain domain shows the maintenance
+      page, and `?preview=<token>` unlocks the real site (check the cookie's actually
+      set - this hasn't been tested against real Apache yet, only reasoned through)

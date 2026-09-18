@@ -1,0 +1,230 @@
+---
+// Contact draft "D5": light split panel (Reach Us sidebar + boxed card),
+// borderless grey-filled fields, D3's brand-gradient rule along the card's
+// top edge. Not wired to /api/quote.php yet - the file upload field needs
+// server-side handling quote.php doesn't have. Confirm the design, then
+// I'll update quote.php (multipart parsing + the new fields) for real.
+import ServiceTypeField from "./ServiceTypeField.astro";
+import { CONTACT_EMAIL, CONTACT_PHONE } from "../data/contact-info";
+---
+
+<section class="panel">
+  <div class="container split">
+    <div class="reach">
+      <h3 class="reach-title">Reach Us</h3>
+      <div class="contact">
+        <div class="k">Email</div>
+        <div class="v">{CONTACT_EMAIL}</div>
+      </div>
+      <div class="contact">
+        <div class="k">Phone</div>
+        <div class="v">{CONTACT_PHONE}</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <form class="form">
+        <div class="row2">
+          <div class="field">
+            <label for="d5-name">
+              Full Name <span class="req">(required)</span>
+            </label>
+            <input
+              id="d5-name"
+              name="name"
+              type="text"
+              autocomplete="name"
+              required
+            />
+          </div>
+          <div class="field">
+            <label for="d5-email">
+              Email <span class="req">(required)</span>
+            </label>
+            <input
+              id="d5-email"
+              name="email"
+              type="email"
+              autocomplete="email"
+              required
+            />
+          </div>
+        </div>
+        <div class="row2">
+          <div class="field">
+            <label for="d5-phone">Phone</label>
+            <input id="d5-phone" name="phone" type="tel" autocomplete="tel" />
+          </div>
+          <div class="field">
+            <label for="d5-company">Company Name</label>
+            <input
+              id="d5-company"
+              name="company"
+              type="text"
+              autocomplete="organization"
+            />
+          </div>
+        </div>
+        <div class="field">
+          <label id="d5-service-label">Service type</label>
+          <ServiceTypeField id="d5-service" name="services" />
+        </div>
+        <div class="field">
+          <label for="d5-message">Message</label>
+          <p class="hint">
+            Any extra details e.g. site address, rough size or a quick outline
+            of the job, what the data's for, and when you need it.
+          </p>
+          <textarea id="d5-message" name="message" rows="5" required></textarea>
+        </div>
+        <div class="field">
+          <label for="d5-files">Upload photos or plans</label>
+          <input
+            id="d5-files"
+            name="files"
+            type="file"
+            multiple
+            accept="image/*,.pdf"
+          />
+        </div>
+        <button type="submit" class="submit">
+          Request a Quote
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<style>
+  .panel {
+    background: var(--color-surface);
+    padding-block: 60px;
+  }
+
+  .split {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 40px;
+    align-items: start;
+  }
+
+  .reach-title {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin-bottom: 18px;
+  }
+
+  .contact {
+    margin-bottom: 20px;
+  }
+
+  .contact .k {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .contact .v {
+    margin-top: 4px;
+    font-size: 14.5px;
+    font-weight: 600;
+    color: var(--color-ink);
+  }
+
+  .card {
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-top: 3px solid;
+    border-image: var(--gradient-brand) 1;
+    padding: 32px;
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .row2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  label {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--color-ink);
+  }
+
+  .hint {
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+    margin-top: -2px;
+  }
+
+  .req {
+    font-weight: 400;
+    font-size: 11px;
+    color: var(--color-text-faint);
+  }
+
+  input,
+  select,
+  textarea {
+    border: none;
+    background: var(--color-surface);
+    padding: 11px 13px;
+    font: inherit;
+    font-size: 14px;
+    color: var(--color-ink);
+    width: 100%;
+  }
+
+  input:focus,
+  select:focus,
+  textarea:focus {
+    outline: 2px solid var(--color-accent);
+    outline-offset: -1px;
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 90px;
+  }
+
+  .submit {
+    background: var(--color-ink);
+    color: #fff;
+    border: none;
+    font-size: 13.5px;
+    font-weight: 600;
+    padding: 13px 24px;
+    cursor: pointer;
+    align-self: flex-start;
+  }
+
+  .submit:hover {
+    background: var(--color-ink-soft);
+  }
+
+  @media (max-width: 760px) {
+    .split,
+    .row2 {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

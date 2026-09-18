@@ -1,0 +1,256 @@
+---
+// Multi-select tag combobox for "Service type" - a dropdown checklist that
+// adds checked services as removable chips in the field. Replaces the
+// previous native <select> since a project can reasonably span more than
+// one service category.
+//
+// Built to be safe when this component appears more than once on the same
+// page (both ContactFormD5 and ContactFormB render it) - everything is
+// scoped through data-attributes and querySelectorAll, no getElementById.
+import { SERVICE_TYPES } from "../data/service-types";
+
+interface Props {
+  /** Unique per-instance id, e.g. "d5-service" - used for aria-labelledby. */
+  id: string;
+  name?: string;
+}
+
+const { id, name = "services" } = Astro.props;
+
+// Cycles the same five brand stops used to color-code services elsewhere on
+// the site (the homepage service cards' image bands).
+const CHIP_COLORS = [
+  "var(--color-ink)",
+  "var(--color-ink-soft)",
+  "var(--color-accent)",
+  "var(--color-canopy)",
+  "var(--color-accent-green)",
+];
+---
+
+<div class="combobox" data-combobox>
+  <div
+    class="field"
+    tabindex="0"
+    role="button"
+    aria-haspopup="listbox"
+    aria-expanded="false"
+    aria-labelledby={`${id}-label`}
+    data-field
+  >
+    <span class="placeholder" data-placeholder>
+      Select services
+    </span>
+  </div>
+  <svg
+    class="chevron"
+    data-chevron
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.8"
+    aria-hidden="true"
+  >
+    <path d="M6 9l6 6 6-6"></path>
+  </svg>
+
+  <div class="panel" data-panel hidden role="listbox">
+    {SERVICE_TYPES.map((service, i) => (
+      <label class="option">
+        <input
+          type="checkbox"
+          name={name}
+          value={service.title}
+          data-option
+          data-color={CHIP_COLORS[i % CHIP_COLORS.length]}
+        />
+        <span class="option-body">
+          <span class="option-title">{service.title}</span>
+          <span class="option-desc">{service.description}</span>
+        </span>
+      </label>
+    ))}
+  </div>
+</div>
+
+<style>
+  .combobox {
+    position: relative;
+  }
+
+  .field {
+    min-height: 44px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+    padding: 6px 34px 6px 13px;
+    background: var(--color-surface);
+    cursor: pointer;
+  }
+
+  .field:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: -1px;
+  }
+
+  .placeholder {
+    font-size: 14px;
+    color: var(--color-text-muted);
+  }
+
+  .chevron {
+    position: absolute;
+    top: 15px;
+    right: 12px;
+    width: 16px;
+    height: 16px;
+    color: var(--color-text-muted);
+    pointer-events: none;
+    transition: transform 0.15s;
+  }
+
+  .combobox[data-open] .chevron {
+    transform: rotate(180deg);
+  }
+
+  .panel {
+    margin-top: 6px;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    padding: 4px;
+    max-height: 220px;
+    overflow-y: auto;
+  }
+
+  .option {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 9px 8px;
+    font-size: 14px;
+    color: var(--color-ink);
+    cursor: pointer;
+  }
+
+  .option:hover {
+    background: var(--color-surface);
+  }
+
+  .option input {
+    margin-top: 3px;
+    flex-shrink: 0;
+  }
+
+  .option-body {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .option-title {
+    font-weight: 600;
+  }
+
+  .option-desc {
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--color-text-muted);
+    line-height: 1.4;
+  }
+
+  .combobox :global(.chip) {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 6px 3px 10px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #fff;
+  }
+
+  .combobox :global(.chip button) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    border: none;
+    background: rgba(255, 255, 255, 0.25);
+    color: inherit;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .combobox :global(.chip svg) {
+    width: 11px;
+    height: 11px;
+    display: block;
+  }
+</style>
+
+<script>
+  function setUpCombobox(root: HTMLElement) {
+    const field = root.querySelector<HTMLElement>("[data-field]");
+    const panel = root.querySelector<HTMLElement>("[data-panel]");
+    const placeholder = root.querySelector<HTMLElement>("[data-placeholder]");
+    const options = Array.from(
+      root.querySelectorAll<HTMLInputElement>("[data-option]"),
+    );
+    if (!field || !panel || !placeholder) return;
+
+    function renderChips() {
+      field!.querySelectorAll(".chip").forEach((el) => el.remove());
+      const checked = options.filter((o) => o.checked);
+      placeholder!.hidden = checked.length > 0;
+
+      checked.forEach((opt) => {
+        const chip = document.createElement("span");
+        chip.className = "chip";
+        chip.style.background = opt.dataset.color ?? "var(--color-ink)";
+
+        const label = document.createElement("span");
+        label.textContent = opt.value;
+
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.setAttribute("aria-label", `Remove ${opt.value}`);
+        btn.innerHTML =
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+        btn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          opt.checked = false;
+          renderChips();
+        });
+
+        chip.append(label, btn);
+        field!.insertBefore(chip, placeholder);
+      });
+    }
+
+    function setOpen(open: boolean) {
+      panel!.hidden = !open;
+      field!.setAttribute("aria-expanded", String(open));
+      root.toggleAttribute("data-open", open);
+    }
+
+    field.addEventListener("click", () => setOpen(Boolean(panel!.hidden)));
+    field.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        setOpen(Boolean(panel!.hidden));
+      }
+      if (e.key === "Escape") setOpen(false);
+    });
+    options.forEach((opt) => opt.addEventListener("change", renderChips));
+    document.addEventListener("click", (e) => {
+      if (!root.contains(e.target as Node)) setOpen(false);
+    });
+
+    renderChips();
+  }
+
+  document
+    .querySelectorAll<HTMLElement>("[data-combobox]")
+    .forEach(setUpCombobox);
+</script>

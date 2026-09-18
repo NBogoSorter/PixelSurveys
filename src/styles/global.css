@@ -15,7 +15,9 @@
   --color-accent-green: #63ba78; /* gradient endpoint, sparing use */
   --color-bg: #ffffff;
   --color-border: #d7e3e4; /* neutral, biased toward the teal accent rather than flat grey */
+  --color-surface: #f1f6f6; /* light panel tint, same bias as --color-border */
   --color-text-muted: #57727a;
+  --color-text-faint: #93a7ae; /* lighter still - de-emphasized helper text, e.g. a "required" tag */
   --color-hero-overlay: rgba(12, 83, 141, 0.2);
 
   /* Full 5-stop logo gradient, for decorative use (dividers, accents) */

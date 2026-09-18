@@ -1,0 +1,95 @@
+---
+import type { CapabilityIconName } from "../data/capabilities";
+
+interface Props {
+  name: CapabilityIconName;
+  class?: string;
+}
+
+const { name, class: className } = Astro.props;
+---
+
+{name === "construction" && (
+  <svg
+    class={className}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.6"
+    aria-hidden="true"
+  >
+    <path d="M4 21V10l8-6 8 6v11" />
+    <path d="M9 21v-6h6v6" />
+    <path d="M4 10h16" />
+  </svg>
+)}
+{name === "land" && (
+  <svg
+    class={className}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.6"
+    aria-hidden="true"
+  >
+    <path d="M3 17l6-10 5 7 3-4 4 7" />
+    <path d="M3 20h18" />
+  </svg>
+)}
+{name === "survey" && (
+  <svg
+    class={className}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.6"
+    aria-hidden="true"
+  >
+    <circle cx="12" cy="12" r="8.5" />
+    <path d="M12 3.5V6M12 18v2.5M20.5 12H18M6 12H3.5" />
+    <path d="M14.5 9.5 11 13" />
+  </svg>
+)}
+{name === "infrastructure" && (
+  <svg
+    class={className}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.6"
+    aria-hidden="true"
+  >
+    <circle cx="5" cy="18" r="2" />
+    <circle cx="19" cy="6" r="2" />
+    <path d="M6.5 16.5 17.5 7.5" />
+    <path d="M5 20v-2M19 8V6" />
+  </svg>
+)}
+{name === "monitoring" && (
+  <svg
+    class={className}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.6"
+    aria-hidden="true"
+  >
+    <path d="M4 12a8 8 0 0 1 14-5" />
+    <path d="M18 4v3h-3" />
+    <path d="M20 12a8 8 0 0 1-14 5" />
+    <path d="M6 20v-3h3" />
+  </svg>
+)}
+{name === "environment" && (
+  <svg
+    class={className}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.6"
+    aria-hidden="true"
+  >
+    <path d="M12 21s-7-4.5-7-11a7 7 0 0 1 14 0c0 6.5-7 11-7 11z" />
+    <path d="M12 13a4 4 0 0 0 4-4" />
+  </svg>
+)}

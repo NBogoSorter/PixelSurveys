@@ -1,7 +1,14 @@
 ---
+import CapabilitiesBorderedGrid from "../components/CapabilitiesBorderedGrid.astro";
+import CapabilitiesOpenGrid from "../components/CapabilitiesOpenGrid.astro";
+import CapabilityIntro from "../components/CapabilityIntro.astro";
+import ContactFormB from "../components/ContactFormB.astro";
+import ContactFormD5 from "../components/ContactFormD5.astro";
+import FaqAccordion from "../components/FaqAccordion.astro";
 import Hero from "../components/Hero.astro";
 import IntroSection from "../components/IntroSection.astro";
 import ServicesGrid from "../components/ServicesGrid.astro";
+import TrustBar from "../components/TrustBar.astro";
 import Base from "../layouts/Base.astro";
 ---
 
@@ -9,4 +16,66 @@ import Base from "../layouts/Base.astro";
   <Hero />
   <IntroSection />
   <ServicesGrid />
+
+  {/* Draft comparison, moved down from /capabilities-preview/ - remove the loser once picked. */}
+  <div class="draft">
+    <div class="container">
+      <p class="draft-label">Draft A - open grid, no card borders</p>
+      <CapabilityIntro />
+    </div>
+    {/* Full-bleed: sits outside .container on purpose so its background runs edge to edge. */}
+    <CapabilitiesOpenGrid />
+  </div>
+
+  <div class="draft">
+    <div class="container">
+      <p class="draft-label">Draft B - bordered grid</p>
+      <CapabilityIntro />
+    </div>
+    {/* Full-bleed, same as Draft A above. */}
+    <CapabilitiesBorderedGrid />
+  </div>
+
+  <TrustBar />
+  <FaqAccordion />
+
+  {/* Contact form drafts, for comparison - same pattern as the Capabilities drafts above. */}
+  <div class="draft">
+    <div class="container">
+      <p class="draft-label">
+        Contact draft D5 - filled inputs, accent-rule card
+      </p>
+    </div>
+    <ContactFormD5 />
+  </div>
+
+  <div class="draft draft--flush">
+    <div class="container">
+      <p class="draft-label">Contact draft B - dark split panel</p>
+    </div>
+    <ContactFormB />
+  </div>
 </Base>
+
+<style>
+  .draft {
+    padding-top: 48px;
+    padding-bottom: 48px;
+    border-top: 1px solid var(--color-border);
+  }
+
+  /* Last section before the footer - ContactFormB's own navy background
+     should butt straight into the footer's gradient rule, no white gap. */
+  .draft--flush {
+    padding-bottom: 0;
+  }
+
+  .draft-label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin-bottom: 8px;
+  }
+</style>

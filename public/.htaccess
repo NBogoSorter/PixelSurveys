@@ -21,6 +21,26 @@ ErrorDocument 404 /404.html
   # links and search results don't 404 after cutover. Extend as needed.
   RewriteRule ^wp-admin/?  / [L,R=301]
   RewriteRule ^wp-login\.php$ / [L,R=301]
+
+  # ---- Pre-launch gate ----
+  # Public visitors get the "coming soon" page at /maintenance/. Whoever
+  # opens https://pixelsurveys.com/?preview=OuLztsE3olfNACnGdMVb64QG once
+  # gets a cookie that unlocks the real site on every visit after that -
+  # send that link to the client, not the plain domain.
+  #
+  # CHANGE THE TOKEN before this goes anywhere near a real deploy - it's
+  # sitting in git history the moment this file is committed, so treat the
+  # one below as already public, not a real secret. Edit both this line and
+  # the Set-Cookie line below to match, and keep the two in sync.
+  #
+  # Delete this whole "Pre-launch gate" block (both directives) once the
+  # site is ready to go fully public.
+  RewriteCond %{HTTP_COOKIE} !preview_access=OuLztsE3olfNACnGdMVb64QG
+  RewriteCond %{QUERY_STRING} !(^|&)preview=OuLztsE3olfNACnGdMVb64QG(&|$)
+  RewriteCond %{REQUEST_URI} !^/maintenance/
+  RewriteCond %{REQUEST_URI} !^/_astro/
+  RewriteCond %{REQUEST_URI} !^/api/
+  RewriteRule ^ /maintenance/ [L]
 </IfModule>
 
 <IfModule mod_headers.c>
@@ -37,6 +57,11 @@ ErrorDocument 404 /404.html
   <FilesMatch "\.html$">
     Header set Cache-Control "no-cache"
   </FilesMatch>
+
+  # Part of the pre-launch gate above: arriving with the right ?preview=
+  # token sets the bypass cookie so it isn't needed on every visit. Keep
+  # the token here in sync with the one in the mod_rewrite block.
+  Header always set Set-Cookie "preview_access=OuLztsE3olfNACnGdMVb64QG; Path=/; Max-Age=15552000; Secure; SameSite=Lax" "expr=%{QUERY_STRING} =~ /(^|&)preview=OuLztsE3olfNACnGdMVb64QG(&|$)/"
 </IfModule>
 
 <IfModule mod_deflate.c>
