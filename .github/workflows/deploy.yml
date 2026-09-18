@@ -1,12 +1,16 @@
 name: Build & deploy
 
-# Pushes to main deploy to STAGING automatically.
-# Production is manual: Actions -> "Build & deploy" -> Run workflow -> target: production.
+# Every push to main builds and deploys straight to production. There's no
+# staging target - the client previews the in-progress site via the
+# pre-launch gate (see README.md) on the production domain itself, not a
+# separate environment.
 #
-# Each target is a GitHub Environment holding its own secrets, pointing at a
-# dedicated cPanel FTP account scoped to that site's docroot:
+# The "production" GitHub Environment gates the actual deploy: add yourself
+# as a required reviewer on it so every deploy needs a manual approval
+# click, even though the build kicks off automatically on push. Its secrets
+# point at a cPanel FTP account scoped to public_html:
 #   FTP_SERVER      e.g. ftp.pixelsurveys.com.au
-#   FTP_USERNAME    e.g. deploy-staging@pixelsurveys.com.au
+#   FTP_USERNAME    e.g. deploy-prod@pixelsurveys.com.au
 #   FTP_PASSWORD
 #   FTP_SERVER_DIR  path relative to the FTP account's root, ending in "/" (usually "./")
 #
@@ -15,16 +19,10 @@ name: Build & deploy
 on:
   push:
     branches: [main]
-  workflow_dispatch:
-    inputs:
-      target:
-        description: Where to deploy
-        type: choice
-        options: [staging, production]
-        default: staging
+  workflow_dispatch: {} # manual re-run on demand, no new commit needed
 
 concurrency:
-  group: deploy-${{ github.event.inputs.target || 'staging' }}
+  group: deploy-production
   cancel-in-progress: false
 
 jobs:
@@ -53,7 +51,7 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
-    environment: ${{ github.event.inputs.target || 'staging' }}
+    environment: production
     steps:
       - uses: actions/download-artifact@v8
         with:

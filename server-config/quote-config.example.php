@@ -38,10 +38,10 @@ return [
     'smtp_password' => 'REPLACE_WITH_MAILBOX_PASSWORD_OR_APP_PASSWORD',
 
     // Exact origins allowed to post the form (scheme + host, no trailing slash).
+    // No staging entry - there's no staging environment in this setup.
     'allowed_origins' => [
         'https://pixelsurveys.com.au',
         'https://www.pixelsurveys.com.au',
-        'https://staging.pixelsurveys.com.au',
     ],
 
     // Outside the web root. dirname(__DIR__) here is the account home directory.

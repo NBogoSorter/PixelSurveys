@@ -20,7 +20,9 @@ npm run preview   # serve dist/ locally
 Stop `npm run preview` before running `npm run build` again. Rebuilding while preview
 has `dist/` open on Windows can produce a page with no CSS.
 
-`quote.php` doesn't run locally (the dev server doesn't execute PHP). Test the form on staging.
+`quote.php` doesn't run locally (the dev server doesn't execute PHP). Test the form after
+a real deploy - there's no staging environment (see [Deploying](#deploying)), so that
+means testing on production, behind the pre-launch gate.
 
 ## Project layout
 
@@ -55,38 +57,42 @@ Do these in cPanel, in order.
    Mail → Manage email apps → turn on **Authenticated SMTP**. Off by default on most
    tenants. If the mailbox has MFA enabled, its normal password won't work over SMTP -
    generate an **app password** instead (the same user's page → Authentication methods)
-   and use that in step 4 below. If sign-in still fails after both of those, the tenant
+   and use that in step 3 below. If sign-in still fails after both of those, the tenant
    likely has Security Defaults or a Conditional Access policy blocking basic auth
    entirely - that needs OAuth2 (XOAUTH2) instead, a bigger change; only chase that if
    plain SMTP AUTH turns out to actually be blocked, not pre-emptively.
-3. **Create the staging subdomain** (cPanel → Domains) `staging.pixelsurveys.com.au`. Let
-   cPanel put its document root outside `public_html` (e.g. `~/staging.pixelsurveys.com.au`).
-4. **Create the form config** outside every web root:
+3. **Create the form config** outside every web root:
    - cPanel → File Manager → in your home directory create `server-config/`
    - Upload `server-config/quote-config.example.php` there, rename it to `quote-config.php`
    - Fill in `smtp_password` with the mailbox's password or app password from step 2
-5. **Create two FTP accounts** (cPanel → FTP Accounts), each limited to one document root:
-   - `deploy-staging@…` → the staging subdomain's folder
-   - `deploy-prod@…` → `public_html`
-6. **GitHub:** repo → Settings → Environments → create `staging` and `production`, each
-   with secrets `FTP_SERVER`, `FTP_USERNAME`, `FTP_PASSWORD`, `FTP_SERVER_DIR` (usually `./`).
-   Under `production`, add yourself as a required reviewer so production deploys need approval.
+4. **Create an FTP account** (cPanel → FTP Accounts) limited to `public_html`:
+   `deploy-prod@pixelsurveys.com.au` (or similar).
+5. **GitHub:** repo → Settings → Environments → create a `production` environment with
+   secrets `FTP_SERVER`, `FTP_USERNAME`, `FTP_PASSWORD`, `FTP_SERVER_DIR` (usually `./`).
+   Add yourself as a required reviewer so every deploy needs an approval click.
+
+There's no staging subdomain in this setup. `staging.pixelsurveys.com.au` exists in
+cPanel (an old WordPress staging copy) but is intentionally untouched and unrelated to
+this project - the client previews the in-progress site via the pre-launch gate below,
+on the production domain itself.
 
 ## Deploying
 
-- **Push to `main`** → GitHub Actions builds and uploads to **staging**.
-- **Production:** GitHub → Actions → "Build & deploy" → Run workflow → target `production`.
+Push to `main` → GitHub Actions builds and deploys straight to **production**, gated by
+the `production` environment's required-reviewer approval (so it builds automatically,
+but nothing reaches the live site until that approval click). Re-run the workflow
+manually (Actions → "Build & deploy" → Run workflow) to redeploy without a new commit.
 
 Deploys only upload changed files, and only ever delete files a previous deploy uploaded.
 
 ## Pre-launch gate
 
 Until the site is ready to go public, `public/.htaccess` shows everyone the "coming
-soon" page at `/maintenance/` instead of the real site - on **both** staging and
-production, since they run from the same build. Whoever opens
+soon" page at `/maintenance/` instead of the real site. Whoever opens
 `https://pixelsurveys.com.au/?preview=<token>` once gets a cookie that unlocks the real
 site in that browser from then on; the plain domain still shows the maintenance page
-for everyone else, including search engines (it's marked `noindex`).
+for everyone else, including search engines (it's marked `noindex`). This is how the
+client previews the real, in-progress site - there's no separate staging URL for that.
 
 - **Send the client the `?preview=` link, not the plain domain**, while this is active.
 - **The token in `.htaccess` right now is only an example.** It's been sitting in this
@@ -96,16 +102,14 @@ for everyone else, including search engines (it's marked `noindex`).
   `RewriteCond` and the `Set-Cookie` header) - they have to match.
 - **To launch for real:** delete the whole "Pre-launch gate" block in
   `public/.htaccess` (both directives), then redeploy.
-- This replaces the need for cPanel's separate "Password Protect Directories" feature
-  on staging - one link works for both.
 
 ### First production deploy (replacing WordPress)
 
-The deploy won't delete WordPress's files, because it didn't upload them. After the backup
-from step 1 and a successful first production deploy, remove the leftover WordPress files
-from `public_html` (`wp-admin/`, `wp-content/`, `wp-includes/`, `wp-*.php`, `index.php`,
-`xmlrpc.php`). `index.html` already takes priority over `index.php`, so the new site shows
-immediately, but stale WordPress PHP stays reachable until those files are removed.
+The deploy won't delete WordPress's files, because it didn't upload them. After a
+successful first deploy, remove the leftover WordPress files from `public_html`
+(`wp-admin/`, `wp-content/`, `wp-includes/`, `wp-*.php`, `index.php`, `xmlrpc.php`).
+`index.html` already takes priority over `index.php`, so the new site shows immediately,
+but stale WordPress PHP stays reachable until those files are removed.
 
 ## Checklist after each deploy
 
