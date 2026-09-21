@@ -118,11 +118,13 @@ for everyone else, including search engines (it's marked `noindex`). This is how
 client previews the real, in-progress site - there's no separate staging URL for that.
 
 - **Send the client the `?preview=` link, not the plain domain**, while this is active.
-- **The token in `.htaccess` right now is only an example.** It's been sitting in this
-  chat and will be in git history the moment this file is committed - treat it as
-  already public. Before this goes anywhere near a real deploy, pick a new random
-  string and replace it in **both** places it appears in `public/.htaccess` (the
-  `RewriteCond` and the `Set-Cookie` header) - they have to match.
+- **The current preview link is**
+  `https://pixelsurveys.com.au/?preview=qRWAlfZm5naV5SY5QjBp6X2b`
+- The token lives in `public/.htaccess` and therefore in this repo, so treat it as
+  readable by anyone with repo access. That's acceptable for what it does - it keeps
+  an unfinished site out of public view, it doesn't protect anything sensitive. To
+  change it, replace it in **both** places in `public/.htaccess` (the `RewriteCond`
+  and the `Set-Cookie` header) - they have to match - then redeploy.
 - **To launch for real:** delete the whole "Pre-launch gate" block in
   `public/.htaccess` (both directives), then redeploy.
 
