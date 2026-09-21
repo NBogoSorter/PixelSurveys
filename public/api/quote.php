@@ -174,13 +174,20 @@ function get_graph_access_token(string $tenantId, string $clientId, string $cert
 }
 
 /** Sends as $fromMailbox (must be a real mailbox the app is allowed to send as). */
-function send_graph_mail(string $accessToken, string $fromMailbox, string $to, string $subject, string $body, string $replyToEmail, string $replyToName): void
+function send_graph_mail(string $accessToken, string $fromMailbox, string $fromName, string $to, string $subject, string $body, string $replyToEmail, string $replyToName): void
 {
     $endpoint = 'https://graph.microsoft.com/v1.0/users/' . rawurlencode($fromMailbox) . '/sendMail';
     $message = [
         'message' => [
             'subject' => $subject,
             'body' => ['contentType' => 'Text', 'content' => $body],
+            // Without an explicit "from", Exchange labels the message with the
+            // sending mailbox's own display name - which is the mailbox
+            // owner's personal name when from_mailbox is an alias rather than
+            // a mailbox of its own. Setting it keeps the sender reading as the
+            // website. The address stays the mailbox we're authorised to send
+            // as; only the display name is ours to choose.
+            'from' => ['emailAddress' => ['address' => $fromMailbox, 'name' => $fromName]],
             'toRecipients' => [['emailAddress' => ['address' => $to]]],
             'replyTo' => [['emailAddress' => ['address' => $replyToEmail, 'name' => $replyToName]]],
         ],
@@ -351,6 +358,9 @@ try {
     send_graph_mail(
         $accessToken,
         $config['from_mailbox'],
+        // Fallback so an older config file without this key still sends,
+        // rather than failing with a TypeError.
+        $config['from_name'] ?? 'Pixel Surveys Website',
         $config['to_address'],
         $subject,
         $body,
