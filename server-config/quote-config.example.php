@@ -7,18 +7,20 @@
  * public_html, NOT inside it) and fill in real values. The real file is
  * git-ignored and is never uploaded by the deploy workflow.
  *
- * Mail sends through Microsoft 365's SMTP (pixelsurveys.com.au's SPF record
- * only permits mail from Microsoft's own servers - see the note at the top
- * of quote.php). The smtp_* fields below are real mailbox credentials -
- * this file staying outside the web root is what keeps them from being
+ * Mail sends through the Microsoft Graph API (pixelsurveys.com.au's SPF
+ * record only permits mail from Microsoft's own servers - see the note at
+ * the top of quote.php). The graph_* fields below are real app credentials
+ * - this file staying outside the web root is what keeps them from being
  * downloadable.
  *
- * Before this works, the sending mailbox needs "Authenticated SMTP" turned
- * on: Microsoft 365 admin center -> Users -> (the mailbox) -> Mail ->
- * Manage email apps -> enable "Authenticated SMTP". Most tenants ship with
- * this off. If sign-in still fails after that, the mailbox likely has MFA
- * enabled and needs an app password instead of its normal password (M365
- * admin center -> the user -> Authentication methods).
+ * Before this works, an Entra ID app registration is needed (README.md has
+ * the full walkthrough): Entra admin center -> App registrations -> New
+ * registration -> API permissions -> add Microsoft Graph -> Application
+ * permissions -> Mail.Send -> Grant admin consent -> Certificates & secrets
+ * -> New client secret. Then:
+ *   graph_tenant_id     = the app's "Directory (tenant) ID"
+ *   graph_client_id     = the app's "Application (client) ID"
+ *   graph_client_secret = the client secret's VALUE (shown once, at creation)
  */
 
 return [
@@ -26,16 +28,15 @@ return [
     // single M365 mailbox - no second one to create/license. Split them
     // (e.g. a dedicated website@) only if the client wants that separation.
     'to_address' => 'info@pixelsurveys.com.au',
-    'from_address' => 'info@pixelsurveys.com.au',
+    'from_mailbox' => 'info@pixelsurveys.com.au',
     'from_name' => 'Pixel Surveys Website',
 
     'subject_prefix' => '[Quote request]',
 
-    // --- Microsoft 365 SMTP (authenticated) ---
-    'smtp_host' => 'smtp.office365.com',
-    'smtp_port' => 587,
-    'smtp_username' => 'info@pixelsurveys.com.au', // usually same as from_address
-    'smtp_password' => 'REPLACE_WITH_MAILBOX_PASSWORD_OR_APP_PASSWORD',
+    // --- Microsoft Graph API (app-only auth, no user signs in) ---
+    'graph_tenant_id' => 'REPLACE_WITH_DIRECTORY_TENANT_ID',
+    'graph_client_id' => 'REPLACE_WITH_APPLICATION_CLIENT_ID',
+    'graph_client_secret' => 'REPLACE_WITH_CLIENT_SECRET_VALUE',
 
     // Exact origins allowed to post the form (scheme + host, no trailing slash).
     // No staging entry - there's no staging environment in this setup.

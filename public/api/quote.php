@@ -13,24 +13,20 @@ declare(strict_types=1);
  * form's fetch() path); otherwise redirects to a static thanks/error page so
  * the form still works with JavaScript disabled.
  *
- * Sends via authenticated SMTP through Microsoft 365 (PHPMailer, vendored in
- * ./lib/phpmailer/ - no Composer available on this host), not PHP's mail().
- * pixelsurveys.com.au's SPF record is "v=spf1 include:spf.protection.outlook.com
- * -all" - a hard fail - so mail sent any other way gets rejected as spoofed.
- * The sending mailbox needs "Authenticated SMTP" enabled for it in the
- * Microsoft 365 admin center (Users -> the mailbox -> Mail -> Manage email
- * apps); most tenants ship with it off. If the tenant also enforces Security
- * Defaults or a Conditional Access policy blocking basic auth entirely, this
- * won't authenticate and needs OAuth2 (XOAUTH2) instead - more setup, cross
- * that bridge only if plain SMTP AUTH turns out to be blocked.
+ * Sends via the Microsoft Graph API (POST .../sendMail), not SMTP. Two
+ * reasons: pixelsurveys.com.au's SPF record is "v=spf1
+ * include:spf.protection.outlook.com -all" - a hard fail - so mail sent any
+ * way other than through Microsoft gets rejected as spoofed; and Microsoft
+ * is retiring SMTP AUTH's username/password login entirely (existing
+ * tenants lose it 31 Dec 2026, https://learn.microsoft.com/en-us/exchange/
+ * clients-and-mobile-in-exchange-online/deprecation-of-basic-authentication-
+ * exchange-online) - not worth building on something with a ~3 month
+ * runway. Graph API is Microsoft's own listed replacement, and needs
+ * nothing vendored - it's plain HTTPS via PHP's built-in curl.
+ *
+ * Requires an Entra ID app registration with the Mail.Send *application*
+ * permission (admin-consented) - see README.md for the setup steps.
  */
-
-require __DIR__ . '/lib/phpmailer/Exception.php';
-require __DIR__ . '/lib/phpmailer/SMTP.php';
-require __DIR__ . '/lib/phpmailer/PHPMailer.php';
-
-use PHPMailer\PHPMailer\Exception as MailException;
-use PHPMailer\PHPMailer\PHPMailer;
 
 const MIN_SECONDS_TO_SUBMIT = 3;
 
@@ -61,6 +57,74 @@ function clean_line(mixed $value, int $maxLength): string
     return mb_substr($value, 0, $maxLength);
 }
 
+/** POSTs $fields as application/x-www-form-urlencoded or application/json and decodes the JSON response. */
+function http_post_json(string $url, array $fields, array $headers = [], bool $asJson = false): array
+{
+    $ch = curl_init($url);
+    curl_setopt_array($ch, [
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_POST => true,
+        CURLOPT_POSTFIELDS => $asJson ? json_encode($fields) : http_build_query($fields),
+        CURLOPT_HTTPHEADER => $headers,
+        CURLOPT_TIMEOUT => 15,
+    ]);
+    $raw = curl_exec($ch);
+    $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $curlError = curl_error($ch);
+    curl_close($ch);
+
+    if ($raw === false) {
+        throw new RuntimeException('cURL error: ' . $curlError);
+    }
+    if ($status < 200 || $status >= 300) {
+        throw new RuntimeException("HTTP $status: " . substr((string) $raw, 0, 500));
+    }
+
+    $decoded = $raw === '' ? [] : json_decode($raw, true);
+
+    return is_array($decoded) ? $decoded : [];
+}
+
+/** Client-credentials OAuth2 flow - no user ever signs in, this app authenticates as itself. */
+function get_graph_access_token(string $tenantId, string $clientId, string $clientSecret): string
+{
+    $response = http_post_json(
+        "https://login.microsoftonline.com/$tenantId/oauth2/v2.0/token",
+        [
+            'client_id' => $clientId,
+            'client_secret' => $clientSecret,
+            'scope' => 'https://graph.microsoft.com/.default',
+            'grant_type' => 'client_credentials',
+        ],
+    );
+
+    if (!isset($response['access_token']) || !is_string($response['access_token'])) {
+        throw new RuntimeException('Token response had no access_token.');
+    }
+
+    return $response['access_token'];
+}
+
+/** Sends as $fromMailbox (must be a real mailbox the app is allowed to send as). */
+function send_graph_mail(string $accessToken, string $fromMailbox, string $to, string $subject, string $body, string $replyToEmail, string $replyToName): void
+{
+    $endpoint = 'https://graph.microsoft.com/v1.0/users/' . rawurlencode($fromMailbox) . '/sendMail';
+    $message = [
+        'message' => [
+            'subject' => $subject,
+            'body' => ['contentType' => 'Text', 'content' => $body],
+            'toRecipients' => [['emailAddress' => ['address' => $to]]],
+            'replyTo' => [['emailAddress' => ['address' => $replyToEmail, 'name' => $replyToName]]],
+        ],
+        'saveToSentItems' => false,
+    ];
+
+    http_post_json($endpoint, $message, [
+        'Authorization: Bearer ' . $accessToken,
+        'Content-Type: application/json',
+    ], asJson: true);
+}
+
 if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
     header('Allow: POST');
     respond(false, 405, 'Method not allowed.');
@@ -78,7 +142,7 @@ if (!is_readable($configPath)) {
     respond(false, 500, 'The form is not configured yet. Please email us directly.');
 }
 
-/** @var array{to_address: string, from_address: string, from_name: string, subject_prefix: string, allowed_origins: string[], rate_limit_dir: string, rate_limit_max: int, rate_limit_window: int, smtp_host: string, smtp_port: int, smtp_username: string, smtp_password: string} $config */
+/** @var array{to_address: string, from_mailbox: string, from_name: string, subject_prefix: string, allowed_origins: string[], rate_limit_dir: string, rate_limit_max: int, rate_limit_window: int, graph_tenant_id: string, graph_client_id: string, graph_client_secret: string} $config */
 $config = require $configPath;
 
 // Reject cross-site posts. Browsers send Origin on POST; if it's present it must be ours.
@@ -152,7 +216,7 @@ if (mb_strlen($message) < 10) {
     respond(false, 422, 'Please add a few details about your project.');
 }
 
-// --- Send (via Microsoft 365 SMTP - see the note at the top of this file) ---
+// --- Send (via Microsoft Graph - see the note at the top of this file) ---
 $subject = $config['subject_prefix'] . ' ' . $name . ($service !== '' ? ' - ' . $service : '');
 
 $body = implode("\n", [
@@ -170,32 +234,27 @@ $body = implode("\n", [
     'Sent ' . gmdate('Y-m-d H:i') . ' UTC from ' . $ip,
 ]);
 
-$mail = new PHPMailer(true);
-
 try {
-    $mail->isSMTP();
-    $mail->Host = $config['smtp_host'];
-    $mail->Port = $config['smtp_port'];
-    $mail->SMTPAuth = true;
-    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-    $mail->Username = $config['smtp_username'];
-    $mail->Password = $config['smtp_password'];
-    $mail->CharSet = PHPMailer::CHARSET_UTF8;
+    $accessToken = get_graph_access_token(
+        $config['graph_tenant_id'],
+        $config['graph_client_id'],
+        $config['graph_client_secret'],
+    );
 
-    // From must be a real, authenticated mailbox (deliverability/SPF). The
-    // visitor's address only ever goes in Reply-To, and it's already passed
-    // FILTER_VALIDATE_EMAIL above.
-    $mail->setFrom($config['from_address'], $config['from_name']);
-    $mail->addAddress($config['to_address']);
-    $mail->addReplyTo($email, $name);
-
-    $mail->isHTML(false);
-    $mail->Subject = $subject;
-    $mail->Body = $body;
-
-    $mail->send();
-} catch (MailException $e) {
-    error_log('quote.php: PHPMailer failed: ' . $mail->ErrorInfo);
+    // Sends as $config['from_mailbox'] itself (deliverability/SPF - a real,
+    // authenticated mailbox). The visitor's address only ever goes in
+    // Reply-To, and it's already passed FILTER_VALIDATE_EMAIL above.
+    send_graph_mail(
+        $accessToken,
+        $config['from_mailbox'],
+        $config['to_address'],
+        $subject,
+        $body,
+        $email,
+        $name,
+    );
+} catch (Throwable $e) {
+    error_log('quote.php: Graph send failed: ' . $e->getMessage());
     respond(false, 502, 'Your request could not be sent. Please email us directly.');
 }
 

@@ -2,9 +2,11 @@
 
 Static marketing site built with [Astro](https://astro.build), hosted on VentraIP
 Business Hosting (shared cPanel). The build outputs plain HTML/CSS/images. The only
-server-side code is `public/api/quote.php`, which handles the quote form - it sends
-via authenticated SMTP through Microsoft 365, since pixelsurveys.com.au's email is
-hosted there and its SPF record (`-all`, a hard fail) rejects mail sent any other way.
+server-side code is `public/api/quote.php`, which handles the quote form - it sends via
+the Microsoft Graph API, since pixelsurveys.com.au's email is hosted on Microsoft 365
+with a hard-fail SPF record (mail sent any other way gets rejected as spoofed), and
+Graph is Microsoft's own recommended replacement for the SMTP-with-a-password approach
+they're retiring (existing tenants lose it 31 Dec 2026).
 
 ## Local development
 
@@ -35,9 +37,8 @@ means testing on production, behind the pre-launch gate.
 | `src/assets/`                            | Images optimized at build time (logo, later service/hero photos) |
 | `public/.htaccess`                       | HTTPS/www redirects, security + cache headers, 404, pre-launch gate |
 | `src/pages/maintenance.astro`            | The public "coming soon" page (see [Pre-launch gate](#pre-launch-gate)) |
-| `public/api/quote.php`                   | Quote form handler - sends via M365 SMTP, see comment at its top |
-| `public/api/lib/phpmailer/`              | Vendored PHPMailer (no Composer on this host) - don't hand-edit  |
-| `server-config/quote-config.example.php` | Template for the form's settings incl. mailbox credentials (never deployed) |
+| `public/api/quote.php`                   | Quote form handler - sends via Graph API, see comment at its top |
+| `server-config/quote-config.example.php` | Template for the form's settings incl. Entra app credentials (never deployed) |
 | `media/`                                 | Original source assets                                           |
 
 ### Adding photos
@@ -52,19 +53,27 @@ means testing on production, behind the pre-launch gate.
 Do these in cPanel, in order.
 
 1. ~~Back up the current WordPress site.~~ Skipped - client's call.
-2. **Enable Authenticated SMTP on the `info@pixelsurveys.com.au` mailbox** (this is on
-   Microsoft 365, not cPanel): M365 admin center → Users → `info@pixelsurveys.com.au` →
-   Mail → Manage email apps → turn on **Authenticated SMTP**. Off by default on most
-   tenants. If the mailbox has MFA enabled, its normal password won't work over SMTP -
-   generate an **app password** instead (the same user's page → Authentication methods)
-   and use that in step 3 below. If sign-in still fails after both of those, the tenant
-   likely has Security Defaults or a Conditional Access policy blocking basic auth
-   entirely - that needs OAuth2 (XOAUTH2) instead, a bigger change; only chase that if
-   plain SMTP AUTH turns out to actually be blocked, not pre-emptively.
+2. **Register an Entra ID app** (this is on Microsoft 365/Azure, not cPanel) - this is
+   what lets `quote.php` send mail without storing a mailbox password anywhere:
+   - Entra admin center (entra.microsoft.com) → **App registrations** → **New
+     registration**. Name it something like "Pixel Surveys Website Mail". Leave the
+     other defaults.
+   - Copy the **Application (client) ID** and **Directory (tenant) ID** off the app's
+     Overview page - both go in `quote-config.php` in step 3.
+   - **API permissions** → **Add a permission** → **Microsoft Graph** → **Application
+     permissions** (not Delegated - nobody signs in here) → search `Mail.Send` → add it.
+   - Back on the API permissions page, click **Grant admin consent for [tenant]** - the
+     permission doesn't actually work until this is clicked.
+   - **Certificates & secrets** → **New client secret** → copy the secret's **Value**
+     immediately (it's only shown once) - that's the third value for step 3.
+   - *Optional hardening:* by default this app can send mail as **any** mailbox in the
+     tenant, not just `info@`. Restricting it to just that one mailbox needs an Exchange
+     Online PowerShell **Application Access Policy** - worth doing eventually, not a
+     blocker to get the form working first.
 3. **Create the form config** outside every web root:
    - cPanel → File Manager → in your home directory create `server-config/`
    - Upload `server-config/quote-config.example.php` there, rename it to `quote-config.php`
-   - Fill in `smtp_password` with the mailbox's password or app password from step 2
+   - Fill in `graph_tenant_id`, `graph_client_id`, `graph_client_secret` from step 2
 4. **Create an FTP account** (cPanel → FTP Accounts) limited to `public_html`:
    `deploy-prod@pixelsurveys.com.au` (or similar).
 5. **GitHub:** repo → Settings → Environments → create a `production` environment with
