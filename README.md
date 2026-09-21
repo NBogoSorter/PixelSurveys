@@ -113,6 +113,33 @@ to `main` is a deploy to the live site.
 
 Deploys only upload changed files, and only ever delete files a previous deploy uploaded.
 
+## Before launch
+
+Things that are fine while only the client is previewing behind the gate, but must not
+be live when the site opens to the public.
+
+- [ ] **The quote email subject contains literal placeholder text.** It currently reads
+      `Quote Request: <service> – [Site Location] | [Quote Number]`, where those two
+      bracketed strings are literal, not values. The agreed format was locked in before
+      either existed. To finish it:
+      - **Site location** - the field was removed from the form at the client's request,
+        so it needs adding back (a "Site location / suburb" input) before it can appear.
+      - **Quote number** - no reference numbering exists. Decide sequential (a locked
+        counter file outside the web root) versus stateless (date + random). Worth
+        labelling it a reference rather than a quote number unless it's meant to match
+        the client's actual quote register in their accounting system.
+      - Until both are done, a real customer enquiry arrives with `[Site Location]`
+        visible in the subject line.
+- [ ] **Capabilities draft A vs B** are both still on the homepage with visible
+      "Draft A"/"Draft B" labels. Pick one and delete the other.
+- [ ] **`/contact/` uses a different form** (`QuoteForm.astro`) to the homepage's
+      `ContactFormB.astro`. Both work, but they will drift apart as copy changes.
+- [ ] **Placeholder content**: `CONTACT_PHONE` in `src/data/contact-info.ts` is still
+      `+61 0000 000 000`, the hero and service cards have no real photos, the About page
+      copy is unwritten, and the "Monitoring & Progress" FAQ answer is an unfinished
+      sentence.
+- [ ] **Remove the pre-launch gate itself** - see below.
+
 ## Pre-launch gate
 
 Until the site is ready to go public, `public/.htaccess` shows everyone the "coming

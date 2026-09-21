@@ -300,12 +300,26 @@ if (mb_strlen($message) < 10) {
 // --- Send (via Microsoft Graph - see the note at the top of this file) ---
 // Kept short enough to read in an inbox list: the first service plus a count,
 // rather than all of them running off the end of the subject line.
-$subjectTail = match (count($services)) {
-    0 => '',
-    1 => ' - ' . $services[0],
-    default => ' - ' . $services[0] . ' +' . (count($services) - 1) . ' more',
+$serviceLabel = match (count($services)) {
+    0 => 'General enquiry',
+    1 => $services[0],
+    default => $services[0] . ' +' . (count($services) - 1) . ' more',
 };
-$subject = $config['subject_prefix'] . ' ' . $name . $subjectTail;
+
+// TEMPORARY: "[Site Location]" and "[Quote Number]" are literal placeholder
+// text, not variables. The agreed subject format is
+//
+//     Quote Request: [Service] - [Site Location] | [Quote Number]
+//
+// but the form collects neither value yet: the site location field was
+// removed at the client's request, and no reference numbering exists. The
+// format is locked in now so the client can see it; the placeholders are
+// filled in when those two features are built.
+//
+// MUST NOT SHIP TO A LIVE, PUBLIC SITE. A real customer enquiry arriving
+// with "[Site Location]" in the subject reads as broken. See README.md,
+// "Before launch".
+$subject = $config['subject_prefix'] . ' ' . $serviceLabel . ' – [Site Location] | [Quote Number]';
 
 $body = implode("\n", [
     'New quote request from the website',

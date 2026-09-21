@@ -37,7 +37,10 @@ return [
     'from_mailbox' => 'info@pixelsurveys.com.au',
     'from_name' => 'Pixel Surveys Website',
 
-    'subject_prefix' => '[Quote request]',
+    // Leading label on the subject line. quote.php appends the service, the
+    // site location and the reference number to this, giving e.g.
+    //   Quote Request: Contours & Terrain Data – [Site Location] | [Quote Number]
+    'subject_prefix' => 'Quote Request:',
 
     // --- Microsoft Graph API (app-only auth via certificate) ---
     'graph_tenant_id' => 'REPLACE_WITH_DIRECTORY_TENANT_ID',
