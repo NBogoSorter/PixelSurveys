@@ -53,8 +53,13 @@ means testing on production, behind the pre-launch gate.
 Do these in cPanel, in order.
 
 1. ~~Back up the current WordPress site.~~ Skipped - client's call.
-2. **Register an Entra ID app** (this is on Microsoft 365/Azure, not cPanel) - this is
-   what lets `quote.php` send mail without storing a mailbox password anywhere:
+2. ~~**Register an Entra ID app**~~ **Done.** App is "Pixel Surveys Website Mail";
+   its tenant ID, client ID, thumbprint and private key are already in the server
+   config from step 3. Verified working - a token request against the live tenant
+   returned `roles: ["Mail.Send"]`, so admin consent is granted and the certificate
+   is accepted. **The certificate expires ~20 Sept 2028**; regenerate and re-upload
+   it before then or the form quietly stops sending. The original steps, for when
+   that renewal comes around or the app ever needs rebuilding:
    - Entra admin center (entra.microsoft.com) → **App registrations** → **New
      registration**. Name it something like "Pixel Surveys Website Mail". Leave the
      other defaults.
