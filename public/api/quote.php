@@ -26,6 +26,12 @@ declare(strict_types=1);
  *
  * Requires an Entra ID app registration with the Mail.Send *application*
  * permission (admin-consented) - see README.md for the setup steps.
+ *
+ * Authenticates with a certificate (a signed JWT client assertion), not a
+ * client secret - this tenant's policy blocks apps from creating secrets at
+ * all. Hand-rolled below rather than pulled in as a library: it's ~15 lines
+ * of base64url + json_encode + openssl_sign, not worth vendoring anything
+ * for. See https://learn.microsoft.com/en-us/entra/identity-platform/certificate-credentials
  */
 
 const MIN_SECONDS_TO_SUBMIT = 3;
@@ -85,15 +91,62 @@ function http_post_json(string $url, array $fields, array $headers = [], bool $a
     return is_array($decoded) ? $decoded : [];
 }
 
-/** Client-credentials OAuth2 flow - no user ever signs in, this app authenticates as itself. */
-function get_graph_access_token(string $tenantId, string $clientId, string $clientSecret): string
+function base64url_encode(string $data): string
 {
+    return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
+}
+
+/**
+ * Builds the signed JWT that proves "this request really is from the app
+ * holding the private key that pairs with the certificate uploaded to
+ * Entra" - the certificate-auth equivalent of a client_secret string.
+ */
+function build_client_assertion_jwt(string $tenantId, string $clientId, string $certThumbprintHex, string $privateKeyPem): string
+{
+    // Tolerate a thumbprint copied with "::" or spaces (e.g. from openssl's -fingerprint
+    // output) as well as the plain hex Entra's own UI shows.
+    $thumbprintBinary = hex2bin(str_replace([':', ' '], '', $certThumbprintHex));
+    if ($thumbprintBinary === false) {
+        throw new RuntimeException('graph_cert_thumbprint is not valid hex.');
+    }
+
+    $header = ['alg' => 'RS256', 'typ' => 'JWT', 'x5t' => base64url_encode($thumbprintBinary)];
+    $now = time();
+    $claims = [
+        'aud' => "https://login.microsoftonline.com/$tenantId/oauth2/v2.0/token",
+        'iss' => $clientId,
+        'sub' => $clientId,
+        'jti' => bin2hex(random_bytes(16)),
+        'nbf' => $now,
+        'exp' => $now + 300, // Entra allows up to 10 minutes; one token request needs far less.
+    ];
+
+    $signingInput = base64url_encode(json_encode($header)) . '.' . base64url_encode(json_encode($claims));
+
+    $privateKey = openssl_pkey_get_private($privateKeyPem);
+    if ($privateKey === false) {
+        throw new RuntimeException('graph_private_key could not be read: ' . openssl_error_string());
+    }
+    $signed = openssl_sign($signingInput, $signature, $privateKey, OPENSSL_ALGO_SHA256);
+    if (!$signed) {
+        throw new RuntimeException('Failed to sign the client assertion JWT.');
+    }
+
+    return $signingInput . '.' . base64url_encode($signature);
+}
+
+/** Client-credentials OAuth2 flow - no user ever signs in, this app authenticates as itself. */
+function get_graph_access_token(string $tenantId, string $clientId, string $certThumbprintHex, string $privateKeyPem): string
+{
+    $assertion = build_client_assertion_jwt($tenantId, $clientId, $certThumbprintHex, $privateKeyPem);
+
     $response = http_post_json(
         "https://login.microsoftonline.com/$tenantId/oauth2/v2.0/token",
         [
             'client_id' => $clientId,
-            'client_secret' => $clientSecret,
             'scope' => 'https://graph.microsoft.com/.default',
+            'client_assertion_type' => 'urn:ietf:params:oauth:client-assertion-type:jwt-bearer',
+            'client_assertion' => $assertion,
             'grant_type' => 'client_credentials',
         ],
     );
@@ -142,7 +195,7 @@ if (!is_readable($configPath)) {
     respond(false, 500, 'The form is not configured yet. Please email us directly.');
 }
 
-/** @var array{to_address: string, from_mailbox: string, from_name: string, subject_prefix: string, allowed_origins: string[], rate_limit_dir: string, rate_limit_max: int, rate_limit_window: int, graph_tenant_id: string, graph_client_id: string, graph_client_secret: string} $config */
+/** @var array{to_address: string, from_mailbox: string, from_name: string, subject_prefix: string, allowed_origins: string[], rate_limit_dir: string, rate_limit_max: int, rate_limit_window: int, graph_tenant_id: string, graph_client_id: string, graph_cert_thumbprint: string, graph_private_key: string} $config */
 $config = require $configPath;
 
 // Reject cross-site posts. Browsers send Origin on POST; if it's present it must be ours.
@@ -238,7 +291,8 @@ try {
     $accessToken = get_graph_access_token(
         $config['graph_tenant_id'],
         $config['graph_client_id'],
-        $config['graph_client_secret'],
+        $config['graph_cert_thumbprint'],
+        $config['graph_private_key'],
     );
 
     // Sends as $config['from_mailbox'] itself (deliverability/SPF - a real,

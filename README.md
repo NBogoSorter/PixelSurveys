@@ -64,8 +64,15 @@ Do these in cPanel, in order.
      permissions** (not Delegated - nobody signs in here) → search `Mail.Send` → add it.
    - Back on the API permissions page, click **Grant admin consent for [tenant]** - the
      permission doesn't actually work until this is clicked.
-   - **Certificates & secrets** → **New client secret** → copy the secret's **Value**
-     immediately (it's only shown once) - that's the third value for step 3.
+   - **Certificates & secrets** → **Certificates** tab → **Upload certificate** → upload
+     the **public** half of the key pair (a `.cer`/`.pem` file - never the private key).
+     This tenant blocks apps from creating client secrets at all, so it's certificate
+     auth instead - Claude generated a real key pair for this; get both files from it,
+     it never puts the private half anywhere committed to git.
+   - After the upload, Entra shows a **Thumbprint** for the certificate - that's the
+     third value for step 3, alongside the tenant/client IDs.
+   - The generated certificate is valid for 2 years (until ~Sept 2028) - a reminder
+     to regenerate and re-upload it before then, or the form quietly stops sending.
    - *Optional hardening:* by default this app can send mail as **any** mailbox in the
      tenant, not just `info@`. Restricting it to just that one mailbox needs an Exchange
      Online PowerShell **Application Access Policy** - worth doing eventually, not a
@@ -73,7 +80,9 @@ Do these in cPanel, in order.
 3. **Create the form config** outside every web root:
    - cPanel → File Manager → in your home directory create `server-config/`
    - Upload `server-config/quote-config.example.php` there, rename it to `quote-config.php`
-   - Fill in `graph_tenant_id`, `graph_client_id`, `graph_client_secret` from step 2
+   - Fill in `graph_tenant_id`, `graph_client_id`, `graph_cert_thumbprint` from step 2,
+     and `graph_private_key` with the **private** key file's contents (the one that never
+     goes to Entra - paste the whole `-----BEGIN PRIVATE KEY-----` block)
 4. **Create an FTP account** (cPanel → FTP Accounts) limited to `public_html`:
    `deploy-prod@pixelsurveys.com.au` (or similar).
 5. **GitHub:** repo → Settings → Environments → create a `production` environment with

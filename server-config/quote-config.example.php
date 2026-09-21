@@ -17,10 +17,16 @@
  * the full walkthrough): Entra admin center -> App registrations -> New
  * registration -> API permissions -> add Microsoft Graph -> Application
  * permissions -> Mail.Send -> Grant admin consent -> Certificates & secrets
- * -> New client secret. Then:
- *   graph_tenant_id     = the app's "Directory (tenant) ID"
- *   graph_client_id     = the app's "Application (client) ID"
- *   graph_client_secret = the client secret's VALUE (shown once, at creation)
+ * -> Certificates -> Upload certificate (this tenant blocks client secrets,
+ * so it's certificate auth, not a secret string). Then:
+ *   graph_tenant_id        = the app's "Directory (tenant) ID"
+ *   graph_client_id        = the app's "Application (client) ID"
+ *   graph_cert_thumbprint  = the thumbprint Entra shows after the cert uploads
+ *   graph_private_key      = the PRIVATE half of that certificate (never
+ *                             uploaded anywhere - only the public half goes
+ *                             to Entra). Claude generated a real pair for
+ *                             this session; get both files from it rather
+ *                             than typing this back in from memory.
  */
 
 return [
@@ -33,10 +39,13 @@ return [
 
     'subject_prefix' => '[Quote request]',
 
-    // --- Microsoft Graph API (app-only auth, no user signs in) ---
+    // --- Microsoft Graph API (app-only auth via certificate) ---
     'graph_tenant_id' => 'REPLACE_WITH_DIRECTORY_TENANT_ID',
     'graph_client_id' => 'REPLACE_WITH_APPLICATION_CLIENT_ID',
-    'graph_client_secret' => 'REPLACE_WITH_CLIENT_SECRET_VALUE',
+    'graph_cert_thumbprint' => 'REPLACE_WITH_CERT_THUMBPRINT_FROM_ENTRA',
+    'graph_private_key' => <<<'PEM'
+        REPLACE_WITH_THE_PRIVATE_KEY_PEM_CONTENT
+        PEM,
 
     // Exact origins allowed to post the form (scheme + host, no trailing slash).
     // No staging entry - there's no staging environment in this setup.
