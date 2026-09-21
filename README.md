@@ -88,11 +88,14 @@ Do these in cPanel, in order.
    - Fill in `graph_tenant_id`, `graph_client_id`, `graph_cert_thumbprint` from step 2,
      and `graph_private_key` with the **private** key file's contents (the one that never
      goes to Entra - paste the whole `-----BEGIN PRIVATE KEY-----` block)
-4. **Create an FTP account** (cPanel → FTP Accounts) limited to `public_html`:
-   `deploy-prod@pixelsurveys.com.au` (or similar).
-5. **GitHub:** repo → Settings → Environments → create a `production` environment with
-   secrets `FTP_SERVER`, `FTP_USERNAME`, `FTP_PASSWORD`, `FTP_SERVER_DIR` (usually `./`).
-   Add yourself as a required reviewer so every deploy needs an approval click.
+4. ~~**Create an FTP account**~~ **Done.** Scoped to `public_html`, so `FTP_SERVER_DIR`
+   is `./`. Confirmed working by a successful deploy.
+5. **GitHub environment** - secrets are done, the approval gate is **not**. The
+   `production` environment exists with `FTP_SERVER`, `FTP_USERNAME`, `FTP_PASSWORD`
+   and `FTP_SERVER_DIR` set, but no required reviewer took effect, so **every push to
+   `main` deploys straight to the live site with no approval step**. To fix: Settings →
+   Environments → `production` → tick **Required reviewers**, add yourself, then click
+   **Save protection rules** (adding the reviewer without saving is the easy mistake).
 
 There's no staging subdomain in this setup. `staging.pixelsurveys.com.au` exists in
 cPanel (an old WordPress staging copy) but is intentionally untouched and unrelated to
@@ -101,10 +104,12 @@ on the production domain itself.
 
 ## Deploying
 
-Push to `main` → GitHub Actions builds and deploys straight to **production**, gated by
-the `production` environment's required-reviewer approval (so it builds automatically,
-but nothing reaches the live site until that approval click). Re-run the workflow
-manually (Actions → "Build & deploy" → Run workflow) to redeploy without a new commit.
+Push to `main` → GitHub Actions builds and deploys to **production**. Re-run the
+workflow manually (Actions → "Build & deploy" → Run workflow) to redeploy without a new
+commit.
+
+**There is currently no approval step** - see step 5 above. Until that's fixed, a push
+to `main` is a deploy to the live site.
 
 Deploys only upload changed files, and only ever delete files a previous deploy uploaded.
 
@@ -128,13 +133,24 @@ client previews the real, in-progress site - there's no separate staging URL for
 - **To launch for real:** delete the whole "Pre-launch gate" block in
   `public/.htaccess` (both directives), then redeploy.
 
-### First production deploy (replacing WordPress)
+### Leftover WordPress files - OUTSTANDING
 
-The deploy won't delete WordPress's files, because it didn't upload them. After a
-successful first deploy, remove the leftover WordPress files from `public_html`
-(`wp-admin/`, `wp-content/`, `wp-includes/`, `wp-*.php`, `index.php`, `xmlrpc.php`).
-`index.html` already takes priority over `index.php`, so the new site shows immediately,
-but stale WordPress PHP stays reachable until those files are removed.
+The first deploy landed on 21 Sept 2026. The new site serves correctly, but the old
+WordPress install is **still present and still executing PHP**, because the deploy only
+removes files it uploaded itself. Probed live after that deploy:
+
+| Path | Status |
+| ---- | ------ |
+| `/xmlrpc.php` | 200 - brute-force amplification and pingback DDoS surface |
+| `/readme.html` | 200 - discloses the WordPress version |
+| `/wp-json/` | 200 - REST API live, allows user enumeration |
+| `/wp-admin/` | 302 - login still reachable |
+
+Nobody is patching this install any more, which is the worst state to leave one in.
+Delete from `public_html`: `wp-admin/`, `wp-content/`, `wp-includes/`, `wp-*.php`,
+`index.php`, `xmlrpc.php`, `readme.html`, `license.txt`. Leave everything else - the
+deployed site's files and `.htaccess` are separate. Re-run the probes above afterwards;
+all four should 404.
 
 ## Checklist after each deploy
 
