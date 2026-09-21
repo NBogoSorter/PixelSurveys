@@ -36,6 +36,21 @@ declare(strict_types=1);
 
 const MIN_SECONDS_TO_SUBMIT = 3;
 
+/**
+ * The only values the "Service type" field may submit. Anything else is
+ * dropped rather than echoed into the email - the subject line is built from
+ * these, so they must not be attacker-controlled free text.
+ *
+ * Keep in sync with src/data/service-types.ts, which renders the checkboxes.
+ */
+const ALLOWED_SERVICES = [
+    'Aerial Imagery & Mapping',
+    'Contours & Terrain Data',
+    '3D Point Clouds & Models',
+    'Volumes & Site Monitoring',
+    'Not Sure',
+];
+
 $wantsJson = str_contains($_SERVER['HTTP_ACCEPT'] ?? '', 'application/json');
 
 function respond(bool $ok, int $status, string $error = ''): never
@@ -252,7 +267,20 @@ if (!is_dir($rateDir) && !mkdir($rateDir, 0700, true) && !is_dir($rateDir)) {
 $name = clean_line($_POST['name'] ?? '', 100);
 $email = clean_line($_POST['email'] ?? '', 254);
 $phone = clean_line($_POST['phone'] ?? '', 40);
-$service = clean_line($_POST['service'] ?? '', 100);
+$company = clean_line($_POST['company'] ?? '', 100);
+
+// The form posts services[] (checkboxes, zero or more). Only values on the
+// allow-list survive, so a hand-crafted POST can't inject arbitrary text.
+// array_unique guards against a hand-rolled POST repeating one value to pad
+// the "+N more" count in the subject line.
+$services = array_values(array_unique(array_intersect(
+    array_map(
+        static fn ($v) => clean_line($v, 100),
+        is_array($_POST['services'] ?? null) ? $_POST['services'] : [],
+    ),
+    ALLOWED_SERVICES,
+)));
+$service = implode(', ', $services);
 $message = is_string($_POST['message'] ?? null) ? trim($_POST['message']) : '';
 $message = mb_substr(str_replace("\r\n", "\n", $message), 0, 5000);
 
@@ -270,17 +298,25 @@ if (mb_strlen($message) < 10) {
 }
 
 // --- Send (via Microsoft Graph - see the note at the top of this file) ---
-$subject = $config['subject_prefix'] . ' ' . $name . ($service !== '' ? ' - ' . $service : '');
+// Kept short enough to read in an inbox list: the first service plus a count,
+// rather than all of them running off the end of the subject line.
+$subjectTail = match (count($services)) {
+    0 => '',
+    1 => ' - ' . $services[0],
+    default => ' - ' . $services[0] . ' +' . (count($services) - 1) . ' more',
+};
+$subject = $config['subject_prefix'] . ' ' . $name . $subjectTail;
 
 $body = implode("\n", [
     'New quote request from the website',
     '',
-    'Name:    ' . $name,
-    'Email:   ' . $email,
-    'Phone:   ' . ($phone !== '' ? $phone : '-'),
-    'Service: ' . ($service !== '' ? $service : 'Not sure yet'),
+    'Name:     ' . $name,
+    'Email:    ' . $email,
+    'Phone:    ' . ($phone !== '' ? $phone : '-'),
+    'Company:  ' . ($company !== '' ? $company : '-'),
+    'Services: ' . ($service !== '' ? $service : 'None selected'),
     '',
-    'Project details:',
+    'Message:',
     $message,
     '',
     '--',

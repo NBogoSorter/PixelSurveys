@@ -5,17 +5,18 @@
 // one service category.
 //
 // Built to be safe when this component appears more than once on the same
-// page (both ContactFormD5 and ContactFormB render it) - everything is
-// scoped through data-attributes and querySelectorAll, no getElementById.
+// page - everything is scoped through data-attributes and querySelectorAll,
+// no getElementById.
 import { SERVICE_TYPES } from "../data/service-types";
 
 interface Props {
-  /** Unique per-instance id, e.g. "d5-service" - used for aria-labelledby. */
+  /** Unique per-instance id, e.g. "b-service" - used for aria-labelledby. */
   id: string;
+  /** Form field name. Needs the "[]" suffix for PHP to receive an array. */
   name?: string;
 }
 
-const { id, name = "services" } = Astro.props;
+const { id, name = "services[]" } = Astro.props;
 
 // Cycles the same five brand stops used to color-code services elsewhere on
 // the site (the homepage service cards' image bands).
@@ -245,6 +246,14 @@ const CHIP_COLORS = [
     options.forEach((opt) => opt.addEventListener("change", renderChips));
     document.addEventListener("click", (e) => {
       if (!root.contains(e.target as Node)) setOpen(false);
+    });
+
+    // A successful submit calls form.reset(), which unchecks the boxes without
+    // firing "change" - so the chips would linger for services no longer
+    // selected. The form dispatches this once the reset has happened.
+    root.closest("form")?.addEventListener("quote-form-reset", () => {
+      renderChips();
+      setOpen(false);
     });
 
     renderChips();

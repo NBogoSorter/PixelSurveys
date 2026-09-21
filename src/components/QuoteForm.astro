@@ -1,5 +1,8 @@
 ---
-import { SERVICES } from "../data/services";
+// SERVICE_TYPES, not SERVICES: quote.php validates submitted values against
+// the service-type list, so the fuller category names used on the services
+// page would be silently dropped.
+import { SERVICE_TYPES } from "../data/service-types";
 ---
 
 <form class="form" action="/api/quote.php" method="post" data-quote-form>
@@ -43,9 +46,11 @@ import { SERVICES } from "../data/services";
     </div>
     <div class="field">
       <label for="quote-service">Service</label>
-      <select id="quote-service" name="service">
+      {/* "services[]" to match what quote.php reads - a single-select just
+          posts a one-element array. See ContactFormB, the main form. */}
+      <select id="quote-service" name="services[]">
         <option value="">Not sure yet</option>
-        {SERVICES.map((s) => (
+        {SERVICE_TYPES.map((s) => (
           <option value={s.title}>{s.title}</option>
         ))}
       </select>

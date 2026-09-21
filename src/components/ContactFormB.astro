@@ -1,7 +1,11 @@
 ---
-// Contact draft "B": full-bleed navy section, "Reach Us" sidebar, form in a
-// boxed white card. Same not-yet-wired note as ContactFormD5 - the file
-// upload field needs server-side handling quote.php doesn't have yet.
+// The site's contact form: full-bleed navy section, "Reach Us" sidebar, form
+// in a boxed white card. Posts to /api/quote.php, which emails the client via
+// the Microsoft Graph API.
+//
+// maxlength values below mirror the server's own limits in quote.php so the
+// browser stops overlong input before a round trip - the server still enforces
+// them, since nothing client-side is trustworthy.
 import ServiceTypeField from "./ServiceTypeField.astro";
 import { CONTACT_EMAIL, CONTACT_PHONE } from "../data/contact-info";
 ---
@@ -30,7 +34,12 @@ import { CONTACT_EMAIL, CONTACT_PHONE } from "../data/contact-info";
       </div>
 
       <div class="card">
-        <form class="form">
+        <form
+          class="form"
+          action="/api/quote.php"
+          method="post"
+          data-quote-form
+        >
           <div class="row2">
             <div class="field">
               <label for="b-name">
@@ -42,6 +51,7 @@ import { CONTACT_EMAIL, CONTACT_PHONE } from "../data/contact-info";
                 type="text"
                 autocomplete="name"
                 required
+                maxlength="100"
               />
             </div>
             <div class="field">
@@ -54,13 +64,20 @@ import { CONTACT_EMAIL, CONTACT_PHONE } from "../data/contact-info";
                 type="email"
                 autocomplete="email"
                 required
+                maxlength="254"
               />
             </div>
           </div>
           <div class="row2">
             <div class="field">
               <label for="b-phone">Phone</label>
-              <input id="b-phone" name="phone" type="tel" autocomplete="tel" />
+              <input
+                id="b-phone"
+                name="phone"
+                type="tel"
+                autocomplete="tel"
+                maxlength="40"
+              />
             </div>
             <div class="field">
               <label for="b-company">Company Name</label>
@@ -69,12 +86,15 @@ import { CONTACT_EMAIL, CONTACT_PHONE } from "../data/contact-info";
                 name="company"
                 type="text"
                 autocomplete="organization"
+                maxlength="100"
               />
             </div>
           </div>
           <div class="field">
             <label id="b-service-label">Service type</label>
-            <ServiceTypeField id="b-service" name="services" />
+            {/* "services[]" (not "services") so PHP collects every checked
+                box into an array instead of keeping only the last one. */}
+            <ServiceTypeField id="b-service" name="services[]" />
           </div>
           <div class="field">
             <label for="b-message">Message</label>
@@ -87,21 +107,34 @@ import { CONTACT_EMAIL, CONTACT_PHONE } from "../data/contact-info";
               name="message"
               rows="5"
               required
-            ></textarea>
+              minlength="10"
+              maxlength="5000"></textarea>
           </div>
-          <div class="field">
-            <label for="b-files">Upload photos or plans</label>
+
+          {/* Honeypot: off-screen and hidden from assistive tech, so only a
+              bot fills it in. quote.php fakes success when it's non-empty. */}
+          <div class="hp" aria-hidden="true">
+            <label for="b-website">Website</label>
             <input
-              id="b-files"
-              name="files"
-              type="file"
-              multiple
-              accept="image/*,.pdf"
+              id="b-website"
+              name="website"
+              type="text"
+              tabindex="-1"
+              autocomplete="off"
             />
           </div>
-          <button type="submit" class="submit">
-            Request a Quote
-          </button>
+          {/* Set by the script below; lets the server reject submissions made
+              faster than a person could plausibly type. Empty without JS, and
+              the server skips the check in that case. */}
+          <input type="hidden" name="ts" value="" data-quote-ts />
+
+          <div class="actions">
+            <button type="submit" class="submit" data-quote-submit>
+              Request a Quote
+            </button>
+            <p class="status" role="status" aria-live="polite" data-quote-status>
+            </p>
+          </div>
         </form>
       </div>
     </div>
@@ -237,6 +270,22 @@ import { CONTACT_EMAIL, CONTACT_PHONE } from "../data/contact-info";
     min-height: 90px;
   }
 
+  /* Off-screen rather than display:none - some bots skip hidden inputs. */
+  .hp {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px 20px;
+  }
+
   .submit {
     background: var(--color-ink);
     color: #fff;
@@ -245,11 +294,36 @@ import { CONTACT_EMAIL, CONTACT_PHONE } from "../data/contact-info";
     font-weight: 600;
     padding: 13px 24px;
     cursor: pointer;
-    align-self: flex-start;
   }
 
   .submit:hover {
     background: var(--color-accent);
+  }
+
+  .submit:disabled {
+    opacity: 0.6;
+    cursor: progress;
+  }
+
+  /* Empty until the script writes to it, so it takes no space at rest. */
+  .status {
+    font-size: 13px;
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+
+  .status:empty {
+    display: none;
+  }
+
+  .status[data-state="success"] {
+    color: var(--color-canopy);
+    font-weight: 600;
+  }
+
+  .status[data-state="error"] {
+    color: #b3432f;
+    font-weight: 600;
   }
 
   @media (max-width: 760px) {
@@ -259,3 +333,72 @@ import { CONTACT_EMAIL, CONTACT_PHONE } from "../data/contact-info";
     }
   }
 </style>
+
+<script>
+  // Submits via fetch so the visitor stays on the page. Without JS the form
+  // still posts normally and quote.php 303-redirects to /contact/thanks/ or
+  // /contact/error/, so the feature degrades rather than breaking.
+  //
+  // querySelectorAll, not querySelector: this component can appear more than
+  // once on a page, and a single lookup would wire up only the first one.
+  document
+    .querySelectorAll<HTMLFormElement>("[data-quote-form]")
+    .forEach((form) => {
+      const ts = form.querySelector<HTMLInputElement>("[data-quote-ts]");
+      const submit = form.querySelector<HTMLButtonElement>(
+        "[data-quote-submit]",
+      );
+      const status = form.querySelector<HTMLElement>("[data-quote-status]");
+
+      const stamp = () => {
+        if (ts) ts.value = String(Math.floor(Date.now() / 1000));
+      };
+      stamp();
+
+      const setStatus = (text: string, state: "success" | "error" | "") => {
+        if (!status) return;
+        status.textContent = text;
+        status.dataset.state = state;
+      };
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        if (submit) submit.disabled = true;
+        setStatus("Sending…", "");
+
+        try {
+          const res = await fetch(form.action, {
+            method: "POST",
+            body: new FormData(form),
+            headers: { Accept: "application/json" },
+          });
+          const data = (await res.json().catch(() => null)) as {
+            ok?: boolean;
+            error?: string;
+          } | null;
+
+          if (res.ok && data?.ok) {
+            form.reset();
+            // reset() clears the timestamp and leaves the combobox chips
+            // stale, so re-stamp and let it resync from the checkboxes.
+            stamp();
+            form.dispatchEvent(new CustomEvent("quote-form-reset"));
+            setStatus("Thanks - your request has been sent.", "success");
+          } else {
+            setStatus(
+              data?.error ??
+                "Something went wrong sending your request. Please email us directly.",
+              "error",
+            );
+          }
+        } catch {
+          setStatus(
+            "Couldn't reach the server. Check your connection and try again.",
+            "error",
+          );
+        } finally {
+          if (submit) submit.disabled = false;
+        }
+      });
+    });
+</script>
