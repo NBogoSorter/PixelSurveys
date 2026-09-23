@@ -7,6 +7,13 @@ export interface SubService {
    * to show the shape, not supplied by the client. Needs their sign-off.
    */
   description: string;
+  /**
+   * Optional extra sentence or two. When set, the row becomes an expandable
+   * <details> on the services page; when absent it stays a plain list item.
+   * Currently only on Imagery & Visual Data, as a trial of the pattern - add
+   * it to the others to roll the dropdowns out. Placeholder copy too.
+   */
+  moreInfo?: string;
 }
 
 export interface Service {
@@ -41,10 +48,14 @@ export const SERVICES: Service[] = [
         title: "Orthomosaic Mapping",
         description:
           "A scaled, distortion-corrected map of the whole site.",
+        moreInfo:
+          "Hundreds of overlapping aerial photos stitched into one scaled image. Measure distances and areas straight off it, or drop it into CAD or GIS as a background layer.",
       },
       {
         title: "High-Resolution Site Photography",
         description: "Detail imagery for records and reporting.",
+        moreInfo:
+          "Close-range stills of specific features or trouble spots, for progress records, defect reporting and client updates.",
       },
     ],
     href: "/services/",

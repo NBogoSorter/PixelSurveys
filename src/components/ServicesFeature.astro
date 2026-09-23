@@ -51,28 +51,58 @@ import { SERVICES } from "../data/services";
             </div>
 
             <ul class="list">
-              {service.subServices.map((sub) => (
-                <li class="item">
-                  <svg
-                    class="chevron"
-                    viewBox="0 0 24 24"
-                    width="13"
-                    height="13"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    aria-hidden="true"
-                  >
-                    <path d="M9 6l6 6-6 6" />
-                  </svg>
-                  <span>
-                    <span class="item-title">{sub.title}</span>
-                    <span class="item-desc">{sub.description}</span>
-                  </span>
-                </li>
-              ))}
+              {service.subServices.map((sub) =>
+                sub.moreInfo ? (
+                  <li class="item">
+                    <details class="drop">
+                      <summary class="row">
+                        <svg
+                          class="chevron"
+                          viewBox="0 0 24 24"
+                          width="13"
+                          height="13"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          aria-hidden="true"
+                        >
+                          <path d="M9 6l6 6-6 6" />
+                        </svg>
+                        <span>
+                          <span class="item-title">{sub.title}</span>
+                          <span class="item-desc">{sub.description}</span>
+                        </span>
+                      </summary>
+                      <p class="more">{sub.moreInfo}</p>
+                    </details>
+                  </li>
+                ) : (
+                  <li class="item">
+                    <div class="row">
+                      <svg
+                        class="chevron"
+                        viewBox="0 0 24 24"
+                        width="13"
+                        height="13"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true"
+                      >
+                        <path d="M9 6l6 6-6 6" />
+                      </svg>
+                      <span>
+                        <span class="item-title">{sub.title}</span>
+                        <span class="item-desc">{sub.description}</span>
+                      </span>
+                    </div>
+                  </li>
+                ),
+              )}
             </ul>
           </div>
         </article>
@@ -171,17 +201,49 @@ import { SERVICES } from "../data/services";
   }
 
   .item {
+    border-top: 1px solid #eef4f4;
+  }
+
+  /* Shared by the expandable <summary> and the plain <div>, so a row looks
+     identical whether or not it has anything to expand. */
+  .row {
     display: flex;
     align-items: flex-start;
     gap: 10px;
     padding: 13px 0;
-    border-top: 1px solid #eef4f4;
+  }
+
+  /* display:flex above already suppresses the default marker in most
+     browsers; these cover Safari and the older list-item rendering. */
+  .drop > .row {
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .drop > .row::-webkit-details-marker {
+    display: none;
   }
 
   .chevron {
     flex-shrink: 0;
     margin-top: 3px;
     color: var(--color-accent);
+    transition: transform 0.15s;
+  }
+
+  .drop[open] .chevron {
+    transform: rotate(90deg);
+  }
+
+  /* 23px = the 13px chevron plus the 10px row gap, so the expanded text
+     lines up with the title above it rather than the chevron. */
+  .more {
+    margin: 0;
+    padding: 0 0 14px 23px;
+    max-width: 52ch;
+    font-size: 12.5px;
+    line-height: 1.6;
+    color: var(--color-text-muted);
   }
 
   .item-title {
