@@ -30,7 +30,8 @@ means testing on production, behind the pre-launch gate.
 
 | Path                                     | What it is                                                       |
 | ---------------------------------------- | ---------------------------------------------------------------- |
-| `src/pages/`                             | One file per URL (`services.astro` → `/services/`)               |
+| `src/pages/`                             | One file per URL (`services/index.astro` → `/services/`)         |
+| `src/pages/services/`                    | Services hub plus per-service detail pages                       |
 | `src/components/`                        | Header, footer, hero, service cards, quote form                  |
 | `src/data/services.ts`                   | Service categories and bullet copy. Edit copy here               |
 | `src/styles/global.css`                  | Brand tokens (colors sampled from the logo), base styles         |
@@ -39,6 +40,7 @@ means testing on production, behind the pre-launch gate.
 | `src/pages/maintenance.astro`            | The public "coming soon" page (see [Pre-launch gate](#pre-launch-gate)) |
 | `public/api/quote.php`                   | Quote form handler - sends via Graph API, see comment at its top |
 | `server-config/quote-config.example.php` | Template for the form's settings incl. Entra app credentials (never deployed) |
+| `scripts/linkcheck.py`                   | Checks every internal link in `dist/` after a build               |
 | `media/`                                 | Original source assets                                           |
 
 ### Adding photos
@@ -149,10 +151,27 @@ be live when the site opens to the public.
       `src/data/services.ts` - the category ledes and all ten sub-service lines - was
       written to show the layout, not supplied by the client. It reads plausibly, which
       makes it easy to ship by accident. Needs their sign-off or replacement.
-- [ ] **Sub-services aren't links.** The services page lists ten named services, but
-      there are no per-service pages, so they render as plain list items. If the client
-      wants the hub-and-children structure implied by their outline, that's ten more
-      pages of copy.
+- [ ] **Only one of the ten services has a detail page.**
+      `/services/orthomosaic-mapping/` exists; the other nine render as plain text on
+      the hub, not links, so nothing points at a 404. A service becomes a link the
+      moment you give it an `href` in `src/data/services.ts` - add the page first.
+- [ ] **The orthomosaic page carries unverified figures presented as fact.** This is
+      the riskiest content on the site, because it reads as authoritative:
+      - The GSD table's capture heights and cm/px figures are illustrative, **not real
+        capture data**. Replace with the client's own.
+      - `[XX] mm` typical horizontal accuracy, and `[XX] hectares` per flight in the
+        FAQ, are literal placeholders visible on the page.
+      - The FAQ claims "2-3 cm per pixel against roughly 15-50 cm for public satellite
+        imagery" - check the client is happy standing behind that comparison.
+      - The page states every project is flown with RTK or PPK and surveyed ground
+        control. Confirm that's actually true of how they work.
+- [ ] **Seven links on the orthomosaic page go nowhere** - six `/applications/*` URLs
+      and `/services/survey-control-gnss/`. They were specified as plausible URLs for
+      pages that don't exist yet. Either build them, or drop the links.
+      `python scripts/linkcheck.py dist` re-checks every internal link after a build.
+- [ ] **The orthomosaic page has eleven image placeholders and one iframe slot**, each
+      labelled with the shot it needs. The "Sample output" section expects an
+      interactive map viewer embed - see the EMBED POINT comment in the page source.
 - [ ] **Remove the pre-launch gate itself** - see below.
 
 ## Pre-launch gate

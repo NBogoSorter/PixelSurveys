@@ -25,21 +25,24 @@ const currentPath = Astro.url.pathname;
       />
     </a>
 
-    <nav aria-label="Main">
-      <ul class="nav-list">
-        {NAV_LINKS.map((link) => (
-          <li>
-            <a
-              href={link.href}
-              class="nav-link"
-              aria-current={currentPath === link.href ? "page" : undefined}
-            >
-              {link.label}
-            </a>
-          </li>
-        ))}
-      </ul>
-    </nav>
+    <div class="right">
+      <nav aria-label="Main">
+        <ul class="nav-list">
+          {NAV_LINKS.map((link) => (
+            <li>
+              <a
+                href={link.href}
+                class="nav-link"
+                aria-current={currentPath === link.href ? "page" : undefined}
+              >
+                {link.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+      <a href="/contact/" class="quote">Get a Free Quote</a>
+    </div>
   </div>
 </header>
 
@@ -47,6 +50,30 @@ const currentPath = Astro.url.pathname;
   .header {
     border-bottom: 3px solid var(--color-accent);
     background: var(--color-bg);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+
+  .right {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+  }
+
+  .quote {
+    flex-shrink: 0;
+    background: var(--color-ink);
+    color: #fff;
+    font-size: 12.5px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    padding: 11px 20px;
+    white-space: nowrap;
+  }
+
+  .quote:hover {
+    background: var(--color-accent);
   }
 
   .inner {
@@ -90,6 +117,12 @@ const currentPath = Astro.url.pathname;
     color: var(--color-accent);
   }
 
+  @media (max-width: 860px) {
+    .right {
+      gap: 20px;
+    }
+  }
+
   @media (max-width: 640px) {
     .inner {
       flex-direction: column;
@@ -98,12 +131,25 @@ const currentPath = Astro.url.pathname;
       padding-block: 14px;
     }
 
+    .right {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+      width: 100%;
+    }
+
     .nav-list {
       gap: 8px 20px;
     }
 
     .logo-image {
       height: 32px;
+    }
+
+    /* The header stacks tall on phones; sticky would eat most of the
+       viewport, so it scrolls away instead. */
+    .header {
+      position: static;
     }
   }
 </style>

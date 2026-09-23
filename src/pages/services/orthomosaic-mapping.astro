@@ -1,0 +1,1127 @@
+---
+// Service detail page: Orthomosaic Mapping. The first of the per-service pages
+// under /services/. Sections follow the client's brief, in their order.
+//
+// PLACEHOLDER DATA - all of the following are unverified and must be replaced
+// before launch (tracked in README.md, "Before launch"):
+//   - the GSD table's capture heights and cm/px figures
+//   - [XX] mm typical horizontal accuracy in "Accuracy and control"
+//   - [XX] hectares per flight in the FAQ
+//   - every image placeholder
+//   - the /applications/ and /services/ links below, which are the brief's
+//     "plausible URLs" and mostly have no page behind them yet
+import Base from "../../layouts/Base.astro";
+
+const BREADCRUMB = [
+  { label: "Home", href: "/" },
+  { label: "Services", href: "/services/" },
+  { label: "Imagery & Visual Data", href: "/services/" },
+];
+
+const CAPABILITIES = [
+  {
+    title: "Measure directly",
+    line: "Take distances and areas straight off the image without returning to site",
+    icon: "ruler",
+  },
+  {
+    title: "CAD and GIS background",
+    line: "Drop a current, accurate base layer under your design",
+    icon: "layers",
+  },
+  {
+    title: "Feature extraction",
+    line: "Digitise kerbs, fences, drainage, hardstand and site detail",
+    icon: "vector",
+  },
+  {
+    title: "Site documentation",
+    line: "An accurate record of conditions on a specific date",
+    icon: "document",
+  },
+  {
+    title: "Area calculations",
+    line: "Measure disturbance, footprint, hardstand or vegetated area",
+    icon: "area",
+  },
+  {
+    title: "Change comparison",
+    line: "Overlay against design or an earlier capture to see what moved",
+    icon: "compare",
+  },
+];
+
+const GSD_ROWS = [
+  {
+    height: "Low",
+    gsd: "~1 cm/px",
+    suited: "Detail work, small sites, asset condition",
+  },
+  {
+    height: "Standard",
+    gsd: "~2–3 cm/px",
+    suited: "Most site mapping and design base layers",
+  },
+  {
+    height: "High",
+    gsd: "~4–5 cm/px",
+    suited: "Large area coverage, broad-scale monitoring",
+  },
+];
+
+const APPLICATIONS = [
+  { label: "Site planning and feasibility", href: "/applications/site-planning/" },
+  { label: "As-built documentation", href: "/applications/as-built-documentation/" },
+  {
+    label: "Disturbance and footprint area reporting",
+    href: "/applications/disturbance-reporting/",
+  },
+  {
+    label: "Land division and subdivision planning",
+    href: "/applications/subdivision-planning/",
+  },
+  {
+    label: "Construction progress comparison",
+    href: "/applications/construction-progress/",
+  },
+  {
+    label: "Environmental and vegetation monitoring",
+    href: "/applications/environmental-monitoring/",
+  },
+];
+
+const FAQS = [
+  {
+    q: "How large an area can you cover in one flight?",
+    a: "Most sites up to [XX] hectares are captured in a single visit. Larger areas are flown over multiple flights or days and delivered as one merged dataset.",
+  },
+  {
+    q: "Can you overlay it on my design?",
+    a: "Yes. Supplied in your project coordinate system, it drops straight into your CAD or GIS as a background layer with no manual alignment.",
+  },
+  {
+    q: "How is this different from Google Earth imagery?",
+    a: "Three things: currency, since your capture is flown on a date you choose rather than whenever the satellite last passed; resolution, since ours is typically 2–3 cm per pixel against roughly 15–50 cm for public satellite imagery; and control, since ours is tied to surveyed ground points and comes with a stated, verified accuracy.",
+  },
+  {
+    q: "Can I measure off it reliably?",
+    a: "Yes, horizontally, within the stated accuracy. Vertical measurement needs a point cloud or terrain model instead.",
+  },
+  {
+    q: "What do you need from us?",
+    a: "Site address and access details, the coordinate system and datum you want, your preferred file formats, and notice of any hazards, restrictions or active works on site.",
+  },
+];
+
+const RELATED = [
+  {
+    title: "Topographic & Contour Surveys",
+    href: "/services/",
+    brief: "Contour lines over ground",
+  },
+  {
+    title: "High-Resolution Site Photography",
+    href: "/services/",
+    brief: "Detail shot, close crop",
+  },
+  { title: "Point Clouds", href: "/services/", brief: "Coloured point cloud" },
+  {
+    title: "Site Progress Monitoring",
+    href: "/services/",
+    brief: "Two dates side by side",
+  },
+];
+---
+
+<Base
+  title="Orthomosaic Mapping"
+  description="Measurable, georeferenced aerial base maps for design, planning and site documentation. Supplied as GeoTIFF in your coordinate system, with stated accuracy."
+>
+  {/* ---------- 1. Hero ---------- */}
+  <section class="hero">
+    <div class="hero-image" aria-hidden="true">
+      <span class="ph-brief">Photo &mdash; orthomosaic of a construction site, detail visible at a glance</span>
+    </div>
+    <div class="hero-scrim" aria-hidden="true"></div>
+    <div class="container hero-inner">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <ol class="crumb-list">
+          {BREADCRUMB.map((c) => (
+            <li>
+              <a href={c.href}>{c.label}</a>
+              <span class="sep" aria-hidden="true">/</span>
+            </li>
+          ))}
+          <li aria-current="page">Orthomosaic Mapping</li>
+        </ol>
+      </nav>
+      <h1 class="hero-title">Orthomosaic Mapping</h1>
+      <p class="hero-sub">
+        Measurable, georeferenced aerial base maps for design, planning and site
+        documentation.
+      </p>
+      <a href="/contact/" class="btn btn-light">Get a Free Quote</a>
+    </div>
+  </section>
+
+  {/* ---------- 2. What is an orthomosaic ---------- */}
+  <section class="section">
+    <div class="container split">
+      <div class="prose">
+        <h2>What is an orthomosaic?</h2>
+        <p>
+          An orthomosaic is a single large aerial image built from hundreds of
+          overlapping photographs, geometrically corrected and tied to
+          real-world coordinates.
+        </p>
+        <p>
+          The correction removes lens distortion and the perspective lean of a
+          normal photograph, so scale is uniform across the whole image and
+          every pixel sits at a known position.
+        </p>
+        <p>
+          That correction is what makes it measurable. You can take distances
+          and areas directly off it, which you cannot reliably do from a
+          standard aerial photograph, where objects further from the
+          camera&rsquo;s centre appear displaced.
+        </p>
+      </div>
+      <div class="ph ph-tall">
+        <span class="ph-brief">
+          Diagram &mdash; single aerial frame beside the stitched, corrected map
+        </span>
+      </div>
+    </div>
+  </section>
+
+  {/* ---------- 3. Comparison ----------
+      Two figures in a grid rather than a bespoke layout, so an image-comparison
+      slider can replace the .compare-grid contents later without touching the
+      surrounding section. */}
+  <section class="panel">
+    <div class="container">
+      <h2 class="centered">The difference correction makes</h2>
+      <p class="centered lede">
+        Both images show the same site. Only one can be measured.
+      </p>
+      <div class="compare-grid">
+        <figure class="compare-item">
+          <div class="ph ph-wide">
+            <span class="ph-brief">Photo &mdash; uncorrected aerial frame of the site</span>
+          </div>
+          <figcaption>
+            Standard aerial photograph &mdash; perspective lean, inconsistent
+            scale
+          </figcaption>
+        </figure>
+        <figure class="compare-item">
+          <div class="ph ph-wide">
+            <span class="ph-brief">Photo &mdash; the same site as a finished orthomosaic</span>
+          </div>
+          <figcaption>
+            Orthomosaic &mdash; corrected, georeferenced, measurable
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  {/* ---------- 4. What you can do with it ---------- */}
+  <section class="section">
+    <div class="container">
+      <h2>What an orthomosaic lets you do</h2>
+      <ul class="tiles">
+        {CAPABILITIES.map((cap) => (
+          <li class="tile">
+            <span class="tile-icon" aria-hidden="true">
+              {cap.icon === "ruler" && (
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="8" width="20" height="8" />
+                  <path d="M6 8v3M10 8v5M14 8v3M18 8v5" />
+                </svg>
+              )}
+              {cap.icon === "layers" && (
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 3l9 5-9 5-9-5 9-5z" />
+                  <path d="M3 13l9 5 9-5" />
+                </svg>
+              )}
+              {cap.icon === "vector" && (
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M5 19L19 5" />
+                  <rect x="2" y="16" width="5" height="5" />
+                  <rect x="17" y="3" width="5" height="5" />
+                </svg>
+              )}
+              {cap.icon === "document" && (
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M14 3H6v18h12V7l-4-4z" />
+                  <path d="M14 3v4h4M9 13h6M9 17h6" />
+                </svg>
+              )}
+              {cap.icon === "area" && (
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 3v18h18" stroke-dasharray="3 3" />
+                  <path d="M7 17l4-6 3 4 4-7" />
+                </svg>
+              )}
+              {cap.icon === "compare" && (
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="3" width="13" height="13" />
+                  <rect x="8" y="8" width="13" height="13" />
+                </svg>
+              )}
+            </span>
+            <span class="tile-title">{cap.title}</span>
+            <span class="tile-line">{cap.line}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  {/* ---------- 5. Resolution and GSD ---------- */}
+  <section class="section">
+    <div class="container narrow">
+      <h2>Resolution and ground sample distance</h2>
+      <div class="prose">
+        <p>
+          Ground sample distance (GSD) is the ground distance a single pixel
+          covers. A 2&nbsp;cm GSD means each pixel represents 2&nbsp;cm on the
+          ground, and it is the honest measure of how much detail an image
+          really holds.
+        </p>
+        <p>
+          Flying lower gives a finer GSD, but it takes more flight time and more
+          images over the same area. The right height is a balance between the
+          detail you need and the size of the site.
+        </p>
+      </div>
+
+      <div class="table-wrap">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Capture height</th>
+              <th scope="col">Typical GSD</th>
+              <th scope="col">Best suited to</th>
+            </tr>
+          </thead>
+          <tbody>
+            {GSD_ROWS.map((row) => (
+              <tr>
+                <th scope="row">{row.height}</th>
+                <td data-label="Typical GSD">{row.gsd}</td>
+                <td data-label="Best suited to">{row.suited}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <p class="note">
+        Figures are indicative. We confirm the GSD for your site at the quoting
+        stage based on area, terrain and the detail you need.
+      </p>
+    </div>
+  </section>
+
+  {/* ---------- 6. Accuracy and control ---------- */}
+  <section class="section">
+    <div class="container narrow">
+      <h2>Accuracy and control</h2>
+      <div class="prose">
+        <p>
+          Every project is flown with RTK or PPK positioning, so each image is
+          recorded with a precise camera position at the moment of capture.
+        </p>
+        <p>
+          Surveyed ground control points are established across the site to tie
+          the imagery to your datum and to independently verify the result. Our{" "}
+          <a href="/services/survey-control-gnss/">survey control and GNSS</a>{" "}
+          work underpins every capture.
+        </p>
+        <p>
+          Accuracy is validated against those control points and reported on
+          delivery, so you receive a stated figure rather than an assurance.
+        </p>
+        <p>
+          Typical horizontal accuracy on an open site is in the range of
+          [XX]&nbsp;mm, though the figure depends on site conditions, flight
+          height and control.
+        </p>
+      </div>
+
+      <aside class="callout">
+        <h3 class="callout-title">A note on what an orthomosaic is not</h3>
+        <p>
+          An orthomosaic is a 2D product corrected to the ground plane, so tall
+          vertical features like building facades, poles and stockpile faces can
+          still appear to lean, particularly toward the edges of the image.
+        </p>
+        <p>
+          If you need true vertical geometry, a point cloud or 3D model is the
+          right product &mdash; and we&rsquo;ll say so rather than sell you the
+          wrong one.
+        </p>
+      </aside>
+    </div>
+  </section>
+
+  {/* ---------- 7. What you receive ---------- */}
+  <section class="section">
+    <div class="container">
+      <h2>What you receive</h2>
+      <div class="split split-even">
+        <div>
+          <h3 class="col-title">Deliverables</h3>
+          <ul class="ticks">
+            <li>The orthomosaic as a GeoTIFF</li>
+            <li>ECW or JPEG2000 for large-area datasets</li>
+            <li>A tiled or web-viewable version for sharing with your team</li>
+            <li>World file and georeferencing included</li>
+            <li>
+              A processing report covering capture date, GSD, control used and
+              accuracy achieved
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="col-title">Formats and coordinates</h3>
+          <ul class="ticks">
+            <li>Supplied in your nominated coordinate system and datum</li>
+            <li>
+              Typically GDA2020 with the relevant MGA zone for Australian
+              projects
+            </li>
+          </ul>
+        </div>
+      </div>
+      <p class="closing-line">
+        Tell us what you work in &mdash; Civil 3D, 12d, QGIS, ArcGIS or another
+        platform &mdash; and we&rsquo;ll deliver it ready to import.
+      </p>
+    </div>
+  </section>
+
+  {/* ---------- 8. Sample output ---------- */}
+  <section class="panel">
+    <div class="container">
+      <h2>Sample output</h2>
+      {/* EMBED POINT: replace this placeholder with the <iframe> for the
+          interactive map viewer (e.g. a tiled orthomosaic viewer). Keep the
+          16/9 wrapper so the layout doesn't shift when it goes in. */}
+      <div class="ph ph-viewer">
+        <span class="ph-brief">
+          Interactive map viewer &mdash; iframe embed goes here
+        </span>
+      </div>
+      <div class="zoom-row">
+        <figure class="zoom-item">
+          <div class="ph ph-small"><span class="ph-brief">Full site</span></div>
+          <figcaption>Full site</figcaption>
+        </figure>
+        <figure class="zoom-item">
+          <div class="ph ph-small"><span class="ph-brief">Building detail</span></div>
+          <figcaption>Building detail</figcaption>
+        </figure>
+        <figure class="zoom-item">
+          <div class="ph ph-small"><span class="ph-brief">Kerb and drainage detail</span></div>
+          <figcaption>Kerb and drainage detail</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  {/* ---------- 9. Typical applications ---------- */}
+  <section class="section">
+    <div class="container narrow">
+      <h2>Where orthomosaics are used</h2>
+      <ul class="apps">
+        {APPLICATIONS.map((app) => (
+          <li>
+            <a href={app.href} class="app-link">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M9 6l6 6-6 6" />
+              </svg>
+              <span>{app.label}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  {/* ---------- 10. FAQ ---------- */}
+  <section class="panel">
+    <div class="container narrow">
+      <h2>Common questions</h2>
+      <div class="faq">
+        {FAQS.map((item, index) => (
+          <details class="faq-row" open={index === 0}>
+            <summary class="faq-head">
+              <span class="faq-q">{item.q}</span>
+              <span class="faq-chev" aria-hidden="true">&#9656;</span>
+            </summary>
+            <p class="faq-a">{item.a}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {/* ---------- 11. Related services ---------- */}
+  <section class="section">
+    <div class="container">
+      <h2>Related services</h2>
+      <div class="related">
+        {RELATED.map((item) => (
+          <a href={item.href} class="related-card">
+            <div class="ph ph-card">
+              <span class="ph-brief">{item.brief}</span>
+            </div>
+            <span class="related-title">{item.title}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {/* ---------- 12. Closing CTA ---------- */}
+  <section class="cta-band">
+    <div class="container cta-inner">
+      <div>
+        <h2 class="cta-title">Need a current, accurate base map of your site?</h2>
+        <p class="cta-line">
+          Tell us the site and what you&rsquo;re using it for, and we&rsquo;ll
+          advise on resolution, control and turnaround.
+        </p>
+      </div>
+      <a href="/contact/" class="btn btn-dark">Get a Free Quote</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* ---------- shared ---------- */
+  .section {
+    padding-block: 64px;
+  }
+
+  .panel {
+    background: var(--color-surface);
+    padding-block: 64px;
+  }
+
+  .narrow {
+    max-width: 880px;
+  }
+
+  h2 {
+    font-size: clamp(24px, 3vw, 30px);
+    font-weight: 700;
+    color: var(--color-ink);
+    margin-bottom: 20px;
+    text-wrap: balance;
+  }
+
+  .centered {
+    text-align: center;
+  }
+
+  .lede {
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--color-text-muted);
+    margin-bottom: 32px;
+  }
+
+  .prose p {
+    font-size: 15px;
+    line-height: 1.75;
+    color: var(--color-text-muted);
+    max-width: 68ch;
+  }
+
+  .prose p + p {
+    margin-top: 16px;
+  }
+
+  .prose a {
+    color: var(--color-ink);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .prose a:hover {
+    color: var(--color-accent);
+  }
+
+  .btn {
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 14px 28px;
+  }
+
+  .btn-light {
+    background: #fff;
+    color: var(--color-ink);
+  }
+
+  .btn-light:hover {
+    background: var(--color-surface);
+  }
+
+  .btn-dark {
+    background: var(--color-ink);
+    color: #fff;
+    flex-shrink: 0;
+  }
+
+  .btn-dark:hover {
+    background: var(--color-ink-soft);
+  }
+
+  /* ---------- image placeholders ----------
+     Deliberately readable as placeholders, and each names the shot it needs,
+     so the page doubles as the photo brief while none have been supplied. */
+  .ph {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #e4eded;
+    border: 1px solid var(--color-border);
+  }
+
+  .ph-brief {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    /* Darker than --color-text-muted, which only reaches 3.9:1 on this tint. */
+    color: #3d5a62;
+    text-align: center;
+    padding: 16px;
+    line-height: 1.5;
+  }
+
+  .ph-tall {
+    aspect-ratio: 4 / 3;
+  }
+
+  .ph-wide {
+    aspect-ratio: 16 / 10;
+  }
+
+  .ph-viewer {
+    aspect-ratio: 16 / 9;
+    margin-bottom: 20px;
+  }
+
+  .ph-small {
+    aspect-ratio: 4 / 3;
+  }
+
+  .ph-card {
+    aspect-ratio: 4 / 3;
+  }
+
+  /* ---------- 1. hero ---------- */
+  .hero {
+    position: relative;
+    min-height: 460px;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+  }
+
+  .hero-image {
+    position: absolute;
+    inset: 0;
+    background: #e4eded;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Strong enough that white text clears 4.5:1 once a real photo replaces
+     the flat placeholder behind it. */
+  .hero-scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(12, 83, 141, 0.62) 0%,
+      rgba(12, 83, 141, 0.92) 100%
+    );
+  }
+
+  .hero-inner {
+    position: relative;
+    padding-block: 56px;
+  }
+
+  .crumbs {
+    margin-bottom: 18px;
+  }
+
+  .crumb-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    font-size: 12.5px;
+    color: #cfe3ef;
+  }
+
+  .crumb-list a {
+    color: #cfe3ef;
+  }
+
+  .crumb-list a:hover {
+    color: #fff;
+    text-decoration: underline;
+  }
+
+  .crumb-list li {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .sep {
+    color: #8fb4d0;
+  }
+
+  .hero-title {
+    font-size: clamp(32px, 5vw, 48px);
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -0.015em;
+  }
+
+  .hero-sub {
+    margin-top: 14px;
+    margin-bottom: 28px;
+    max-width: 620px;
+    font-size: 16.5px;
+    line-height: 1.65;
+    color: #e3eef6;
+  }
+
+  /* ---------- 2 / 7. split columns ---------- */
+  .split {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 44px;
+    align-items: start;
+  }
+
+  .split-even {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .col-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--color-ink);
+    border-bottom: 2px solid var(--color-accent);
+    padding-bottom: 8px;
+    margin-bottom: 14px;
+  }
+
+  .ticks {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .ticks li {
+    position: relative;
+    padding-left: 18px;
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: var(--color-text-muted);
+  }
+
+  .ticks li::before {
+    content: "\2013";
+    position: absolute;
+    left: 0;
+    color: var(--color-accent);
+  }
+
+  .closing-line {
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid var(--color-border);
+    font-size: 15.5px;
+    line-height: 1.65;
+    color: var(--color-ink);
+    font-weight: 500;
+  }
+
+  /* ---------- 3. comparison ---------- */
+  .compare-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+  }
+
+  .compare-item {
+    margin: 0;
+  }
+
+  .compare-item figcaption {
+    margin-top: 12px;
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--color-text-muted);
+    text-align: center;
+  }
+
+  /* ---------- 4. capability tiles ---------- */
+  .tiles {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+  }
+
+  .tile {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    border: 1px solid var(--color-border);
+    border-top: 3px solid var(--color-accent);
+    padding: 22px 20px 24px;
+  }
+
+  .tile-icon {
+    color: var(--color-accent);
+    line-height: 0;
+  }
+
+  .tile-title {
+    font-size: 15.5px;
+    font-weight: 600;
+    color: var(--color-ink);
+  }
+
+  .tile-line {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--color-text-muted);
+  }
+
+  /* ---------- 5. GSD table ---------- */
+  .table-wrap {
+    margin-top: 28px;
+  }
+
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid var(--color-border);
+  }
+
+  .table th,
+  .table td {
+    text-align: left;
+    padding: 14px 16px;
+    font-size: 14px;
+    line-height: 1.5;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .table thead th {
+    background: var(--color-surface);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-ink);
+  }
+
+  .table tbody th {
+    font-weight: 600;
+    color: var(--color-ink);
+    white-space: nowrap;
+  }
+
+  .table td {
+    color: var(--color-text-muted);
+  }
+
+  .table tbody tr:last-child th,
+  .table tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  .note {
+    margin-top: 16px;
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--color-text-muted);
+    font-style: italic;
+  }
+
+  /* ---------- 6. callout ---------- */
+  .callout {
+    margin-top: 36px;
+    background: var(--color-surface);
+    border-left: 4px solid var(--color-accent);
+    padding: 24px 26px;
+  }
+
+  .callout-title {
+    font-size: 16.5px;
+    font-weight: 700;
+    color: var(--color-ink);
+    margin-bottom: 12px;
+  }
+
+  .callout p {
+    font-size: 14.5px;
+    line-height: 1.7;
+    color: var(--color-text-muted);
+    max-width: 68ch;
+  }
+
+  .callout p + p {
+    margin-top: 12px;
+  }
+
+  /* ---------- 8. sample output ---------- */
+  .zoom-row {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+  }
+
+  .zoom-item {
+    margin: 0;
+  }
+
+  .zoom-item figcaption {
+    margin-top: 10px;
+    font-size: 12.5px;
+    color: var(--color-text-muted);
+    text-align: center;
+  }
+
+  /* ---------- 9. applications ---------- */
+  .apps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2px 32px;
+  }
+
+  .app-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 13px 0;
+    border-bottom: 1px solid var(--color-border);
+    font-size: 14.5px;
+    font-weight: 500;
+    color: var(--color-ink);
+  }
+
+  .app-link svg {
+    flex-shrink: 0;
+    color: var(--color-accent);
+    transition: transform 0.15s;
+  }
+
+  .app-link:hover {
+    color: var(--color-accent);
+  }
+
+  .app-link:hover svg {
+    transform: translateX(3px);
+  }
+
+  /* ---------- 10. FAQ ---------- */
+  .faq-row {
+    border-top: 1px solid var(--color-border);
+  }
+
+  .faq-row:last-child {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .faq-head {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding-block: 18px;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .faq-head::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-q {
+    flex: 1;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--color-ink);
+  }
+
+  .faq-chev {
+    flex-shrink: 0;
+    color: var(--color-text-muted);
+    font-size: 13px;
+    transition: transform 0.15s;
+  }
+
+  .faq-row[open] .faq-chev {
+    transform: rotate(90deg);
+  }
+
+  .faq-a {
+    padding-bottom: 20px;
+    max-width: 68ch;
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--color-text-muted);
+  }
+
+  /* ---------- 11. related ---------- */
+  .related {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 20px;
+  }
+
+  .related-card {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--color-border);
+  }
+
+  .related-title {
+    padding: 16px 16px 18px;
+    font-size: 14.5px;
+    font-weight: 600;
+    color: var(--color-ink);
+    line-height: 1.4;
+  }
+
+  .related-card:hover .related-title {
+    color: var(--color-accent);
+    text-decoration: underline;
+  }
+
+  /* ---------- 12. closing CTA ---------- */
+  .cta-band {
+    background: var(--color-accent);
+    padding-block: 48px;
+  }
+
+  .cta-inner {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+  }
+
+  .cta-title {
+    font-size: clamp(21px, 2.6vw, 27px);
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 10px;
+    text-wrap: balance;
+  }
+
+  .cta-line {
+    font-size: 15px;
+    line-height: 1.65;
+    color: #e4f2f1;
+    max-width: 640px;
+  }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 900px) {
+    .tiles {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .related {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 760px) {
+    .split,
+    .split-even,
+    .compare-grid,
+    .apps {
+      grid-template-columns: 1fr;
+    }
+
+    .zoom-row {
+      grid-template-columns: 1fr;
+    }
+
+    .cta-inner {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    /* Table collapses to stacked rows - each cell labelled by its heading. */
+    .table,
+    .table tbody,
+    .table tr,
+    .table th,
+    .table td {
+      display: block;
+    }
+
+    .table thead {
+      display: none;
+    }
+
+    .table tbody tr {
+      border-bottom: 1px solid var(--color-border);
+      padding-block: 6px;
+    }
+
+    .table tbody tr:last-child {
+      border-bottom: none;
+    }
+
+    .table th,
+    .table td {
+      border-bottom: none;
+      padding-block: 6px;
+    }
+
+    .table td::before {
+      content: attr(data-label) ": ";
+      font-weight: 600;
+      color: var(--color-ink);
+    }
+  }
+
+  @media (max-width: 560px) {
+    .tiles {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,24 +1,67 @@
 ---
+import { CONTACT_EMAIL, CONTACT_PHONE } from "../data/contact-info";
+
 const year = new Date().getFullYear();
+
+// Mirrors the categories on /services/. Once the per-service detail pages
+// exist, point these at them instead of the hub.
+const SERVICE_LINKS = [
+  { label: "Orthomosaic Mapping", href: "/services/orthomosaic-mapping/" },
+  { label: "Imagery & Visual Data", href: "/services/" },
+  { label: "Elevation & Terrain", href: "/services/" },
+  { label: "3D Spatial Data", href: "/services/" },
+  { label: "Analysis & Reports", href: "/services/" },
+];
+
+const SITE_LINKS = [
+  { label: "Services", href: "/services/" },
+  { label: "About", href: "/about/" },
+  { label: "Contact", href: "/contact/" },
+];
 ---
 
 <footer class="footer">
   <div class="rule" aria-hidden="true"></div>
   <div class="container inner">
-    <p class="brand">Pixel Surveys</p>
-    <nav aria-label="Footer">
-      <ul class="links">
+    <div class="col col-brand">
+      <p class="brand">Pixel Surveys</p>
+      <p class="blurb">
+        Drone survey and aerial mapping across Australia.
+      </p>
+      <ul class="contact">
         <li>
-          <a href="/services/">Services</a>
+          <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
         </li>
         <li>
-          <a href="/about/">About</a>
-        </li>
-        <li>
-          <a href="/contact/">Contact</a>
+          <a href={`tel:${CONTACT_PHONE.replace(/\s/g, "")}`}>{CONTACT_PHONE}</a>
         </li>
       </ul>
+    </div>
+
+    <nav class="col" aria-label="Services">
+      <h2 class="col-title">Services</h2>
+      <ul class="links">
+        {SERVICE_LINKS.map((link) => (
+          <li>
+            <a href={link.href}>{link.label}</a>
+          </li>
+        ))}
+      </ul>
     </nav>
+
+    <nav class="col" aria-label="Footer">
+      <h2 class="col-title">Site</h2>
+      <ul class="links">
+        {SITE_LINKS.map((link) => (
+          <li>
+            <a href={link.href}>{link.label}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+
+  <div class="container bottom">
     <p class="copyright">&copy; {year} Pixel Surveys</p>
   </div>
 </footer>
@@ -35,12 +78,14 @@ const year = new Date().getFullYear();
   }
 
   .inner {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px 32px;
-    padding-block: 28px;
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr;
+    gap: 32px 40px;
+    padding-block: 40px 32px;
+  }
+
+  .col-brand {
+    max-width: 340px;
   }
 
   .brand {
@@ -48,29 +93,84 @@ const year = new Date().getFullYear();
     font-size: 16px;
   }
 
+  .blurb {
+    margin-top: 8px;
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.72);
+  }
+
+  .contact {
+    margin: 14px 0 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .contact a {
+    font-size: 13.5px;
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  .contact a:hover {
+    color: #fff;
+    text-decoration: underline;
+  }
+
+  .col-title {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.55);
+    margin-bottom: 12px;
+  }
+
   .links {
     display: flex;
-    flex-wrap: wrap;
-    gap: 8px 24px;
+    flex-direction: column;
+    gap: 8px;
     list-style: none;
     margin: 0;
     padding: 0;
   }
 
   .links a {
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
+    font-size: 13.5px;
     color: rgba(255, 255, 255, 0.85);
   }
 
   .links a:hover {
     color: #fff;
+    text-decoration: underline;
+  }
+
+  .bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.16);
+    padding-block: 18px 24px;
   }
 
   .copyright {
     font-size: 13px;
     color: rgba(255, 255, 255, 0.7);
+  }
+
+  @media (max-width: 760px) {
+    .inner {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .col-brand {
+      grid-column: 1 / -1;
+      max-width: none;
+    }
+  }
+
+  @media (max-width: 460px) {
+    .inner {
+      grid-template-columns: 1fr;
+    }
   }
 </style>

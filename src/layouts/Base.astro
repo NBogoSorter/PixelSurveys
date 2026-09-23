@@ -29,6 +29,12 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content="Pixel Surveys" />
+    <meta property="og:locale" content="en_AU" />
+    {/* No og:image yet - that needs a real 1200x630 share image, which waits
+        on the client supplying photography. Twitter falls back to "summary"
+        rather than claiming a large image that doesn't exist. */}
+    <meta name="twitter:card" content="summary" />
   </head>
   <body>
     <SiteHeader />
