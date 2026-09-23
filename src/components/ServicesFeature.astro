@@ -1,0 +1,255 @@
+---
+// The services page layout: a 2x2 grid of large image cards, one per category,
+// each listing its named sub-services.
+//
+// Sub-services are plain list items, not links. The site has no per-service
+// pages yet, so making them look clickable would promise something that isn't
+// there. When those pages exist, swap the <li> content for an <a href> and
+// keep the chevron as the marker.
+import { Image } from "astro:assets";
+import { SERVICES } from "../data/services";
+---
+
+<section class="section">
+  <div class="container">
+    <div class="grid">
+      {SERVICES.map((service) => (
+        <article class="card">
+          {service.image ? (
+            <Image
+              src={service.image}
+              alt={service.imageAlt ?? ""}
+              widths={[480, 640, 960]}
+              sizes="(max-width: 760px) 100vw, 580px"
+              class="photo"
+            />
+          ) : (
+            <div class="photo photo-placeholder">
+              <svg
+                viewBox="0 0 24 24"
+                width="30"
+                height="30"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <rect x="3" y="5" width="18" height="14" />
+                <circle cx="9" cy="10" r="1.6" />
+                <path d="M3 16l5-4 4 3 3-2 6 5" />
+              </svg>
+              <span class="brief">Photo &mdash; {service.imageBrief}</span>
+            </div>
+          )}
+
+          <div class="body">
+            <div class="intro">
+              <h2 class="title">{service.title}</h2>
+              <p class="lede">{service.description}</p>
+            </div>
+
+            <ul class="list">
+              {service.subServices.map((sub) => (
+                <li class="item">
+                  <svg
+                    class="chevron"
+                    viewBox="0 0 24 24"
+                    width="13"
+                    height="13"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M9 6l6 6-6 6" />
+                  </svg>
+                  <span>
+                    <span class="item-title">{sub.title}</span>
+                    <span class="item-desc">{sub.description}</span>
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <div class="cta">
+      <div class="cta-text">
+        <h2 class="cta-title">Not sure which you need?</h2>
+        <p class="cta-lede">
+          Tell us about the site and what the data is for, and we&rsquo;ll work
+          out the right deliverables with you.
+        </p>
+      </div>
+      <a href="/contact/" class="cta-button">Request a Quote</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .section {
+    padding-block: 8px 80px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 28px;
+  }
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--color-border);
+    background: var(--color-bg);
+  }
+
+  .photo {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  /* Deliberately reads as a placeholder, and names the shot it needs, so the
+     page doubles as the photo brief while the client still owes us images. */
+  .photo-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: #e4eded;
+    /* Darker than --color-text-muted: that only reaches 3.9:1 on this tint. */
+    color: #3d5a62;
+  }
+
+  .brief {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    text-align: center;
+    padding-inline: 16px;
+  }
+
+  .body {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    flex: 1;
+    padding: 26px 26px 28px;
+  }
+
+  .title {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--color-ink);
+  }
+
+  .lede {
+    margin-top: 9px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--color-text-muted);
+  }
+
+  .list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 13px 0;
+    border-top: 1px solid #eef4f4;
+  }
+
+  .chevron {
+    flex-shrink: 0;
+    margin-top: 3px;
+    color: var(--color-accent);
+  }
+
+  .item-title {
+    display: block;
+    font-size: 14.5px;
+    font-weight: 600;
+    color: var(--color-ink);
+    line-height: 1.35;
+  }
+
+  .item-desc {
+    display: block;
+    margin-top: 3px;
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--color-text-muted);
+  }
+
+  .cta {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    margin-top: 40px;
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+    padding: 30px 34px;
+  }
+
+  .cta-text {
+    flex: 1;
+  }
+
+  .cta-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--color-ink);
+  }
+
+  .cta-lede {
+    margin-top: 8px;
+    max-width: 560px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--color-text-muted);
+  }
+
+  .cta-button {
+    flex-shrink: 0;
+    background: var(--color-ink);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 14px 28px;
+  }
+
+  .cta-button:hover {
+    background: var(--color-ink-soft);
+  }
+
+  @media (max-width: 760px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+
+    .cta {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 20px;
+    }
+  }
+</style>

@@ -44,8 +44,15 @@ means testing on production, behind the pre-launch gate.
 ### Adding photos
 
 - **Service cards:** put images in `src/assets/services/`, `import` them in
-  `src/data/services.ts`, and set `image` + `imageAlt` on each service. The gradient
-  placeholder disappears automatically.
+  `src/data/services.ts`, and set `image` + `imageAlt` on each service. The placeholder
+  disappears automatically.
+  - Each service also has an `imageBrief` - a short description of the shot that card
+    needs. While `image` is undefined, the services page renders that text inside the
+    placeholder, so **the page itself is the photo brief** to send the client. Four
+    photos are needed in total, one per category.
+  - The homepage cards keep a plain brand-gradient placeholder instead: at four-across
+    the labelled version is too noisy, and at that size a gradient reads as a design
+    device rather than a mistake.
 - **Hero:** see the comment in `src/components/Hero.astro`.
 
 ## One-time VentraIP setup
@@ -138,6 +145,14 @@ be live when the site opens to the public.
       `+61 0000 000 000`, the hero and service cards have no real photos, the About page
       copy is unwritten, and the "Monitoring & Progress" FAQ answer is an unfinished
       sentence.
+- [ ] **Services page copy is unapproved.** Every `description` in
+      `src/data/services.ts` - the category ledes and all ten sub-service lines - was
+      written to show the layout, not supplied by the client. It reads plausibly, which
+      makes it easy to ship by accident. Needs their sign-off or replacement.
+- [ ] **Sub-services aren't links.** The services page lists ten named services, but
+      there are no per-service pages, so they render as plain list items. If the client
+      wants the hub-and-children structure implied by their outline, that's ten more
+      pages of copy.
 - [ ] **Remove the pre-launch gate itself** - see below.
 
 ## Pre-launch gate

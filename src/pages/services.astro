@@ -1,6 +1,6 @@
 ---
 import PageHeader from "../components/PageHeader.astro";
-import ServicesGrid from "../components/ServicesGrid.astro";
+import ServicesFeature from "../components/ServicesFeature.astro";
 import Base from "../layouts/Base.astro";
 ---
 
@@ -8,6 +8,9 @@ import Base from "../layouts/Base.astro";
   title="Services"
   description="Orthomosaic maps, digital terrain models, point clouds, 3D models and site analysis from drone survey data."
 >
-  <PageHeader title="Services" />
-  <ServicesGrid showCta={false} />
+  <PageHeader
+    title="Services"
+    lede="Four categories of survey data, captured in a single flight and delivered in the formats your team already works in."
+  />
+  <ServicesFeature />
 </Base>

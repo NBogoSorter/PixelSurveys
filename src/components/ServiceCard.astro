@@ -28,8 +28,8 @@ const { service } = Astro.props;
   <div class="body">
     <h3 class="title">{service.title}</h3>
     <ul class="list">
-      {service.items.map((item) => (
-        <li>{item}</li>
+      {service.subServices.map((sub) => (
+        <li>{sub.title}</li>
       ))}
     </ul>
     <a href={service.href} class="learn">
