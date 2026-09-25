@@ -1,9 +1,13 @@
 ---
 interface Props {
   title?: string;
+  location?: string;
 }
 
-const { title = "Drone Survey & Aerial Mapping Services" } = Astro.props;
+const {
+  title = "Drone Survey & Aerial Mapping Services",
+  location = "Adelaide based. Servicing sites across South Australia",
+} = Astro.props;
 ---
 
 <section class="hero">
@@ -17,6 +21,24 @@ const { title = "Drone Survey & Aerial Mapping Services" } = Astro.props;
 
   <div class="container content">
     <h1 class="heading">{title}</h1>
+    <p class="location">
+      <svg
+        class="pin"
+        viewBox="0 0 24 24"
+        width="16"
+        height="16"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z" />
+        <circle cx="12" cy="10" r="2.6" />
+      </svg>
+      <span>{location}</span>
+    </p>
   </div>
 
   <svg
@@ -75,6 +97,27 @@ const { title = "Drone Survey & Aerial Mapping Services" } = Astro.props;
     max-width: 640px;
     text-wrap: balance;
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Sits straight on the image - no panel behind it - so the shadow is doing
+     all the legibility work. It's heavier than the heading's for that reason:
+     at 15px there's far less letter mass to stay readable over a busy photo.
+     Worth revisiting once the real hero image lands (see the note above the
+     placeholder) - a bright patch under this line would still beat it. */
+  .location {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-top: 22px;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 500;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.55);
+  }
+
+  .pin {
+    flex-shrink: 0;
+    filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.5));
   }
 
   .wave {
