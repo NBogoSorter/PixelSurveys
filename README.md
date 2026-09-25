@@ -147,10 +147,26 @@ be live when the site opens to the public.
       `+61 0000 000 000`, the hero and service cards have no real photos, the About page
       copy is unwritten, and the "Monitoring & Progress" FAQ answer is an unfinished
       sentence.
-- [ ] **Services page copy is unapproved.** Every `description` in
-      `src/data/services.ts` - the category ledes and all ten sub-service lines - was
-      written to show the layout, not supplied by the client. It reads plausibly, which
-      makes it easy to ship by accident. Needs their sign-off or replacement.
+- [ ] **Two service descriptions are missing.** `src/data/services.ts` carries the
+      client's own copy (supplied 25 Sept 2026), except **Site Progress Monitoring** and
+      **Asset & Structure Monitoring**, which their list left blank. Both render
+      `[description to come]` on the page rather than invented copy. Chase the client.
+- [ ] **The services page and the contact form use different names for the same
+      categories.** The client's new service names only partly match the dropdown on the
+      contact form:
+
+      | Contact form (`src/data/service-types.ts`) | Services page (`src/data/services.ts`) |
+      | ------------------------------------------ | -------------------------------------- |
+      | Aerial Imagery & Mapping                    | Aerial Imagery & Mapping (match)       |
+      | Contours & Terrain **Data**                 | Contours & Terrain **Models**          |
+      | **3D Point Clouds & Models**                | **3D Models & Point Clouds**           |
+      | Volumes & Site Monitoring                   | Volumes & Site Monitoring (match)      |
+
+      Two match, two differ by a word. Worth settling on one set of names. **If you
+      change `service-types.ts`, you must change `ALLOWED_SERVICES` in
+      `public/api/quote.php` to match exactly** - the handler drops any submitted value
+      not on that list, silently, so a mismatch loses the service field on every
+      enquiry without any visible error.
 - [ ] **Only one of the ten services has a detail page.**
       `/services/orthomosaic-mapping/` exists; the other nine render as plain text on
       the hub, not links, so nothing points at a 404. A service becomes a link the

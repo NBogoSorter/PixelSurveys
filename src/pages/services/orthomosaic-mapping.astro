@@ -15,7 +15,7 @@ import Base from "../../layouts/Base.astro";
 const BREADCRUMB = [
   { label: "Home", href: "/" },
   { label: "Services", href: "/services/" },
-  { label: "Imagery & Visual Data", href: "/services/" },
+  { label: "Aerial Imagery & Mapping", href: "/services/" },
 ];
 
 const CAPABILITIES = [
@@ -113,14 +113,16 @@ const FAQS = [
   },
 ];
 
+// Titles match src/data/services.ts. Keep them in step - these are the
+// client's own service names, not descriptions of them.
 const RELATED = [
   {
-    title: "Topographic & Contour Surveys",
+    title: "Site Levels & Contours",
     href: "/services/",
     brief: "Contour lines over ground",
   },
   {
-    title: "High-Resolution Site Photography",
+    title: "Aerial Inspection Photography",
     href: "/services/",
     brief: "Detail shot, close crop",
   },

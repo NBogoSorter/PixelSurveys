@@ -2,10 +2,7 @@ import type { ImageMetadata } from "astro";
 
 export interface SubService {
   title: string;
-  /**
-   * One line on what the client actually receives. PLACEHOLDER COPY - written
-   * to show the shape, not supplied by the client. Needs their sign-off.
-   */
+  /** One line on what the client actually receives. Client-supplied copy. */
   description: string;
   /**
    * Detail page for this service. When set, the row on the services page
@@ -17,7 +14,7 @@ export interface SubService {
 
 export interface Service {
   title: string;
-  /** Category lede. Placeholder copy, same caveat as SubService.description. */
+  /** Category lede. Client-supplied copy. */
   description: string;
   subServices: SubService[];
   href: string;
@@ -37,23 +34,25 @@ export interface Service {
   bandTo: string;
 }
 
+// Copy below is the client's own, supplied 25 Sept 2026 - not placeholder text,
+// with two exceptions marked "DESCRIPTION MISSING" where their list left the
+// line blank.
 export const SERVICES: Service[] = [
   {
-    title: "Imagery & Visual Data",
+    title: "Aerial Imagery & Mapping",
     description:
-      "Georeferenced imagery you can measure from and drop straight into CAD or GIS.",
+      "Current, high-resolution aerial imagery and detailed photos of structures and assets.",
     subServices: [
       {
-        title: "Orthomosaic Mapping",
+        title: "Aerial Imagery (Orthomosaic)",
         description:
-          "A scaled, distortion-corrected map of the whole site.",
+          "A single aerial image of the whole site corrected and georeferenced to your coordinate system.",
         href: "/services/orthomosaic-mapping/",
       },
       {
-        // No href yet - the detail page for this one hasn't been written, so
-        // the row stays plain text rather than linking to a 404.
-        title: "High-Resolution Site Photography",
-        description: "Detail imagery for records and reporting.",
+        title: "Aerial Inspection Photography",
+        description:
+          "Close-range photos of roofs, structures and hard to access assets.",
       },
     ],
     href: "/services/",
@@ -62,17 +61,29 @@ export const SERVICES: Service[] = [
     bandTo: "var(--color-accent-green)",
   },
   {
-    title: "Elevation & Terrain",
+    title: "Contours & Terrain Models",
     description:
-      "The shape of the ground, as contours and surface models your designers work from.",
+      "Topographic surveys including accurate ground levels, contours and surface models.",
     subServices: [
       {
-        title: "Topographic & Contour Surveys",
-        description: "Contours at your interval, with spot levels and detail.",
+        title: "Site Levels & Contours",
+        description:
+          "Ground spot levels and contours at your nominated interval.",
       },
       {
-        title: "Terrain & Surface Models (DTM / DSM / TIN)",
-        description: "Surfaces ready to bring into your design software.",
+        title: "Detail & Feature Surveys",
+        description:
+          "Feature detail extraction of assets and structures covering large areas.",
+      },
+      {
+        title: "Terrain & Surface Models (DTM)",
+        description:
+          "Bare-earth or full-surface elevation models for design and earthworks.",
+      },
+      {
+        title: "Preliminary Contours",
+        description:
+          "Contours from existing elevation data. Fast, low-cost and no site access needed. Lower accuracy, so suited to concept and feasibility work.",
       },
     ],
     href: "/services/",
@@ -81,21 +92,22 @@ export const SERVICES: Service[] = [
     bandTo: "var(--color-canopy)",
   },
   {
-    title: "3D Spatial Data",
-    description:
-      "A measurable three-dimensional record of the site, from raw points to full reality capture.",
+    title: "3D Models & Point Clouds",
+    description: "3D data you can measure from, design with and share.",
     subServices: [
       {
         title: "Point Clouds",
-        description: "Dense point data, classified on request.",
+        description:
+          "Millions of measured points capturing the site in 3D. Classified on request and ready to use in your own software.",
       },
       {
-        title: "3D Models & Meshes",
-        description: "Textured models for planning and stakeholder buy-in.",
+        title: "3D Models & Digital Twins",
+        description: "View, share and annotate a 3D replica of the site.",
       },
       {
-        title: "Digital Twins & Reality Capture",
-        description: "A navigable record of the site as it stands.",
+        title: "As-Built 3D Capture",
+        description:
+          "A measured 3D record of what's been built, for checking dimensions, clearances and conformance.",
       },
     ],
     href: "/services/",
@@ -104,21 +116,30 @@ export const SERVICES: Service[] = [
     bandTo: "var(--color-accent-green)",
   },
   {
-    title: "Analysis & Reports",
+    title: "Volumes & Site Monitoring",
     description:
-      "Numbers you can act on: quantities, earthworks movement and month-on-month change.",
+      "Accurate volume measurement and change tracking across the site.",
     subServices: [
       {
         title: "Stockpile Volumes",
-        description: "Quantities with method and assumptions stated.",
+        description:
+          "Safe volume measurement of stockpiles across the whole site, reported for each pile with supporting aerial imagery.",
       },
       {
         title: "Cut & Fill Calculations",
-        description: "Earthworks measured against your design surface.",
+        description:
+          "Cut and fill quantities calculated against your design, or between two measured surfaces.",
       },
       {
+        // DESCRIPTION MISSING - the client's list gave no line for this one.
+        // Left visible rather than invented, so it gets filled in.
         title: "Site Progress Monitoring",
-        description: "Repeat flights, with change measured between them.",
+        description: "[description to come]",
+      },
+      {
+        // DESCRIPTION MISSING - as above.
+        title: "Asset & Structure Monitoring",
+        description: "[description to come]",
       },
     ],
     href: "/services/",

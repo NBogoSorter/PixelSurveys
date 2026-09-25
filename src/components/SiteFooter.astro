@@ -6,11 +6,14 @@ const year = new Date().getFullYear();
 // Mirrors the categories on /services/. Once the per-service detail pages
 // exist, point these at them instead of the hub.
 const SERVICE_LINKS = [
-  { label: "Orthomosaic Mapping", href: "/services/orthomosaic-mapping/" },
-  { label: "Imagery & Visual Data", href: "/services/" },
-  { label: "Elevation & Terrain", href: "/services/" },
-  { label: "3D Spatial Data", href: "/services/" },
-  { label: "Analysis & Reports", href: "/services/" },
+  {
+    label: "Aerial Imagery (Orthomosaic)",
+    href: "/services/orthomosaic-mapping/",
+  },
+  { label: "Aerial Imagery & Mapping", href: "/services/" },
+  { label: "Contours & Terrain Models", href: "/services/" },
+  { label: "3D Models & Point Clouds", href: "/services/" },
+  { label: "Volumes & Site Monitoring", href: "/services/" },
 ];
 
 const SITE_LINKS = [
