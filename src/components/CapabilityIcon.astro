@@ -1,4 +1,17 @@
 ---
+// Client-supplied icons (media/icons/), inlined rather than loaded as files so
+// they inherit their colour from CSS.
+//
+// Changed from the originals:
+//   - the hard-coded #0C538D stroke became currentColor, so one icon works on
+//     white, on the surface tint and on the navy panel
+//   - Inkscape wrappers (<defs>, ids, xml:space, mm width/height) stripped, and
+//     the per-path style="" declarations became plain attributes
+//   - the five Inkscape icons were drawn on non-square canvases of five
+//     different aspect ratios, which would render at visibly different sizes in
+//     one grid. Each viewBox is padded out to a square centred on the original
+//     artwork - the drawing is untouched, only the frame around it.
+// Geometry and stroke weights are exactly as supplied.
 import type { CapabilityIconName } from "../data/capabilities";
 
 interface Props {
@@ -9,87 +22,235 @@ interface Props {
 const { name, class: className } = Astro.props;
 ---
 
+{/* construction_earthworks.svg - original frame 28.31 x 12.44 */}
 {name === "construction" && (
   <svg
     class={className}
-    viewBox="0 0 24 24"
+    viewBox="0 -7.9375 28.310415 28.310415"
     fill="none"
     stroke="currentColor"
-    stroke-width="1.6"
+    stroke-linecap="round"
+    stroke-linejoin="round"
     aria-hidden="true"
   >
-    <path d="M4 21V10l8-6 8 6v11" />
-    <path d="M9 21v-6h6v6" />
-    <path d="M4 10h16" />
+    <g transform="translate(-19.146343,-21.080034)">
+      <path
+        d="m 19.54322,33.118574 v -7.9375 c 3.175,-4.233334 6.35,-4.233334 9.525,-2.116667 3.175,2.116667 5.820833,3.704167 8.995833,2.116667 3.175,-1.5875 5.820833,-3.704167 8.995833,-3.704167 v 11.641667 z"
+        stroke-width="0.79375"
+      />
+      <path d="M 24.834887,32.925678 V 21.823587" stroke-width="0.812971" />
+      <path d="M 29.06822,33.118574 V 23.064407" stroke-width="0.79375" />
+      <path d="m 33.83072,33.118574 0.0082,-7.525488" stroke-width="0.79375" />
+      <path d="M 38.59322,33.118574 V 24.91649" stroke-width="0.79375" />
+      <path d="M 42.827,33.118574 42.84949,22.667532" stroke-width="0.79375" />
+    </g>
   </svg>
 )}
+
+{/* land_development_planning.svg - original frame 26.19 x 20.90 */}
 {name === "land" && (
   <svg
     class={className}
-    viewBox="0 0 24 24"
+    viewBox="0 -2.645832 26.193748 26.193748"
     fill="none"
     stroke="currentColor"
-    stroke-width="1.6"
+    stroke-linecap="round"
+    stroke-linejoin="round"
     aria-hidden="true"
   >
-    <path d="M3 17l6-10 5 7 3-4 4 7" />
-    <path d="M3 20h18" />
+    <g transform="translate(-7.3983369,-6.0231661)">
+      <path
+        d="M 7.7952124,6.4200406 H 33.195212 V 26.528374 H 7.7952124 Z"
+        stroke-width="0.79375"
+      />
+      <path
+        d="m 7.7952124,17.53254 c 5.8208336,-2.116666 7.4083336,2.645834 12.6999996,1.058334 5.291667,-1.5875 7.9375,1.058333 12.7,-0.529167"
+        stroke-width="0.79375"
+      />
+      <path
+        d="m 7.7952124,20.178374 c 5.8208336,-2.116667 7.4083336,2.645833 12.6999996,1.058333 5.291667,-1.5875 7.9375,1.058333 12.7,-0.529167"
+        stroke-width="0.79375"
+      />
+      <path d="M 15.203546,6.4200406 V 18.212271" stroke-width="0.763268" />
+      <path d="M 23.670212,6.4200406 V 18.067168" stroke-width="0.783326" />
+      <path d="M 15.203546,26.474236 V 21.119149" stroke-width="0.8464" />
+      <path d="M 23.670212,26.528374 V 21.02504" stroke-width="0.79375" />
+    </g>
   </svg>
 )}
+
+{/* surveying_mapping.svg - original frame 14.55 x 28.49 */}
 {name === "survey" && (
   <svg
     class={className}
-    viewBox="0 0 24 24"
+    viewBox="-6.968267 0 28.489326 28.489326"
     fill="none"
     stroke="currentColor"
-    stroke-width="1.6"
+    stroke-linecap="round"
+    stroke-linejoin="round"
     aria-hidden="true"
   >
-    <circle cx="12" cy="12" r="8.5" />
-    <path d="M12 3.5V6M12 18v2.5M20.5 12H18M6 12H3.5" />
-    <path d="M14.5 9.5 11 13" />
+    <g transform="translate(-15.947955,-9.9738236)">
+      <path
+        d="m 16.313454,32.276942 v -9.375928 h 3.721129 v 4.9112 h 6.37908 v -4.9112 h 3.72113 v 9.375928"
+        stroke-width="0.730994"
+      />
+      <circle cx="23.224123" cy="23.267504" r="2.3812499" stroke-width="0.79375" />
+      <rect
+        x="17.932457"
+        y="31.187105"
+        width="10.583333"
+        height="6.8791666"
+        rx="0.52916664"
+        stroke-width="0.79375"
+      />
+      <rect
+        x="19.319839"
+        y="32.855671"
+        width="4.5859885"
+        height="3.5420353"
+        stroke-width="0.794"
+      />
+      <path d="m 25.34079,33.303772 h 1.5875" stroke-width="0.794" />
+      <path
+        d="M 16.360155,32.299578 H 17.93889"
+        fill="currentColor"
+        stroke-width="0.685723"
+      />
+      <path
+        d="m 28.522567,32.299578 h 1.578735"
+        fill="currentColor"
+        stroke-width="0.685723"
+      />
+      <path
+        d="m 30.134257,13.472698 v 9.428316 H 26.413663 V 17.962372 H 20.0355 v 4.938642 h -3.720594 v -9.428316 z"
+        stroke-width="0.732981"
+      />
+      <path
+        d="m 27.247285,10.370822 v 2.910829"
+        fill="currentColor"
+        stroke-width="0.793999"
+      />
+      <path d="m 25.34079,34.626688 h 1.5875" stroke-width="0.79375" />
+      <path d="m 25.34079,36.058845 h 1.5875" stroke-width="0.79375" />
+    </g>
   </svg>
 )}
+
+{/* infrastructure_assets_two_pylons.svg - original frame 30.22 x 26.85 */}
 {name === "infrastructure" && (
   <svg
     class={className}
-    viewBox="0 0 24 24"
+    viewBox="0 -1.685164 30.221292 30.221292"
     fill="none"
     stroke="currentColor"
-    stroke-width="1.6"
+    stroke-linecap="round"
+    stroke-linejoin="round"
     aria-hidden="true"
   >
-    <circle cx="5" cy="18" r="2" />
-    <circle cx="19" cy="6" r="2" />
-    <path d="M6.5 16.5 17.5 7.5" />
-    <path d="M5 20v-2M19 8V6" />
+    <g transform="translate(-44.531605,-26.38795)">
+      <path d="m 51.754729,26.731885 2.645834,3.704167 h -5.291667 z" stroke-width="0.687917" />
+      <path d="m 49.108896,30.436052 -2.116667,22.225" stroke-width="0.687917" />
+      <path d="m 54.400563,30.436052 2.116666,22.225" stroke-width="0.687917" />
+      <path d="m 45.404729,33.611052 h 12.7" stroke-width="0.687917" />
+      <path d="m 46.463063,33.611052 v 1.5875" stroke-width="0.687917" />
+      <path d="m 57.046396,33.611052 v 1.5875" stroke-width="0.687917" />
+      <path d="m 49.108896,30.436052 5.291667,3.175" stroke-width="0.687917" />
+      <path d="m 54.400563,30.436052 -5.291667,3.175" stroke-width="0.687917" />
+      <path d="m 48.844313,33.611052 5.820833,7.9375" stroke-width="0.687917" />
+      <path d="m 54.665146,33.611052 -5.820833,7.9375" stroke-width="0.687917" />
+      <path d="M 44.875563,41.548552 H 58.633896" stroke-width="0.687917" />
+      <path d="m 45.933896,41.548552 v 1.5875" stroke-width="0.687917" />
+      <path d="m 57.575562,41.548552 v 1.5875" stroke-width="0.687917" />
+      <path d="m 48.579729,41.548552 7.408333,11.1125" stroke-width="0.687917" />
+      <path d="m 54.929729,41.548552 -7.408333,11.1125" stroke-width="0.687917" />
+      <path d="m 69.746396,35.727719 1.852083,2.645833 h -3.704167 z" stroke-width="0.488" />
+      <path d="m 67.894312,38.373552 -1.322916,12.7" stroke-width="0.488" />
+      <path d="m 71.598479,38.373552 1.322917,12.7" stroke-width="0.488" />
+      <path d="m 64.983896,40.490218 h 9.525" stroke-width="0.488" />
+      <path d="m 67.894312,38.373552 3.704167,2.116666" stroke-width="0.488" />
+      <path d="m 71.598479,38.373552 -3.704167,2.116666" stroke-width="0.488" />
+      <path d="m 67.629729,40.490218 4.233333,5.820834" stroke-width="0.488" />
+      <path d="m 71.863062,40.490218 -4.233333,5.820834" stroke-width="0.488" />
+      <path d="m 65.513062,46.311052 h 8.466667" stroke-width="0.488" />
+      <path d="m 67.365146,46.311052 5.027083,4.7625" stroke-width="0.488" />
+      <path d="m 72.127646,46.311052 -5.027084,4.7625" stroke-width="0.488" />
+      <path
+        d="m 46.463063,35.198552 c 3.660839,1.101395 5.954032,2.519798 8.810624,3.518958 3.773266,1.319787 7.846597,2.144189 10.609792,2.871604"
+        stroke-width="0.461409"
+      />
+      <path
+        d="m 45.933896,43.136052 c 3.492055,0.844813 6.300136,1.797464 9.075208,2.417482 4.177663,0.933389 7.918676,1.391815 10.922692,1.815749"
+        stroke-width="0.485199"
+      />
+      <path d="M 65.883479,40.482562 V 41.59227" stroke-width="0.475833" />
+      <path d="m 73.800187,40.490218 v 1.098896" stroke-width="0.473509" />
+      <path d="M 73.510697,46.340192 V 47.46472" stroke-width="0.479" />
+      <path d="M 65.982094,46.340192 V 47.46472" stroke-width="0.479" />
+      <path
+        d="m 57.046396,35.198552 c 3.029819,1.056634 5.469238,2.363885 7.857358,3.330249 3.389253,1.371477 6.439311,2.310517 8.896433,3.060313"
+        stroke-width="0.429"
+      />
+      <path
+        d="m 57.575562,43.136052 c 3.35025,0.832066 5.052754,1.736466 7.593542,2.472456 2.746402,0.79555 6.272239,1.406511 8.341593,1.856212"
+        stroke-width="0.343987"
+      />
+      <path d="m 45.647475,53.00501 h 2.740666" fill="currentColor" stroke-width="0.467809" />
+      <path d="m 55.089916,53.00501 h 2.740666" fill="currentColor" stroke-width="0.467809" />
+      <path d="m 65.440357,51.247231 h 2.531267" fill="currentColor" stroke-width="0.449583" />
+      <path d="m 71.470554,51.247231 h 2.531267" fill="currentColor" stroke-width="0.45" />
+    </g>
   </svg>
 )}
+
+{/* monitoring_progress.svg - already square */}
 {name === "monitoring" && (
   <svg
     class={className}
-    viewBox="0 0 24 24"
+    viewBox="0 0 128 128"
     fill="none"
     stroke="currentColor"
-    stroke-width="1.6"
+    stroke-width="3"
+    stroke-linecap="round"
+    stroke-linejoin="round"
     aria-hidden="true"
   >
-    <path d="M4 12a8 8 0 0 1 14-5" />
-    <path d="M18 4v3h-3" />
-    <path d="M20 12a8 8 0 0 1-14 5" />
-    <path d="M6 20v-3h3" />
+    <g transform="rotate(-35 64 64)">
+      <path d="M30 46 A38 38 0 0 1 98 46" />
+      <path d="M98 82 A38 38 0 0 1 30 82" />
+      <path d="M30 28 V46 h18" />
+      <path d="M98 100 V82 H80" />
+    </g>
   </svg>
 )}
+
+{/* environmental_landmanagement_leaf_tick.svg - original frame 25.52 x 23.11.
+    The client also supplied a digger variant for this slot
+    (media/icons/environmental_landmanagement_digger.svg) - swap if preferred. */}
 {name === "environment" && (
   <svg
     class={className}
-    viewBox="0 0 24 24"
+    viewBox="0 -1.2062 25.522266 25.522266"
     fill="none"
     stroke="currentColor"
-    stroke-width="1.6"
+    stroke-linecap="round"
+    stroke-linejoin="round"
     aria-hidden="true"
   >
-    <path d="M12 21s-7-4.5-7-11a7 7 0 0 1 14 0c0 6.5-7 11-7 11z" />
-    <path d="M12 13a4 4 0 0 0 4-4" />
+    <g transform="translate(-8.815844,-7.8907374)">
+      <path
+        d="M 12.515615,8.2876075 C 21.536319,10.364192 24.982974,19.259483 18.729432,27.411769 8.878417,24.492171 6.4382974,15.269837 12.515615,8.2876075 Z"
+        stroke-width="0.79375"
+      />
+      <path d="M 12.553045,8.4244516 19.894523,30.570351" stroke-width="0.860501" />
+      <path d="m 15.485418,16.928862 3.633606,-4.531637" stroke-width="0.806836" />
+      <path d="M 14.647808,14.836498 9.920877,12.955107" stroke-width="0.810482" />
+      <path d="M 16.589495,20.794756 9.6392727,18.719933" stroke-width="0.771997" />
+      <path d="m 17.391657,22.940521 4.333662,-5.350027" stroke-width="0.832329" />
+      <path
+        d="m 26.003733,21.502056 2.645833,2.645834 5.291667,-6.35"
+        stroke-width="0.79375"
+      />
+    </g>
   </svg>
 )}

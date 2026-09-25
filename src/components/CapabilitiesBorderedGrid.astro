@@ -44,9 +44,13 @@ import { CAPABILITIES } from "../data/capabilities";
     background: var(--color-bg);
   }
 
+  /* 44px, not the 24px the placeholder icons used: the client's icons
+     carry far more detail (the infrastructure one alone has 30+ paths),
+     and below ~44px their strokes compute to under one CSS pixel and
+     render as a grey smudge. */
   .card :global(.icon) {
-    width: 24px;
-    height: 24px;
+    width: 44px;
+    height: 44px;
     margin-top: 3px;
     color: var(--color-accent);
     flex-shrink: 0;

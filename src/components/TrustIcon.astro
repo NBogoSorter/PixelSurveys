@@ -1,4 +1,12 @@
 ---
+// Client-supplied icons (media/icons/), inlined rather than loaded as files so
+// they inherit their colour from CSS.
+//
+// Changed from the originals:
+//   - the hard-coded #0C538D stroke became currentColor, so one icon works on
+//     white, on the surface tint and on the navy panel
+//   - width/height attributes dropped; CSS sizes them
+// Geometry and stroke weights are exactly as supplied.
 import type { TrustIconName } from "../data/trust-points";
 
 interface Props {
@@ -9,61 +17,107 @@ interface Props {
 const { name, class: className } = Astro.props;
 ---
 
+{/* casa_licensed_pilot.svg */}
 {name === "licensed" && (
   <svg
     class={className}
-    viewBox="0 0 24 24"
+    viewBox="0 0 128 128"
     fill="none"
     stroke="currentColor"
-    stroke-width="1.6"
+    stroke-width="3"
+    stroke-linecap="round"
+    stroke-linejoin="round"
     aria-hidden="true"
   >
-    <rect x="3" y="5" width="14" height="11" rx="1" />
-    <path d="M6 9h5M6 12h3" />
-    <circle cx="17" cy="17" r="4" />
-    <path d="M15.3 17.1 16.5 18.3 18.7 15.9" />
+    <rect x="52" y="34" width="24" height="13" rx="2" />
+    <path d="M54 36 L36 26" />
+    <path d="M36 26 V22" />
+    <path d="M26 22 h20" />
+    <path d="M74 36 L92 26" />
+    <path d="M92 26 V22" />
+    <path d="M82 22 h20" />
+    <circle cx="64" cy="52" r="4.5" />
+    <path d="M56 47 L52 58" />
+    <path d="M72 47 L76 58" />
+    <rect x="20" y="76" width="52" height="36" rx="2" />
+    <circle cx="36" cy="88" r="5.5" />
+    <path d="M27.5 101 a9 9 0 0 1 17 0" />
+    <path d="M52 86 h14" />
+    <path d="M52 96 h10" />
+    <circle cx="98" cy="94" r="14" />
+    <path d="M91 94 l5.5 5.5 L106 88" />
   </svg>
 )}
+
+{/* fully_insured.svg */}
 {name === "insured" && (
   <svg
     class={className}
-    viewBox="0 0 24 24"
+    viewBox="0 0 128 128"
     fill="none"
     stroke="currentColor"
-    stroke-width="1.6"
+    stroke-width="3"
+    stroke-linecap="round"
+    stroke-linejoin="round"
     aria-hidden="true"
   >
-    <path d="M12 3l7 3v6c0 5-3.5 7.5-7 9-3.5-1.5-7-4-7-9V6l7-3z" />
-    <path d="M9 12l2 2 4-4" />
+    <path d="M64 24 L100 36 V72 C100 94 84 106 64 112 C44 106 28 94 28 72 V36 Z" />
+    <path d="M50 68 l10 10 L82 54" />
   </svg>
 )}
+
+{/* safe_compliant_operations.svg */}
 {name === "compliant" && (
   <svg
     class={className}
-    viewBox="0 0 24 24"
+    viewBox="0 0 128 128"
     fill="none"
     stroke="currentColor"
-    stroke-width="1.6"
+    stroke-width="3"
+    stroke-linecap="round"
+    stroke-linejoin="round"
     aria-hidden="true"
   >
-    <circle cx="6" cy="6" r="2" />
-    <circle cx="18" cy="6" r="2" />
-    <circle cx="6" cy="18" r="2" />
-    <circle cx="18" cy="18" r="2" />
-    <path d="M6 6l5 5M18 6l-5 5M6 18l5-5M18 18l-5-5" />
-    <rect x="10" y="10" width="4" height="4" rx="0.5" />
+    <rect x="56" y="36" width="16" height="10" rx="2" />
+    <path d="M57 38 L46 31" />
+    <path d="M46 31 V27" />
+    <path d="M38 27 h16" />
+    <path d="M71 38 L82 31" />
+    <path d="M82 31 V27" />
+    <path d="M74 27 h16" />
+    <circle cx="64" cy="50" r="3.5" />
+    <path d="M57 46 L53 57" />
+    <path d="M71 46 L75 57" />
+    <path d="M26 94 h76" />
+    <rect x="34" y="76" width="20" height="18" />
+    <rect x="60" y="66" width="16" height="28" />
+    <rect x="86" y="70" width="9" height="6" rx="1" />
+    <path d="M90 76 L84 94" />
+    <path d="M90 76 L96 94" />
   </svg>
 )}
+
+{/* accurate_reliable_data.svg */}
 {name === "accurate" && (
   <svg
     class={className}
-    viewBox="0 0 24 24"
+    viewBox="0 0 128 128"
     fill="none"
     stroke="currentColor"
-    stroke-width="1.6"
+    stroke-width="3"
+    stroke-linecap="round"
+    stroke-linejoin="round"
     aria-hidden="true"
   >
-    <rect x="4" y="4" width="16" height="16" />
-    <path d="M12 4v16M4 12h16" />
+    <circle cx="64" cy="38" r="22" />
+    <path d="M64 16 a11 22 0 0 1 0 44 a11 22 0 0 1 0 -44" />
+    <path d="M45 28 h38" />
+    <path d="M45 48 h38" />
+    <path d="M64 68 V82" />
+    <path d="M58 76 l6 6 l6 -6" />
+    <path d="M28 92 h72 l14 26 H14 Z" />
+    <path d="M52 92 L44 118" />
+    <path d="M76 92 L84 118" />
+    <path d="M21 105 h86" />
   </svg>
 )}
