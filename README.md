@@ -146,6 +146,18 @@ be live when the site opens to the public.
       `+61 0000 000 000`, the hero and service cards have no real photos, the About page
       copy is unwritten, and the "Monitoring & Progress" FAQ answer is an unfinished
       sentence.
+- [ ] **There is lorem ipsum on the live homepage.** `IntroSection.astro`, the
+      section directly under the hero, still reads *"This Can Be Secondary Heading
+      Lorem ipsum dolor sit amet."* and *"Supporting Subheading"*. It came from the
+      Elementor prototype, which had placeholder text in that slot, and has been live
+      behind the gate ever since. It is the second thing a visitor sees.
+- [ ] **The FAQ answers make specific commitments that nobody has verified.**
+      `src/data/faq.ts` carries no note of where its copy came from, unlike
+      `services.ts`, and it states: vertical accuracy of *"20 to 30 mm against held
+      back check points"*, turnaround *"within three working days"*, *"MGA2020 by
+      default"*, and that controlled-airspace approvals near Adelaide Airport and
+      Parafield are arranged before the flight. Those are commitments on price,
+      accuracy, turnaround and regulatory process. Get them confirmed or replaced.
 - [ ] **Two service descriptions are missing.** `src/data/services.ts` carries the
       client's own copy (supplied 25 Sept 2026), except **Site Progress Monitoring** and
       **Asset & Structure Monitoring**, which their list left blank. Both render
