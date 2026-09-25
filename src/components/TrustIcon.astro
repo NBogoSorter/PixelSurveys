@@ -21,6 +21,7 @@ const { name, class: className } = Astro.props;
 {name === "licensed" && (
   <svg
     class={className}
+    data-icon={name}
     viewBox="0 0 128 128"
     fill="none"
     stroke="currentColor"
@@ -53,6 +54,7 @@ const { name, class: className } = Astro.props;
 {name === "insured" && (
   <svg
     class={className}
+    data-icon={name}
     viewBox="0 0 128 128"
     fill="none"
     stroke="currentColor"
@@ -66,11 +68,17 @@ const { name, class: className } = Astro.props;
   </svg>
 )}
 
-{/* safe_compliant_operations.svg */}
+{/* safe_compliant_operations.svg - the artwork sits in x 26-102, y 27-94 of
+    the supplied 128 frame, filling only ~52% of it vertically where its three
+    siblings fill 69-80%. That dead margin is why it looked smaller than the
+    rest of the row. The viewBox is cropped to the artwork (plus a margin
+    matching the others) so it renders larger in the same 64px box - the
+    drawing itself is untouched. */}
 {name === "compliant" && (
   <svg
     class={className}
-    viewBox="0 0 128 128"
+    data-icon={name}
+    viewBox="15.3 11.8 97.4 97.4"
     fill="none"
     stroke="currentColor"
     stroke-width="3"
@@ -101,6 +109,7 @@ const { name, class: className } = Astro.props;
 {name === "accurate" && (
   <svg
     class={className}
+    data-icon={name}
     viewBox="0 0 128 128"
     fill="none"
     stroke="currentColor"

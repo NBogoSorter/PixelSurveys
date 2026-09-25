@@ -46,8 +46,19 @@ import { CAPABILITIES } from "../data/capabilities";
     width: 44px;
     height: 44px;
     margin-top: 3px;
-    color: var(--color-accent);
+    /* Matches .title beside it - and it's the colour the client drew these
+       icons in (#0C538D is --color-ink). */
+    color: var(--color-ink);
     flex-shrink: 0;
+  }
+
+  /* This icon's frame is the most tightly filled of the six, but its stroke
+     ratio is the thinnest (1:44 against ~1:33), so at 44px it renders a 1.0px
+     line and reads faint rather than small. Scaled with a transform, not
+     width/height, so its layout box stays 44px and the text in every card
+     still starts on the same line. */
+  .card :global(.icon[data-icon="infrastructure"]) {
+    transform: scale(1.3);
   }
 
   .body {
