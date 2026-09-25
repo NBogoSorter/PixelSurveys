@@ -40,7 +40,7 @@ const CHIP_COLORS = [
     data-field
   >
     <span class="placeholder" data-placeholder>
-      Select services
+      Select one or more services
     </span>
   </div>
   <svg
@@ -67,15 +67,9 @@ const CHIP_COLORS = [
         />
         <span class="option-body">
           <span class="option-title">{service.title}</span>
-          {service.items.length > 0 ? (
-            <span class="option-items">
-              {service.items.map((item) => (
-                <span class="option-item">{item}</span>
-              ))}
-            </span>
-          ) : (
-            <span class="option-desc">{service.note}</span>
-          )}
+          <span class="option-desc">
+            {service.items.length > 0 ? service.items.join(", ") : service.note}
+          </span>
         </span>
       </label>
     ))}
@@ -168,31 +162,6 @@ const CHIP_COLORS = [
     line-height: 1.4;
   }
 
-  /* Spans rather than a <ul>: this sits inside the <label>, and a real list
-     there makes a screen reader announce list semantics partway through the
-     checkbox's name. The dash is decorative, so it comes from CSS. */
-  .option-items {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    margin-top: 1px;
-  }
-
-  .option-item {
-    font-size: 13.5px;
-    font-weight: 400;
-    color: var(--color-text-muted);
-    line-height: 1.4;
-    padding-left: 12px;
-    position: relative;
-  }
-
-  .option-item::before {
-    content: "3";
-    position: absolute;
-    left: 0;
-    color: var(--color-accent);
-  }
 
   .combobox :global(.chip) {
     display: inline-flex;
