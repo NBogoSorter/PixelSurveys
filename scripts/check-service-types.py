@@ -20,8 +20,13 @@ import sys
 SERVICES = "src/data/services.ts"
 QUOTE_PHP = "public/api/quote.php"
 
-# The form's options are SERVICES' category titles plus this one.
-EXTRA = ["Other"]
+# The form's options are SERVICES' category titles plus these, in this order.
+EXTRA = ["Other", "Not sure, I'd like to discuss"]
+
+# Matches a PHP single- or double-quoted string, honouring backslash escapes.
+PHP_STRING = re.compile(r"""'((?:[^'\\]|\\.)*)'|"((?:[^"\\]|\\.)*)\"""", re.S)
+
+UNESCAPE = re.compile(r"\\(.)")
 
 
 def category_titles(path):
@@ -35,7 +40,14 @@ def allowed_services(path):
     block = re.search(r"const ALLOWED_SERVICES = \[(.*?)\];", src, re.S)
     if not block:
         sys.exit("could not find ALLOWED_SERVICES in %s" % path)
-    return re.findall(r"'([^']+)'", block.group(1))
+
+    # Both quote styles matter: a title containing an apostrophe has to be
+    # double-quoted in PHP, and a single-quote-only parser would skip it -
+    # reporting agreement while the handler quietly drops that value.
+    out = []
+    for single, double in PHP_STRING.findall(block.group(1)):
+        out.append(UNESCAPE.sub(r"\1", single if single else double))
+    return out
 
 
 def main():
@@ -49,7 +61,7 @@ def main():
         return 0
 
     print("MISMATCH between the form's options and quote.php's allow-list.\n")
-    print("  form offers (%s + 'Other'):" % SERVICES)
+    print("  form offers (%s + extras):" % SERVICES)
     for t in expected:
         print("     ", t, "" if t in actual else "  <-- handler would DROP this")
     print("\n  %s accepts:" % QUOTE_PHP)

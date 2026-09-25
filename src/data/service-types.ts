@@ -32,4 +32,9 @@ export const SERVICE_TYPES: ServiceTypeOption[] = [
     items: [],
     note: "describe what you need in the message box below",
   },
+  {
+    title: "Not sure, I'd like to discuss",
+    items: [],
+    note: "tell us about the site and we'll talk through the options",
+  },
 ];

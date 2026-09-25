@@ -42,7 +42,7 @@ const MIN_SECONDS_TO_SUBMIT = 3;
  * these, so they must not be attacker-controlled free text.
  *
  * These are the four categories from src/data/services.ts, which is what the
- * form now derives its options from, plus "Other".
+ * form now derives its options from, plus the two catch-all options.
  *
  * MUST match src/data/service-types.ts exactly. A value missing here is
  * dropped silently - no error to the visitor, nothing in the log - so the
@@ -55,6 +55,9 @@ const ALLOWED_SERVICES = [
     '3D Models & Point Clouds',
     'Volumes & Site Monitoring',
     'Other',
+    // Double-quoted: the apostrophe would need escaping in a single-quoted
+    // PHP string, and getting that wrong fails silently.
+    "Not sure, I'd like to discuss",
 ];
 
 $wantsJson = str_contains($_SERVER['HTTP_ACCEPT'] ?? '', 'application/json');
