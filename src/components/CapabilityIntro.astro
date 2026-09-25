@@ -4,17 +4,17 @@
 // whichever grid variant follows (CapabilitiesOpenGrid / CapabilitiesBorderedGrid).
 //
 // This renders above BOTH capability drafts, so the type scale is a prop
-// rather than a hard-coded size: Draft A is on "generous" while Draft B stays
-// at the original sizes, which keeps the A/B comparison about the grid style
-// and not about the text. Drop the prop once a draft is chosen.
+// rather than a hard-coded size: Draft A is on "generous" and Draft B on
+// "comfortable", so the two scales can be compared side by side on the live
+// page. Drop the prop once a scale and a draft are chosen.
 interface Props {
-  size?: "default" | "generous";
+  size?: "default" | "comfortable" | "generous";
 }
 
 const { size = "default" } = Astro.props;
 ---
 
-<div class:list={["header", size === "generous" && "generous"]}>
+<div class:list={["header", size !== "default" && size]}>
   <h2 class="heading">What drone surveying can provide</h2>
   <p class="lede">
     Drone surveys provide a safer and efficient way to capture detailed spatial
@@ -45,8 +45,20 @@ const { size = "default" } = Astro.props;
     color: var(--color-text-muted);
   }
 
-  /* "Generous" scale: heading 30 -> 36, lede 15 -> 17. The clamp's floor and
-     vw rate scale by the same 1.2 so it still steps down on narrow screens. */
+  /* Each scale moves the clamp's floor and vw rate by the same factor as its
+     maximum, so the heading still steps down properly on narrow screens
+     instead of jumping. */
+
+  /* "Comfortable": heading 30 -> 33 (x1.1), lede 15 -> 16. */
+  .comfortable .heading {
+    font-size: clamp(26px, 3.3vw, 33px);
+  }
+
+  .comfortable .lede {
+    font-size: 16px;
+  }
+
+  /* "Generous": heading 30 -> 36 (x1.2), lede 15 -> 17. */
   .generous .heading {
     font-size: clamp(29px, 3.6vw, 36px);
   }
