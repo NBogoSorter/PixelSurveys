@@ -1,20 +1,14 @@
 ---
 // Heading + lede for the "What drone surveying can provide" section.
 // No rule/divider beneath it by design - spacing alone separates it from
-// whichever grid variant follows (CapabilitiesOpenGrid / CapabilitiesBorderedGrid).
+// the grid that follows.
 //
-// This renders above BOTH capability drafts, so the type scale is a prop
-// rather than a hard-coded size: Draft A is on "generous" and Draft B on
-// "comfortable", so the two scales can be compared side by side on the live
-// page. Drop the prop once a scale and a draft are chosen.
-interface Props {
-  size?: "default" | "comfortable" | "generous";
-}
-
-const { size = "default" } = Astro.props;
+// Sizes are the site's "generous" type scale, chosen from the type-size
+// comparison. The size prop this briefly carried is gone now that Draft B
+// has been removed and there is nothing left to compare against.
 ---
 
-<div class:list={["header", size !== "default" && size]}>
+<div class="header">
   <h2 class="heading">What drone surveying can provide</h2>
   <p class="lede">
     Drone surveys provide a safer and efficient way to capture detailed spatial
@@ -30,7 +24,7 @@ const { size = "default" } = Astro.props;
   }
 
   .heading {
-    font-size: clamp(24px, 3vw, 30px);
+    font-size: clamp(29px, 3.6vw, 36px);
     font-weight: 700;
     color: var(--color-ink);
     max-width: 30ch;
@@ -40,30 +34,8 @@ const { size = "default" } = Astro.props;
   .lede {
     margin-top: 14px;
     max-width: 62ch;
-    font-size: 15px;
+    font-size: 17px;
     line-height: 1.65;
     color: var(--color-text-muted);
-  }
-
-  /* Each scale moves the clamp's floor and vw rate by the same factor as its
-     maximum, so the heading still steps down properly on narrow screens
-     instead of jumping. */
-
-  /* "Comfortable": heading 30 -> 33 (x1.1), lede 15 -> 16. */
-  .comfortable .heading {
-    font-size: clamp(26px, 3.3vw, 33px);
-  }
-
-  .comfortable .lede {
-    font-size: 16px;
-  }
-
-  /* "Generous": heading 30 -> 36 (x1.2), lede 15 -> 17. */
-  .generous .heading {
-    font-size: clamp(29px, 3.6vw, 36px);
-  }
-
-  .generous .lede {
-    font-size: 17px;
   }
 </style>

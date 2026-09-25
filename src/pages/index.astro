@@ -1,5 +1,4 @@
 ---
-import CapabilitiesBorderedGrid from "../components/CapabilitiesBorderedGrid.astro";
 import CapabilitiesOpenGrid from "../components/CapabilitiesOpenGrid.astro";
 import CapabilityIntro from "../components/CapabilityIntro.astro";
 import ContactFormB from "../components/ContactFormB.astro";
@@ -16,23 +15,13 @@ import Base from "../layouts/Base.astro";
   <IntroSection />
   <ServicesGrid />
 
-  {/* Draft comparison, moved down from /capabilities-preview/ - remove the loser once picked. */}
-  <div class="draft">
+  <div class="capabilities">
     <div class="container">
-      <p class="draft-label">Draft A - open grid, no card borders</p>
-      <CapabilityIntro size="generous" />
+      <CapabilityIntro />
     </div>
-    {/* Full-bleed: sits outside .container on purpose so its background runs edge to edge. */}
+    {/* Full-bleed: sits outside .container on purpose so its background runs
+        edge to edge. */}
     <CapabilitiesOpenGrid />
-  </div>
-
-  <div class="draft">
-    <div class="container">
-      <p class="draft-label">Draft B - bordered grid</p>
-      <CapabilityIntro size="comfortable" />
-    </div>
-    {/* Full-bleed, same as Draft A above. */}
-    <CapabilitiesBorderedGrid />
   </div>
 
   <TrustBar />
@@ -44,18 +33,8 @@ import Base from "../layouts/Base.astro";
 </Base>
 
 <style>
-  .draft {
+  .capabilities {
     padding-top: 48px;
-    padding-bottom: 48px;
     border-top: 1px solid var(--color-border);
-  }
-
-  .draft-label {
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--color-accent);
-    margin-bottom: 8px;
   }
 </style>

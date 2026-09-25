@@ -139,8 +139,6 @@ be live when the site opens to the public.
         the client's actual quote register in their accounting system.
       - Until both are done, a real customer enquiry arrives with `[Site Location]`
         visible in the subject line.
-- [ ] **Capabilities draft A vs B** are both still on the homepage with visible
-      "Draft A"/"Draft B" labels. Pick one and delete the other.
 - [ ] **`/contact/` uses a different form** (`QuoteForm.astro`) to the homepage's
       `ContactFormB.astro`. Both work, but they will drift apart as copy changes.
 - [ ] **Placeholder content**: `CONTACT_PHONE` in `src/data/contact-info.ts` is still
