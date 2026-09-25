@@ -1,4 +1,10 @@
 ---
+// Homepage service card - design A3 from the services-section exploration:
+// open cards (no border or panel), a rounded image, and a list whose items are
+// separated by rules rather than carrying bullets.
+//
+// The rules are the list's structure here, so they are a touch stronger than
+// the hairlines used elsewhere - #eef4f4 disappears at this size.
 import { Image } from "astro:assets";
 import type { Service } from "../data/services";
 
@@ -25,26 +31,42 @@ const { service } = Astro.props;
       aria-hidden="true"
     />
   )}
-  <div class="body">
-    <h3 class="title">{service.title}</h3>
-    <ul class="list">
-      {service.subServices.map((sub) => (
-        <li>{sub.title}</li>
-      ))}
-    </ul>
-    <a href={service.href} class="learn">
-      Learn more <span aria-hidden="true">&gt;</span>
-      <span class="visually-hidden"> about {service.title}</span>
-    </a>
-  </div>
+
+  <h3 class="title">{service.title}</h3>
+
+  <ul class="list">
+    {service.subServices.map((sub) => (
+      <li>{sub.title}</li>
+    ))}
+  </ul>
+
+  <a href={service.href} class="learn">
+    <span>Learn more</span>
+    <svg
+      viewBox="0 0 24 24"
+      width="16"
+      height="16"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M5 12h14" />
+      <path d="M13 6l6 6-6 6" />
+    </svg>
+    {/* "Learn more" four times over is a poor set of link names on its own,
+        so each one names its service for anyone listing the page's links. */}
+    <span class="visually-hidden"> about {service.title}</span>
+  </a>
 </article>
 
 <style>
   .card {
     display: flex;
     flex-direction: column;
-    border: 1px solid var(--color-border);
-    background: var(--color-bg);
+    gap: 16px;
   }
 
   .band {
@@ -53,54 +75,39 @@ const { service } = Astro.props;
     height: auto;
     aspect-ratio: 4 / 3;
     object-fit: cover;
+    border-radius: 12px;
   }
 
   .band-placeholder {
     background: linear-gradient(135deg, var(--band-from), var(--band-to));
   }
 
-  .body {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    flex: 1;
-    padding: 16px 16px 18px;
-  }
-
   .title {
-    font-size: 17.5px;
+    font-size: 19px;
     font-weight: 600;
     color: var(--color-ink);
-    border-bottom: 2px solid var(--color-accent);
-    padding-bottom: 8px;
+    line-height: 1.3;
   }
 
   .list {
     list-style: none;
     margin: 0;
     padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
     flex: 1;
   }
 
   .list li {
     font-size: 14px;
-    line-height: 1.5;
+    line-height: 1.45;
     color: var(--color-text-muted);
-    padding-left: 12px;
-    position: relative;
-  }
-
-  .list li::before {
-    content: "\2013";
-    position: absolute;
-    left: 0;
-    color: var(--color-accent);
+    padding-block: 8px;
+    border-top: 1px solid #e4eded;
   }
 
   .learn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
     font-size: 15px;
     font-weight: 600;
     color: var(--color-accent);
@@ -108,6 +115,14 @@ const { service } = Astro.props;
 
   .learn:hover {
     text-decoration: underline;
+  }
+
+  .learn:hover svg {
+    transform: translateX(3px);
+  }
+
+  .learn svg {
+    transition: transform 0.15s;
   }
 
   .visually-hidden {

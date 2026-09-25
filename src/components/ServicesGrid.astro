@@ -46,7 +46,9 @@ const { showCta = true } = Astro.props;
   .grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
+    /* Wider than the old 20px: with the card borders gone, the gap is the
+       only thing separating one service from the next. */
+    gap: 28px;
   }
 
   .cta {
