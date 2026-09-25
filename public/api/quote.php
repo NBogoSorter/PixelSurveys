@@ -41,14 +41,20 @@ const MIN_SECONDS_TO_SUBMIT = 3;
  * dropped rather than echoed into the email - the subject line is built from
  * these, so they must not be attacker-controlled free text.
  *
- * Keep in sync with src/data/service-types.ts, which renders the checkboxes.
+ * These are the four categories from src/data/services.ts, which is what the
+ * form now derives its options from, plus "Other".
+ *
+ * MUST match src/data/service-types.ts exactly. A value missing here is
+ * dropped silently - no error to the visitor, nothing in the log - so the
+ * enquiry arrives with the service blank and nothing looks broken.
+ * `python scripts/check-service-types.py` compares the two.
  */
 const ALLOWED_SERVICES = [
     'Aerial Imagery & Mapping',
-    'Contours & Terrain Data',
-    '3D Point Clouds & Models',
+    'Contours & Terrain Models',
+    '3D Models & Point Clouds',
     'Volumes & Site Monitoring',
-    'Not Sure',
+    'Other',
 ];
 
 $wantsJson = str_contains($_SERVER['HTTP_ACCEPT'] ?? '', 'application/json');

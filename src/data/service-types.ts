@@ -1,31 +1,28 @@
-// Options for the "Service type" field on the contact forms - simplified,
-// client-facing labels + a short description for the quote request, distinct
-// from the fuller category names in services.ts used on the services page.
+// Options for the "Service type" field on the contact forms.
+//
+// Derived from SERVICES rather than typed out again: these used to be a
+// separate, simplified list, which drifted out of step with the services page
+// ("Contours & Terrain Data" against "Contours & Terrain Models"). Deriving
+// them means the form can only ever offer what the site actually sells.
+//
+// IMPORTANT: ALLOWED_SERVICES in public/api/quote.php must list exactly these
+// titles. The handler drops any submitted value that isn't on its list, with
+// no error anywhere, so a mismatch silently loses the service on every
+// enquiry. Run `python scripts/check-service-types.py` after changing either.
+import { SERVICES } from "./services";
+
 export interface ServiceTypeOption {
   title: string;
   description: string;
 }
 
 export const SERVICE_TYPES: ServiceTypeOption[] = [
+  ...SERVICES.map((service) => ({
+    title: service.title,
+    description: service.description,
+  })),
   {
-    title: "Aerial Imagery & Mapping",
-    description: "orthomosaic map, georeferenced imagery, site photography",
-  },
-  {
-    title: "Contours & Terrain Data",
-    description: "DTM, TIN surface models, contours and topographic details",
-  },
-  {
-    title: "3D Point Clouds & Models",
-    description: "point clouds, 3D models & meshes",
-  },
-  {
-    title: "Volumes & Site Monitoring",
-    description:
-      "cut & fill, stockpiles, progress monitoring, change detection",
-  },
-  {
-    title: "Not Sure",
-    description: "help me work out what I need",
+    title: "Other",
+    description: "describe what you need in the message box below",
   },
 ];
