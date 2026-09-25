@@ -33,8 +33,8 @@ export const SERVICE_TYPES: ServiceTypeOption[] = [
     note: "describe what you need in the message box below",
   },
   {
-    title: "Not sure, I'd like to discuss",
+    title: "Not sure",
     items: [],
-    note: "tell us about the site and we'll talk through the options",
+    note: "I'd like to discuss",
   },
 ];

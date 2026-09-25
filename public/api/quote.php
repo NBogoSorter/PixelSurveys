@@ -55,9 +55,7 @@ const ALLOWED_SERVICES = [
     '3D Models & Point Clouds',
     'Volumes & Site Monitoring',
     'Other',
-    // Double-quoted: the apostrophe would need escaping in a single-quoted
-    // PHP string, and getting that wrong fails silently.
-    "Not sure, I'd like to discuss",
+    'Not sure',
 ];
 
 $wantsJson = str_contains($_SERVER['HTTP_ACCEPT'] ?? '', 'application/json');

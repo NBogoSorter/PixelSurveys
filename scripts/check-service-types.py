@@ -21,7 +21,7 @@ SERVICES = "src/data/services.ts"
 QUOTE_PHP = "public/api/quote.php"
 
 # The form's options are SERVICES' category titles plus these, in this order.
-EXTRA = ["Other", "Not sure, I'd like to discuss"]
+EXTRA = ["Other", "Not sure"]
 
 # Matches a PHP single- or double-quoted string, honouring backslash escapes.
 PHP_STRING = re.compile(r"""'((?:[^'\\]|\\.)*)'|"((?:[^"\\]|\\.)*)\"""", re.S)
