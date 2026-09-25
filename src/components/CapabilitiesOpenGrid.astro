@@ -67,14 +67,17 @@ import { CAPABILITIES } from "../data/capabilities";
     gap: 8px;
   }
 
+  /* "Generous" text scale - see the type-size comparison. Only this grid
+     uses it; CapabilitiesBorderedGrid (Draft B) keeps the original sizes so
+     the A/B comparison stays about the grid style. */
   .title {
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 600;
     color: var(--color-ink);
   }
 
   .desc {
-    font-size: 13px;
+    font-size: 15px;
     line-height: 1.6;
     color: var(--color-text-muted);
   }

@@ -2,9 +2,19 @@
 // Heading + lede for the "What drone surveying can provide" section.
 // No rule/divider beneath it by design - spacing alone separates it from
 // whichever grid variant follows (CapabilitiesOpenGrid / CapabilitiesBorderedGrid).
+//
+// This renders above BOTH capability drafts, so the type scale is a prop
+// rather than a hard-coded size: Draft A is on "generous" while Draft B stays
+// at the original sizes, which keeps the A/B comparison about the grid style
+// and not about the text. Drop the prop once a draft is chosen.
+interface Props {
+  size?: "default" | "generous";
+}
+
+const { size = "default" } = Astro.props;
 ---
 
-<div class="header">
+<div class:list={["header", size === "generous" && "generous"]}>
   <h2 class="heading">What drone surveying can provide</h2>
   <p class="lede">
     Drone surveys provide a safer and efficient way to capture detailed spatial
@@ -33,5 +43,15 @@
     font-size: 15px;
     line-height: 1.65;
     color: var(--color-text-muted);
+  }
+
+  /* "Generous" scale: heading 30 -> 36, lede 15 -> 17. The clamp's floor and
+     vw rate scale by the same 1.2 so it still steps down on narrow screens. */
+  .generous .heading {
+    font-size: clamp(29px, 3.6vw, 36px);
+  }
+
+  .generous .lede {
+    font-size: 17px;
   }
 </style>
