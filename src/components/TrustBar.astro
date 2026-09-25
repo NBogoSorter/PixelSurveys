@@ -40,11 +40,12 @@ import { TRUST_POINTS } from "../data/trust-points";
     gap: 14px;
   }
 
-  /* 44px, not 34px - below ~43px these icons' strokes compute to under
-     one CSS pixel and wash out. */
+  /* Sized to sit level with the text block beside it. Also well clear of the
+     ~43px floor below which these icons' strokes compute to under one CSS
+     pixel and wash out - at 64px the stroke lands at 1.5px. */
   .item :global(.icon) {
-    width: 44px;
-    height: 44px;
+    width: 64px;
+    height: 64px;
     flex-shrink: 0;
     margin-top: 2px;
   }
@@ -61,7 +62,10 @@ import { TRUST_POINTS } from "../data/trust-points";
     color: rgba(255, 255, 255, 0.8);
   }
 
-  @media (max-width: 980px) {
+  /* Drops to two columns earlier than the 980px it used to: with a 64px icon
+     beside the text, four columns squeeze the copy to about 18 characters a
+     line before this point, which breaks the descriptions into ragged stacks. */
+  @media (max-width: 1150px) {
     .grid {
       grid-template-columns: 1fr 1fr;
       padding-inline: 24px;
