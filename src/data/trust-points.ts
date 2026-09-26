@@ -30,7 +30,7 @@ export const TRUST_POINTS: TrustPoint[] = [
   {
     title: "Accurate & Reliable Data",
     description:
-      "Surveying expertise combined with precise GNSS positioning and professional data processing to deliver accurate, reliable spatial data tailored to your project requirements.",
+      "Surveying expertise combined with precise GNSS positioning and professional data processing to deliver accurate and reliable spatial data.",
     icon: "accurate",
   },
 ];
