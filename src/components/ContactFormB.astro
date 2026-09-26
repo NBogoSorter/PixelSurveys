@@ -8,12 +8,24 @@
 // them, since nothing client-side is trustworthy.
 import ServiceTypeField from "./ServiceTypeField.astro";
 import { CONTACT_EMAIL, CONTACT_PHONE } from "../data/contact-info";
+
+interface Props {
+  /**
+   * 2 on the homepage, where this is one section among several. 1 on
+   * /contact/, where it is the whole page and so carries its <h1> - without
+   * this the page would have no top-level heading at all.
+   */
+  headingLevel?: 1 | 2;
+}
+
+const { headingLevel = 2 } = Astro.props;
+const Heading = headingLevel === 1 ? "h1" : "h2";
 ---
 
 <section class="panel">
   <div class="container">
     <div class="heading">
-      <h2>Let's Discuss Your Next Project</h2>
+      <Heading>Let's Discuss Your Next Project</Heading>
       <p>
         Fill out the form, or reach out directly to arrange a site visit or
         consultation.
@@ -152,6 +164,7 @@ import { CONTACT_EMAIL, CONTACT_PHONE } from "../data/contact-info";
     margin-bottom: 34px;
   }
 
+  .heading h1,
   .heading h2 {
     font-size: clamp(29px, 4.2vw, 38px);
     font-weight: 700;

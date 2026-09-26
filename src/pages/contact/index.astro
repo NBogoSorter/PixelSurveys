@@ -1,6 +1,12 @@
 ---
-import PageHeader from "../../components/PageHeader.astro";
-import QuoteForm from "../../components/QuoteForm.astro";
+// The same contact section the homepage ends with, rather than a second,
+// separate form. It carries its own heading, lede and contact details, so
+// there is no PageHeader above it - two stacked headings ("Request a Quote"
+// then "Let's Discuss Your Next Project") said the same thing twice.
+//
+// headingLevel={1} because here it is the whole page: without it this page
+// would have no <h1>.
+import ContactFormB from "../../components/ContactFormB.astro";
 import Base from "../../layouts/Base.astro";
 ---
 
@@ -8,17 +14,5 @@ import Base from "../../layouts/Base.astro";
   title="Contact"
   description="Request a quote for drone survey and aerial mapping services."
 >
-  <PageHeader
-    title="Request a Quote"
-    lede="Tell us about the site and what you need from it, and we'll get back to you with a quote."
-  />
-  <section class="container form-section">
-    <QuoteForm />
-  </section>
+  <ContactFormB headingLevel={1} />
 </Base>
-
-<style>
-  .form-section {
-    padding-bottom: 80px;
-  }
-</style>
