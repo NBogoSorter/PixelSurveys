@@ -143,9 +143,9 @@ be live when the site opens to the public.
 - [ ] **`/contact/` uses a different form** (`QuoteForm.astro`) to the homepage's
       `ContactFormB.astro`. Both work, but they will drift apart as copy changes.
 - [ ] **Placeholder content**: `CONTACT_PHONE` in `src/data/contact-info.ts` is still
-      `+61 0000 000 000`, the hero and service cards have no real photos, the About page
-      copy is unwritten, and the "Monitoring & Progress" FAQ answer is an unfinished
-      sentence.
+      `+61 0000 000 000`, the hero and service cards have no real photos, and the About
+      page copy is unwritten. (The "Monitoring & Progress" sentence that used to trail
+      off was replaced by the client's own copy on 26 Sept 2026.)
 - [ ] **There is lorem ipsum on the live homepage.** `IntroSection.astro`, the
       section directly under the hero, still reads *"This Can Be Secondary Heading
       Lorem ipsum dolor sit amet."* and *"Supporting Subheading"*. It came from the

@@ -12,13 +12,14 @@ export interface Capability {
   icon: CapabilityIconName;
 }
 
-// "Monitoring & Progress" trails off with "....." in the client's draft -
-// closed out with a period below until the real ending is supplied.
+// Client's own copy, supplied 26 Sept 2026. Land Development & Planning is the
+// only entry they left as it was; the rest were rewritten, and "Surveying &
+// Mapping" was renamed "Surveying & GIS".
 export const CAPABILITIES: Capability[] = [
   {
     title: "Construction & Earthworks",
     description:
-      "Progress monitoring, surface models including TINs & DTMs, cut & fill volumes and stockpile calculations.",
+      "Progress monitoring, terrain models, contours, cut and fill volumes and stockpile calculations. Data provided in the required project coordinate system.",
     icon: "construction",
   },
   {
@@ -28,27 +29,27 @@ export const CAPABILITIES: Capability[] = [
     icon: "land",
   },
   {
-    title: "Surveying & Mapping",
+    title: "Surveying & GIS",
     description:
-      "Supplement traditional survey data with georeferenced imagery, terrain and surface models, contours, detailed survey information and data capture across large or difficult to access areas. Supplied in the coordinate system required.",
+      "Providing georeferenced aerial imagery, contours, terrain models, topographic and feature surveys. Capturing large or difficult to access areas safely and efficiently, with data supplied in the correct coordinate system required.",
     icon: "survey",
   },
   {
     title: "Infrastructure & Assets",
     description:
-      "Aerial imagery and spatial data for mapping, documenting and monitoring roads, utilities and other infrastructure assets.",
+      "Remote inspection imagery, powerline clearance, corridor mapping, progress and maintenance monitoring.",
     icon: "infrastructure",
   },
   {
     title: "Monitoring & Progress",
     description:
-      "Repeat drone surveys to track project progress, compare surfaces and document changes across a site over time. Including stockpiles, volumes and site monitoring.",
+      "Repeat drone surveys to track project progress through site progress imagery, stockpile volumes, earthwork surface comparisons and change detection over time.",
     icon: "monitoring",
   },
   {
     title: "Environmental & Land Management",
     description:
-      "Capture detailed information about terrain, vegetation and deformation changes across sites.",
+      "Capturing detailed information about terrain and vegetation, with mapping and monitoring of erosion, landform changes and deformation across sites.",
     icon: "environment",
   },
 ];
