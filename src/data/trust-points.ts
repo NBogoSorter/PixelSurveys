@@ -6,17 +6,19 @@ export interface TrustPoint {
   icon: TrustIconName;
 }
 
+// Client's own copy, supplied 26 Sept 2026. Safe & Compliant is the one entry
+// they left as it was; "Fully Insured" was renamed "Commercially Insured".
 export const TRUST_POINTS: TrustPoint[] = [
   {
     title: "Licensed & Qualified",
     description:
-      "Operated by CASA-licensed Remote Pilots with professional surveying qualifications and experience.",
+      "CASA-compliant drone operations backed by professional surveying qualifications, technical expertise and industry experience.",
     icon: "licensed",
   },
   {
-    title: "Fully Insured",
+    title: "Commercially Insured",
     description:
-      "Appropriately insured for survey and commercial drone operations, providing confidence and protection for every project.",
+      "Insured with Public Liability and Professional Indemnity cover for survey and commercial drone operations, providing protection and confidence for your project.",
     icon: "insured",
   },
   {
@@ -28,7 +30,7 @@ export const TRUST_POINTS: TrustPoint[] = [
   {
     title: "Accurate & Reliable Data",
     description:
-      "Drone operations are carried out with surveying expertise, ensuring captured data is accurately processed, validated and delivered for project requirements.",
+      "Surveying expertise combined with precise GNSS positioning and professional data processing to deliver accurate, reliable spatial data tailored to your project requirements.",
     icon: "accurate",
   },
 ];
