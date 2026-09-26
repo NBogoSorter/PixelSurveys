@@ -88,12 +88,6 @@ const { service } = Astro.props;
     color: var(--color-ink);
     line-height: 1.3;
     text-wrap: balance;
-    /* Two of the four titles tip onto a second line at this size in a
-       quarter-width column, and they sit right on the boundary - a slightly
-       wider font metric flips which ones. Reserving two lines for all of them
-       keeps the image -> title -> list rhythm identical across the row instead
-       of depending on where the text happens to break. */
-    min-height: calc(1.3em * 2);
   }
 
   .list {

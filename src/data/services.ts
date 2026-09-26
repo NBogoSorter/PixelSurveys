@@ -92,30 +92,6 @@ export const SERVICES: Service[] = [
     bandTo: "var(--color-canopy)",
   },
   {
-    title: "3D Models & Point Clouds",
-    description: "3D data you can measure from, design with and share.",
-    subServices: [
-      {
-        title: "Point Clouds",
-        description:
-          "Millions of measured points capturing the site in 3D. Classified on request and ready to use in your own software.",
-      },
-      {
-        title: "3D Models & Digital Twins",
-        description: "View, share and annotate a 3D replica of the site.",
-      },
-      {
-        title: "As-Built 3D Capture",
-        description:
-          "A measured 3D record of what's been built, for checking dimensions, clearances and conformance.",
-      },
-    ],
-    href: "/services/",
-    imageBrief: "Point cloud or 3D mesh render",
-    bandFrom: "var(--color-accent)",
-    bandTo: "var(--color-accent-green)",
-  },
-  {
     title: "Volumes & Site Monitoring",
     description:
       "Accurate volume measurement and change tracking across the site.",
@@ -146,5 +122,29 @@ export const SERVICES: Service[] = [
     imageBrief: "Stockpiles or active earthworks",
     bandFrom: "var(--color-ink)",
     bandTo: "var(--color-canopy)",
+  },
+  {
+    title: "3D Models & Point Clouds",
+    description: "3D data you can measure from, design with and share.",
+    subServices: [
+      {
+        title: "Point Clouds",
+        description:
+          "Millions of measured points capturing the site in 3D. Classified on request and ready to use in your own software.",
+      },
+      {
+        title: "3D Models & Digital Twins",
+        description: "View, share and annotate a 3D replica of the site.",
+      },
+      {
+        title: "As-Built 3D Capture",
+        description:
+          "A measured 3D record of what's been built, for checking dimensions, clearances and conformance.",
+      },
+    ],
+    href: "/services/",
+    imageBrief: "Point cloud or 3D mesh render",
+    bandFrom: "var(--color-accent)",
+    bandTo: "var(--color-accent-green)",
   },
 ];

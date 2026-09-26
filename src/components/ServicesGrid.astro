@@ -11,8 +11,8 @@ const { showCta = true } = Astro.props;
 ---
 
 <section class="section">
-  <div class="container">
-    <h2 class="heading">Drone Surveying &amp; Data Services</h2>
+  <div class="container wide">
+    <h2 class="heading">Services</h2>
 
     <div class="grid">
       {SERVICES.map((service) => (
@@ -43,6 +43,15 @@ const { showCta = true } = Astro.props;
     text-wrap: balance;
   }
 
+  /* Wider than the page's usual 1200px column, so the four category names sit
+     on one line each. The longest ("Contours & Terrain Models", 25 characters)
+     needs about 292px at 22px; a 1400px container gives each card 317px.
+     NOTE: this makes the section wider than every other section on the page -
+     the hero, capabilities, FAQ and contact all sit in the 1200px column. */
+  .wide {
+    max-width: 1400px;
+  }
+
   .grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -69,7 +78,11 @@ const { showCta = true } = Astro.props;
     background: var(--color-ink-soft);
   }
 
-  @media (max-width: 860px) {
+  /* Drops to two columns at 1300px, not the old 860px: between those widths
+     four columns give each card under 292px and the titles wrap again, which
+     is the thing this layout is trying to avoid. Two columns are far wider
+     than needed, so nothing wraps from here up. */
+  @media (max-width: 1300px) {
     .grid {
       grid-template-columns: repeat(2, 1fr);
     }
