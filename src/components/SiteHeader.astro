@@ -6,7 +6,11 @@ const NAV_LINKS = [
   { label: "Home", href: "/" },
   { label: "Services", href: "/services/" },
   { label: "About", href: "/about/" },
-  { label: "Contact", href: "/contact/" },
+  // Styled as the header's call to action rather than a plain link. It stays
+  // inside the nav list because that is what it is - navigation - and the
+  // separate "Get a Free Quote" button that used to sit beside it pointed at
+  // this same page, so the two were doing one job.
+  { label: "Contact", href: "/contact/", cta: true },
 ];
 
 const currentPath = Astro.url.pathname;
@@ -25,24 +29,21 @@ const currentPath = Astro.url.pathname;
       />
     </a>
 
-    <div class="right">
-      <nav aria-label="Main">
-        <ul class="nav-list">
-          {NAV_LINKS.map((link) => (
-            <li>
-              <a
-                href={link.href}
-                class="nav-link"
-                aria-current={currentPath === link.href ? "page" : undefined}
-              >
-                {link.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </nav>
-      <a href="/contact/" class="quote">Get a Free Quote</a>
-    </div>
+    <nav aria-label="Main">
+      <ul class="nav-list">
+        {NAV_LINKS.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              class:list={["nav-link", link.cta && "nav-cta"]}
+              aria-current={currentPath === link.href ? "page" : undefined}
+            >
+              {link.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
   </div>
 </header>
 
@@ -53,27 +54,6 @@ const currentPath = Astro.url.pathname;
     position: sticky;
     top: 0;
     z-index: 50;
-  }
-
-  .right {
-    display: flex;
-    align-items: center;
-    gap: 32px;
-  }
-
-  .quote {
-    flex-shrink: 0;
-    background: var(--color-ink);
-    color: #fff;
-    font-size: 14px;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    padding: 11px 20px;
-    white-space: nowrap;
-  }
-
-  .quote:hover {
-    background: var(--color-accent);
   }
 
   .inner {
@@ -98,7 +78,9 @@ const currentPath = Astro.url.pathname;
   .nav-list {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px 32px;
+    /* A button sitting among text links needs the row centred on it. */
+    align-items: center;
+    gap: 8px 28px;
     list-style: none;
     margin: 0;
     padding: 0;
@@ -117,10 +99,22 @@ const currentPath = Astro.url.pathname;
     color: var(--color-accent);
   }
 
-  @media (max-width: 860px) {
-    .right {
-      gap: 20px;
-    }
+  /* Contact, carrying the styling the removed quote button had. Uppercase like
+     its siblings rather than the title case that button used, since it sits in
+     the same row as them. */
+  .nav-cta {
+    background: var(--color-ink);
+    color: #fff;
+    padding: 10px 18px;
+    white-space: nowrap;
+  }
+
+  .nav-cta:hover,
+  .nav-cta[aria-current="page"] {
+    background: var(--color-accent);
+    /* Overrides .nav-link's hover colour, which would otherwise turn the
+       label teal on a teal fill. */
+    color: #fff;
   }
 
   @media (max-width: 640px) {
@@ -129,13 +123,6 @@ const currentPath = Astro.url.pathname;
       align-items: flex-start;
       gap: 12px;
       padding-block: 14px;
-    }
-
-    .right {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 12px;
-      width: 100%;
     }
 
     .nav-list {
