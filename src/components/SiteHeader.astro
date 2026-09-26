@@ -99,21 +99,27 @@ const currentPath = Astro.url.pathname;
     color: var(--color-accent);
   }
 
-  /* Contact, carrying the styling the removed quote button had. Uppercase like
-     its siblings rather than the title case that button used, since it sits in
-     the same row as them. */
+  /* Contact as the header's call to action. Uppercase like its siblings rather
+     than the title case the old quote button used, since it sits in their row.
+     Outlined and fully rounded - the only other curve on the site is the 12px
+     on the service card photos, so this is a second, larger departure from the
+     square corners everything else uses. */
   .nav-cta {
-    background: var(--color-ink);
-    color: #fff;
-    padding: 10px 18px;
+    background: transparent;
+    color: var(--color-ink);
+    /* 9px against the solid version's 10px: the 2px border adds height that
+       the padding gives back, so the button matches the nav row as before. */
+    padding: 9px 22px;
+    border: 2px solid var(--color-ink);
+    border-radius: 999px;
     white-space: nowrap;
   }
 
   .nav-cta:hover,
   .nav-cta[aria-current="page"] {
-    background: var(--color-accent);
-    /* Overrides .nav-link's hover colour, which would otherwise turn the
-       label teal on a teal fill. */
+    background: var(--color-ink);
+    /* Overrides .nav-link's teal hover colour, which would otherwise leave
+       teal text on a navy fill. */
     color: #fff;
   }
 
