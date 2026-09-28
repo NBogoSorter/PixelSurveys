@@ -104,18 +104,19 @@ export const SERVICES: Service[] = [
       {
         title: "Cut & Fill Calculations",
         description:
-          "Cut and fill quantities calculated against your design, or between two measured surfaces.",
+          //"Cut and fill quantities calculated against your design, or between two measured surfaces.",
+          "Cut and fill volumes calculated efficiently across the whole area from a measured surface or design.",
       },
       {
         // DESCRIPTION MISSING - the client's list gave no line for this one.
         // Left visible rather than invented, so it gets filled in.
         title: "Site Progress Monitoring",
-        description: "[description to come]",
+        description: "Repeat captures across the whole site, showing work completed through imagery, 3D models and measured volumes.",
       },
       {
         // DESCRIPTION MISSING - as above.
         title: "Asset & Structure Monitoring",
-        description: "[description to come]",
+        description: "Repeat monitoring of structures and surfaces where movement or volume change over time. Change Button text Request a Quote to Contact Us on the services page",
       },
     ],
     href: "/services/",
