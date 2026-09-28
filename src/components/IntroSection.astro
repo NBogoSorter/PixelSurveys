@@ -1,16 +1,26 @@
 ---
-// PLACEHOLDER COPY - lorem ipsum from the Elementor prototype, which had
-// nothing real in this slot. This is the section directly under the hero, so
-// it is the second thing a visitor reads. Tracked in README.md under "Before
-// launch"; must not go public like this.
+// Two-column intro under the hero. Client's own copy, supplied 28 Sept 2026,
+// replacing the lorem ipsum this slot carried from the Elementor prototype.
+//
+// Both columns are paragraphs now. The left was an <h2>, which suited the
+// short placeholder but not a 173-character sentence - a heading that long is
+// wrong for screen readers and search alike. The page still has its headings
+// further down ("Our Services", "Industries & Applications", and so on).
 ---
 
 <section class="section">
   <div class="container grid">
-    <h2 class="heading">
-      This Can Be Secondary Heading Lorem ipsum dolor sit amet.
-    </h2>
-    <p class="subheading">Supporting Subheading</p>
+    <p class="lead">
+      As a drone survey specialist, Pixel Surveys provides innovative, accurate
+      and safe solutions to surveyors, engineers, developers and civil
+      contractors across South Australia.
+    </p>
+    <p class="support">
+      Capabilities included drone capture, GNSS aided processing, survey and
+      geospatial analysis. Pixel Surveys projects are always individually
+      tailored to meet our clients&rsquo; specific requirements and supported by
+      qualified and experienced personnel.
+    </p>
   </div>
 </section>
 
@@ -22,30 +32,34 @@
   .grid {
     display: grid;
     grid-template-columns: 1.4fr 1fr;
-    gap: 32px;
+    gap: 40px;
     align-items: start;
   }
 
-  .heading {
-    font-size: clamp(29px, 3.6vw, 36px);
-    font-weight: 700;
-    line-height: 1.35;
+  /* Large enough to lead the page without being heading-sized: the old 36px
+     was set for a short placeholder line, and this sentence at that size would
+     dominate everything below it. */
+  .lead {
+    font-size: 22px;
+    font-weight: 500;
+    line-height: 1.55;
     color: var(--color-ink);
-    text-wrap: balance;
+    text-wrap: pretty;
   }
 
-  .subheading {
-    font-size: 20px;
-    font-weight: 600;
-    color: var(--color-ink);
-    text-decoration: underline;
-    text-underline-offset: 4px;
-    padding-top: 6px;
+  /* The placeholder here was underlined, which was fine on a two-word label
+     and would read as a broken link on a paragraph. */
+  .support {
+    font-size: 16.5px;
+    line-height: 1.7;
+    color: var(--color-text-muted);
+    padding-top: 4px;
   }
 
   @media (max-width: 720px) {
     .grid {
       grid-template-columns: 1fr;
+      gap: 24px;
     }
   }
 </style>

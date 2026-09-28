@@ -149,11 +149,6 @@ be live when the site opens to the public.
       `CONTACT_PHONE_DIAL` (`+61461370270`) so they dial correctly either way. Worth
       asking which they want displayed. (The "Monitoring & Progress" sentence that used to trail
       off was replaced by the client's own copy on 26 Sept 2026.)
-- [ ] **There is lorem ipsum on the live homepage.** `IntroSection.astro`, the
-      section directly under the hero, still reads *"This Can Be Secondary Heading
-      Lorem ipsum dolor sit amet."* and *"Supporting Subheading"*. It came from the
-      Elementor prototype, which had placeholder text in that slot, and has been live
-      behind the gate ever since. It is the second thing a visitor sees.
 - [ ] **The FAQ answers make specific commitments that nobody has verified.**
       `src/data/faq.ts` carries no note of where its copy came from, unlike
       `services.ts`, and it states: vertical accuracy of *"20 to 30 mm against held
@@ -161,6 +156,9 @@ be live when the site opens to the public.
       default"*, and that controlled-airspace approvals near Adelaide Airport and
       Parafield are arranged before the flight. Those are commitments on price,
       accuracy, turnaround and regulatory process. Get them confirmed or replaced.
+- [ ] **"Capabilities included" in the homepage intro** (`IntroSection.astro`) reads
+      as a typo for "Capabilities include". Left as the client wrote it; worth
+      checking with them.
 - [ ] **Two service descriptions are missing.** `src/data/services.ts` carries the
       client's own copy (supplied 25 Sept 2026), except **Site Progress Monitoring** and
       **Asset & Structure Monitoring**, which their list left blank. Both render
