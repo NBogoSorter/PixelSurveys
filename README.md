@@ -140,8 +140,11 @@ be live when the site opens to the public.
         the client's actual quote register in their accounting system.
       - Until both are done, a real customer enquiry arrives with `[Site Location]`
         visible in the subject line.
-- [ ] **Placeholder content**: the hero and service cards have no real photos, and the
-      About page copy is unwritten. (The phone number was supplied 28 Sept 2026.)
+- [ ] **The hero and service cards have no real photos.** Every other slot on the
+      main pages now carries the client's own words. The `imageBrief` field on each
+      entry in `src/data/services.ts` doubles as the shot list. (Phone number
+      supplied 28 Sept 2026; About page copy written 28 Sept 2026 - it renders the
+      same `IntroSection` as the homepage, so the two cannot drift.)
 - [ ] **The phone number mixes dialling conventions.** The client gave it as
       `+61 0461 370 270`: "+61" is the international prefix but the "0" after it is the
       domestic trunk prefix, dropped when dialling from overseas. Strictly it is either
@@ -149,13 +152,21 @@ be live when the site opens to the public.
       `CONTACT_PHONE_DIAL` (`+61461370270`) so they dial correctly either way. Worth
       asking which they want displayed. (The "Monitoring & Progress" sentence that used to trail
       off was replaced by the client's own copy on 26 Sept 2026.)
-- [ ] **The FAQ answers make specific commitments that nobody has verified.**
-      `src/data/faq.ts` carries no note of where its copy came from, unlike
-      `services.ts`, and it states: vertical accuracy of *"20 to 30 mm against held
-      back check points"*, turnaround *"within three working days"*, *"MGA2020 by
-      default"*, and that controlled-airspace approvals near Adelaide Airport and
-      Parafield are arranged before the flight. Those are commitments on price,
-      accuracy, turnaround and regulatory process. Get them confirmed or replaced.
+- [ ] **Four FAQ answers are still ours and still unverified.** The client supplied
+      four of the nine on 29 Sept 2026, and `src/data/faq.ts` now records which is
+      which at the top of the file. Their *"How accurate is drone survey data?"*
+      replaced our 20-30 mm claim, so accuracy is settled - around 30 mm horizontal
+      and 50 mm vertical with PPK and ground control is now the only accuracy figure
+      the site carries. Still unconfirmed, and each one a commitment: a fixed-fee
+      rather than hourly price model, turnaround *"within three working days"*,
+      *"MGA2020 by default"*, and that controlled-airspace approvals near Adelaide
+      Airport and Parafield are arranged before the flight.
+- [ ] **The FAQ is the only page claiming interstate work.** The client's own answer
+      to *"Where in Australia do you work?"* says *"across South Australia and
+      interstate"*, while the hero reads *"Adelaide based. Servicing sites across
+      South Australia"* and the footer *"Drone survey and mapping services across
+      South Australia."* A visitor outside SA bounces off the hero long before the
+      FAQ. Ask which is right, then make all three agree.
 - [ ] **Only one of the ten services has a detail page.**
       `/services/orthomosaic-mapping/` exists; the other nine render as plain text on
       the hub, not links, so nothing points at a 404. A service becomes a link the
@@ -165,7 +176,12 @@ be live when the site opens to the public.
       - The GSD table's capture heights and cm/px figures are illustrative, **not real
         capture data**. Replace with the client's own.
       - `[XX] mm` typical horizontal accuracy, and `[XX] hectares` per flight in the
-        FAQ, are literal placeholders visible on the page.
+        FAQ, are literal placeholders visible on the page. The client's FAQ answer of
+        29 Sept 2026 now answers the first of these - around 30 mm horizontal - so if
+        this page survives, that figure can go straight in.
+      - Nothing links here any more: the sub-service's `href` was removed from
+        `src/data/services.ts`, so the page is orphaned but still live and still
+        reachable by anyone with the URL. Build it out, delete it, or add `noindex`.
       - The FAQ claims "2-3 cm per pixel against roughly 15-50 cm for public satellite
         imagery" - check the client is happy standing behind that comparison.
       - The page states every project is flown with RTK or PPK and surveyed ground
@@ -191,6 +207,21 @@ client previews the real, in-progress site - there's no separate staging URL for
 - **Send the client the `?preview=` link, not the plain domain**, while this is active.
 - **The current preview link is**
   `https://pixelsurveys.com.au/?preview=qRWAlfZm5naV5SY5QjBp6X2b`
+- **The cookie is per browser and per device.** A laptop that has it does nothing for
+  the same person's phone, and Chrome having it does nothing for Safari. It is also
+  lost when an incognito window closes, or when site data is cleared. Each device
+  they want to view the site on has to open the token link once. It lasts 180 days.
+- **The symptom when a device lacks it is confusing**, and cost a round trip with the
+  client on 29 Sept 2026: they reported *"I can't see the footer."* `RewriteRule ^
+  /maintenance/ [L]` is an **internal rewrite, not a redirect**, so the address bar
+  still shows `/contact/` or whatever was requested while the maintenance page is
+  served - and that page is the only one in the build with no header and no footer.
+  Quickest way to confirm it: ask what the top of the page says. "Something new is
+  on the way" settles it.
+- **Anything that checks the live site has to carry the token**, including scripts.
+  A `curl` of the plain domain returns the maintenance page every time, so a
+  post-deploy check written against the bare URL will never see a change land and
+  will report a failure that isn't real.
 - The token lives in `public/.htaccess` and therefore in this repo, so treat it as
   readable by anyone with repo access. That's acceptable for what it does - it keeps
   an unfinished site out of public view, it doesn't protect anything sensitive. To
@@ -212,6 +243,10 @@ removes files it uploaded itself. Probed live after that deploy:
 | `/wp-json/` | 200 - REST API live, allows user enumeration |
 | `/wp-admin/` | 302 - login still reachable |
 
+Re-probed 29 Sept 2026, eight days on: `/xmlrpc.php`, `/readme.html` and `/wp-json/`
+are all still 200, and `/license.txt` is too. `/wp-admin/` now returns 404. Three of
+the four original findings are unchanged.
+
 Nobody is patching this install any more, which is the worst state to leave one in.
 Delete from `public_html`: `wp-admin/`, `wp-content/`, `wp-includes/`, `wp-*.php`,
 `index.php`, `xmlrpc.php`, `readme.html`, `license.txt`. Leave everything else - the
@@ -228,5 +263,6 @@ all four should 404.
       sometimes get filtered even when SPF/auth all check out)
 - [ ] Form works with JavaScript disabled (redirects to `/contact/thanks/`)
 - [ ] If the pre-launch gate is still active: the plain domain shows the maintenance
-      page, and `?preview=<token>` unlocks the real site (check the cookie's actually
-      set - this hasn't been tested against real Apache yet, only reasoned through)
+      page, and `?preview=<token>` unlocks the real site. Verified against live Apache
+      29 Sept 2026 - the token sets `preview_access`, and a later plain request
+      carrying that cookie returns the real page.
