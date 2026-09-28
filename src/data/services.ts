@@ -116,7 +116,7 @@ export const SERVICES: Service[] = [
       {
         // DESCRIPTION MISSING - as above.
         title: "Asset & Structure Monitoring",
-        description: "Repeat monitoring of structures and surfaces where movement or volume change over time. Change Button text Request a Quote to Contact Us on the services page",
+        description: "Repeat monitoring of structures and surfaces where movement or volume change over time.",
       },
     ],
     href: "/services/",

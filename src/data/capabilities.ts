@@ -17,7 +17,7 @@ export interface Capability {
 // Mapping" was renamed "Surveying & GIS".
 export const CAPABILITIES: Capability[] = [
   {
-    title: "Construction & Earthworks",
+    title: "Civil Construction & Earthworks",
     description:
       "Progress monitoring, terrain models, contours, cut and fill volumes and stockpile calculations. Data provided in the required project coordinate system.",
     icon: "construction",
