@@ -140,9 +140,14 @@ be live when the site opens to the public.
         the client's actual quote register in their accounting system.
       - Until both are done, a real customer enquiry arrives with `[Site Location]`
         visible in the subject line.
-- [ ] **Placeholder content**: `CONTACT_PHONE` in `src/data/contact-info.ts` is still
-      `+61 0000 000 000`, the hero and service cards have no real photos, and the About
-      page copy is unwritten. (The "Monitoring & Progress" sentence that used to trail
+- [ ] **Placeholder content**: the hero and service cards have no real photos, and the
+      About page copy is unwritten. (The phone number was supplied 28 Sept 2026.)
+- [ ] **The phone number mixes dialling conventions.** The client gave it as
+      `+61 0461 370 270`: "+61" is the international prefix but the "0" after it is the
+      domestic trunk prefix, dropped when dialling from overseas. Strictly it is either
+      `0461 370 270` or `+61 461 370 270`. The page shows their version; `tel:` links use
+      `CONTACT_PHONE_DIAL` (`+61461370270`) so they dial correctly either way. Worth
+      asking which they want displayed. (The "Monitoring & Progress" sentence that used to trail
       off was replaced by the client's own copy on 26 Sept 2026.)
 - [ ] **There is lorem ipsum on the live homepage.** `IntroSection.astro`, the
       section directly under the hero, still reads *"This Can Be Secondary Heading

@@ -1,5 +1,9 @@
 ---
-import { CONTACT_EMAIL, CONTACT_PHONE } from "../data/contact-info";
+import {
+  CONTACT_EMAIL,
+  CONTACT_PHONE,
+  CONTACT_PHONE_DIAL,
+} from "../data/contact-info";
 
 const year = new Date().getFullYear();
 
@@ -36,7 +40,10 @@ const SITE_LINKS = [
           <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
         </li>
         <li>
-          <a href={`tel:${CONTACT_PHONE.replace(/\s/g, "")}`}>{CONTACT_PHONE}</a>
+          {/* The dial string, not the display one: stripping spaces out of
+              "+61 0461 370 270" leaves the trunk 0 in, which some handsets
+              refuse to dial. */}
+          <a href={`tel:${CONTACT_PHONE_DIAL}`}>{CONTACT_PHONE}</a>
         </li>
       </ul>
     </div>

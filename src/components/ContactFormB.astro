@@ -7,7 +7,11 @@
 // browser stops overlong input before a round trip - the server still enforces
 // them, since nothing client-side is trustworthy.
 import ServiceTypeField from "./ServiceTypeField.astro";
-import { CONTACT_EMAIL, CONTACT_PHONE } from "../data/contact-info";
+import {
+  CONTACT_EMAIL,
+  CONTACT_PHONE,
+  CONTACT_PHONE_DIAL,
+} from "../data/contact-info";
 
 interface Props {
   /**
@@ -25,23 +29,22 @@ const Heading = headingLevel === 1 ? "h1" : "h2";
 <section class="panel">
   <div class="container">
     <div class="heading">
-      <Heading>Let's Discuss Your Next Project</Heading>
+      <Heading>Get In Touch</Heading>
       <p>
-        Fill out the form, or reach out directly to arrange a site visit or
-        consultation.
+        Fill in the form, call or email for an obligation-free quote.
       </p>
     </div>
 
     <div class="split">
       <div class="reach">
-        <h3 class="reach-title">Reach Us</h3>
+        <h3 class="reach-title">Contact Details</h3>
         <div class="contact">
           <div class="k">Email</div>
-          <div class="v link">{CONTACT_EMAIL}</div>
+          <a class="v link" href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
         </div>
         <div class="contact">
           <div class="k">Phone</div>
-          <div class="v">{CONTACT_PHONE}</div>
+          <a class="v link" href={`tel:${CONTACT_PHONE_DIAL}`}>{CONTACT_PHONE}</a>
         </div>
       </div>
 
