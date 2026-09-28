@@ -31,7 +31,8 @@ const Heading = headingLevel === 1 ? "h1" : "h2";
     <div class="heading">
       <Heading>Get In Touch</Heading>
       <p>
-        Fill in the form, call or email for an obligation-free quote.
+        Fill in the form, call or email for an obligation-free quote or
+        discuss project.
       </p>
     </div>
 
@@ -214,8 +215,11 @@ const Heading = headingLevel === 1 ? "h1" : "h2";
     font-weight: 600;
   }
 
-  .contact .v.link {
-    color: var(--color-accent-green);
+  /* White like the heading above, not the accent green these carried while
+     the email was the only one of the pair styled as a link. The underline on
+     hover is what marks them as clickable now. */
+  .contact .v.link:hover {
+    text-decoration: underline;
   }
 
   .card {
