@@ -156,9 +156,6 @@ be live when the site opens to the public.
       default"*, and that controlled-airspace approvals near Adelaide Airport and
       Parafield are arranged before the flight. Those are commitments on price,
       accuracy, turnaround and regulatory process. Get them confirmed or replaced.
-- [ ] **"Capabilities included" in the homepage intro** (`IntroSection.astro`) reads
-      as a typo for "Capabilities include". Left as the client wrote it; worth
-      checking with them.
 - [ ] **Only one of the ten services has a detail page.**
       `/services/orthomosaic-mapping/` exists; the other nine render as plain text on
       the hub, not links, so nothing points at a 404. A service becomes a link the
