@@ -50,9 +50,9 @@ const MIN_SECONDS_TO_SUBMIT = 3;
  * `python scripts/check-service-types.py` compares the two.
  */
 const ALLOWED_SERVICES = [
-    'Aerial Imagery & Mapping',
     'Topographic Surveys',
     'Volumes & Site Monitoring',
+    'Aerial Imagery & Mapping',
     '3D Models & Point Clouds',
     'Other',
     'Not sure',

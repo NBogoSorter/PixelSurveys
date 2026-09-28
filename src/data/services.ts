@@ -39,28 +39,6 @@ export interface Service {
 // line blank.
 export const SERVICES: Service[] = [
   {
-    title: "Aerial Imagery & Mapping",
-    description:
-      "Current, high-resolution aerial imagery and detailed photos of structures and assets.",
-    subServices: [
-      {
-        title: "Aerial Imagery (Orthomosaic)",
-        description:
-          "A single aerial image of the whole site corrected and georeferenced to your coordinate system.",
-        href: "/services/orthomosaic-mapping/",
-      },
-      {
-        title: "Aerial Inspection Photography",
-        description:
-          "Close-range photos of roofs, structures and hard to access assets.",
-      },
-    ],
-    href: "/services/",
-    imageBrief: "Orthomosaic over a site",
-    bandFrom: "var(--color-ink)",
-    bandTo: "var(--color-accent-green)",
-  },
-  {
     title: "Topographic Surveys",
     description:
       "Topographic surveys including accurate ground levels, contours and surface models.",
@@ -104,25 +82,46 @@ export const SERVICES: Service[] = [
       {
         title: "Cut & Fill Calculations",
         description:
-          //"Cut and fill quantities calculated against your design, or between two measured surfaces.",
           "Cut and fill volumes calculated efficiently across the whole area from a measured surface or design.",
       },
       {
-        // DESCRIPTION MISSING - the client's list gave no line for this one.
-        // Left visible rather than invented, so it gets filled in.
         title: "Site Progress Monitoring",
-        description: "Repeat captures across the whole site, showing work completed through imagery, 3D models and measured volumes.",
+        description:
+          "Repeat captures across the whole site, showing work completed through imagery, 3D models and measured volumes.",
       },
       {
-        // DESCRIPTION MISSING - as above.
         title: "Asset & Structure Monitoring",
-        description: "Repeat monitoring of structures and surfaces where movement or volume change over time.",
+        description:
+          "Repeat monitoring of structures and surfaces where movement or volume change over time.",
       },
     ],
     href: "/services/",
     imageBrief: "Stockpiles or active earthworks",
     bandFrom: "var(--color-ink)",
     bandTo: "var(--color-canopy)",
+  },
+  {
+    title: "Aerial Imagery & Mapping",
+    description:
+      "Current, high-resolution aerial imagery and detailed photos of structures and assets.",
+    subServices: [
+      {
+        // No href: the detail page it linked to is being retired, and a
+        // sub-service only becomes a link once a page exists behind it.
+        title: "Aerial Imagery (Orthomosaic)",
+        description:
+          "A single aerial image of the whole site corrected and georeferenced to your coordinate system.",
+      },
+      {
+        title: "Aerial Inspection Photography",
+        description:
+          "Close-range photos of roofs, structures and hard to access assets.",
+      },
+    ],
+    href: "/services/",
+    imageBrief: "Orthomosaic over a site",
+    bandFrom: "var(--color-ink)",
+    bandTo: "var(--color-accent-green)",
   },
   {
     title: "3D Models & Point Clouds",

@@ -159,10 +159,6 @@ be live when the site opens to the public.
 - [ ] **"Capabilities included" in the homepage intro** (`IntroSection.astro`) reads
       as a typo for "Capabilities include". Left as the client wrote it; worth
       checking with them.
-- [ ] **Two service descriptions are missing.** `src/data/services.ts` carries the
-      client's own copy (supplied 25 Sept 2026), except **Site Progress Monitoring** and
-      **Asset & Structure Monitoring**, which their list left blank. Both render
-      `[description to come]` on the page rather than invented copy. Chase the client.
 - [ ] **Only one of the ten services has a detail page.**
       `/services/orthomosaic-mapping/` exists; the other nine render as plain text on
       the hub, not links, so nothing points at a 404. A service becomes a link the
