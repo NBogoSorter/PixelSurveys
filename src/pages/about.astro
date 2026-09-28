@@ -1,9 +1,19 @@
 ---
+// The two paragraphs here are the same ones the homepage opens with, so this
+// renders IntroSection rather than repeating the copy. One source means the
+// two pages cannot drift apart, and it already carries the "Capabilities
+// include" correction.
+import IntroSection from "../components/IntroSection.astro";
 import PageHeader from "../components/PageHeader.astro";
+import TrustBar from "../components/TrustBar.astro";
 import Base from "../layouts/Base.astro";
 ---
 
-{/* TODO: About copy from client. Route exists so nav links resolve. */}
-<Base title="About">
+<Base
+  title="About"
+  description="Pixel Surveys provides innovative, accurate and safe drone survey solutions to surveyors, engineers, developers and civil contractors across South Australia."
+>
   <PageHeader title="About Pixel Surveys" />
+  <IntroSection />
+  <TrustBar />
 </Base>
