@@ -20,7 +20,11 @@ import { FAQ_ITEMS } from "../data/faq";
               &#9656;
             </span>
           </summary>
-          <p class="a">{item.answer}</p>
+          <div class="a">
+            {(Array.isArray(item.answer) ? item.answer : [item.answer]).map(
+              (paragraph) => <p>{paragraph}</p>,
+            )}
+          </div>
         </details>
       ))}
     </div>
@@ -99,5 +103,11 @@ import { FAQ_ITEMS } from "../data/faq";
     font-size: 16px;
     line-height: 1.6;
     color: var(--color-text-muted);
+  }
+
+  /* Longer answers arrive as several paragraphs. Space between them, and
+     none after the last, so the closing gap stays the .a padding above. */
+  .a p + p {
+    margin-top: 14px;
   }
 </style>
