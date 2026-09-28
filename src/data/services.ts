@@ -61,7 +61,7 @@ export const SERVICES: Service[] = [
     bandTo: "var(--color-accent-green)",
   },
   {
-    title: "Contours & Terrain Models",
+    title: "Topographic Surveys",
     description:
       "Topographic surveys including accurate ground levels, contours and surface models.",
     subServices: [

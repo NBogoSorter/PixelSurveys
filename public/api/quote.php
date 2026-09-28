@@ -51,7 +51,7 @@ const MIN_SECONDS_TO_SUBMIT = 3;
  */
 const ALLOWED_SERVICES = [
     'Aerial Imagery & Mapping',
-    'Contours & Terrain Models',
+    'Topographic Surveys',
     'Volumes & Site Monitoring',
     '3D Models & Point Clouds',
     'Other',
