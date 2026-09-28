@@ -10,9 +10,13 @@ import ContactFormB from "../../components/ContactFormB.astro";
 import Base from "../../layouts/Base.astro";
 ---
 
+{/* mainBackground: this page is one navy panel, and <main> stretches to fill
+    the viewport. Without it, a tall screen shows white between the panel and
+    the navy footer. */}
 <Base
   title="Contact"
   description="Request a quote for drone survey and aerial mapping services."
+  mainBackground="var(--color-ink)"
 >
   <ContactFormB headingLevel={1} />
 </Base>

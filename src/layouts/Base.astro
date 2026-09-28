@@ -6,11 +6,21 @@ import "../styles/global.css";
 interface Props {
   title?: string;
   description?: string;
+  /**
+   * Colour behind <main>. It has flex: 1 so it grows to fill the viewport when
+   * a page's content is shorter than the screen. On a page ending in a
+   * full-bleed coloured section that leftover space shows the body's white
+   * through, as a band between that section and the footer - which is what
+   * /contact/ does on a tall monitor: one navy panel, then white, then the
+   * navy footer. Setting this to the section's colour closes the seam.
+   */
+  mainBackground?: string;
 }
 
 const {
   title,
   description = "Drone survey & aerial mapping services - orthomosaics, terrain models, point clouds and site analysis.",
+  mainBackground,
 } = Astro.props;
 
 const fullTitle = title ? `${title} | Pixel Surveys` : "Pixel Surveys";
@@ -38,7 +48,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
   </head>
   <body>
     <SiteHeader />
-    <main>
+    <main style={mainBackground ? `background: ${mainBackground};` : undefined}>
       <slot />
     </main>
     <SiteFooter />
