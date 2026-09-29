@@ -171,32 +171,18 @@ be live when the site opens to the public.
       South Australia"* and the footer *"Drone survey and mapping services across
       South Australia."* A visitor outside SA bounces off the hero long before the
       FAQ. Ask which is right, then make all three agree.
-- [ ] **Only one of the ten services has a detail page.**
-      `/services/orthomosaic-mapping/` exists; the other nine render as plain text on
-      the hub, not links, so nothing points at a 404. A service becomes a link the
+- [x] ~~**Unverified figures, dead links and image placeholders on the orthomosaic
+      page.**~~ Closed 29 Sept 2026 by deleting the page. It had been orphaned since
+      its `href` came out of `src/data/services.ts`, and it carried an illustrative
+      GSD table presented as real capture data, two literal `[XX]` placeholders, a
+      satellite-imagery comparison nobody had checked, a claim that every project is
+      flown with RTK or PPK, seven links to pages that do not exist, eleven image
+      slots and an iframe slot. It was the riskiest content on the site and nothing
+      pointed at it. Recover it from git history if a detail page is wanted later.
+- [ ] **No service has a detail page.** All ten render as plain text on the hub
+      rather than links, so nothing points at a 404. A service becomes a link the
       moment you give it an `href` in `src/data/services.ts` - add the page first.
-- [ ] **The orthomosaic page carries unverified figures presented as fact.** This is
-      the riskiest content on the site, because it reads as authoritative:
-      - The GSD table's capture heights and cm/px figures are illustrative, **not real
-        capture data**. Replace with the client's own.
-      - `[XX] mm` typical horizontal accuracy, and `[XX] hectares` per flight in the
-        FAQ, are literal placeholders visible on the page. The client's FAQ answer of
-        29 Sept 2026 now answers the first of these - around 30 mm horizontal - so if
-        this page survives, that figure can go straight in.
-      - Nothing links here any more: the sub-service's `href` was removed from
-        `src/data/services.ts`, so the page is orphaned but still live and still
-        reachable by anyone with the URL. Build it out, delete it, or add `noindex`.
-      - The FAQ claims "2-3 cm per pixel against roughly 15-50 cm for public satellite
-        imagery" - check the client is happy standing behind that comparison.
-      - The page states every project is flown with RTK or PPK and surveyed ground
-        control. Confirm that's actually true of how they work.
-- [ ] **Seven links on the orthomosaic page go nowhere** - six `/applications/*` URLs
-      and `/services/survey-control-gnss/`. They were specified as plausible URLs for
-      pages that don't exist yet. Either build them, or drop the links.
       `python scripts/linkcheck.py dist` re-checks every internal link after a build.
-- [ ] **The orthomosaic page has eleven image placeholders and one iframe slot**, each
-      labelled with the shot it needs. The "Sample output" section expects an
-      interactive map viewer embed - see the EMBED POINT comment in the page source.
 - [ ] **Remove the pre-launch gate itself** - see below.
 
 ## Pre-launch gate
