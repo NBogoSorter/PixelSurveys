@@ -5,6 +5,7 @@ import type { ImageMetadata } from "astro";
 import topographicSurveys from "../assets/services/topographic-surveys.png";
 import modelsAndPointClouds from "../assets/services/3d-models-and-point-clouds.png";
 import modelsAndPointCloudsHome from "../assets/services/3d-models-point-cloud-classified.png";
+import aerialImagery from "../assets/services/aerial-imagery-and-mapping.jpg";
 
 export interface SubService {
   title: string;
@@ -124,6 +125,9 @@ export const SERVICES: Service[] = [
     title: "Aerial Imagery & Mapping",
     description:
       "Current, high-resolution aerial imagery and detailed photos of structures and assets.",
+    image: aerialImagery,
+    imageAlt:
+      "A vertical aerial photograph of a graded earth surface meeting a braided watercourse, with vegetation following the channels.",
     subServices: [
       {
         // No href: the detail page it linked to is being retired, and a
