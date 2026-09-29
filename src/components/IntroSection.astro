@@ -35,6 +35,9 @@
 <style>
   .section {
     padding-block: 56px 80px;
+    /* See PageHeader: /about/ paints <main> navy, so this declares its own
+       white instead of inheriting the body's. */
+    background: var(--color-bg);
   }
 
   .grid {
