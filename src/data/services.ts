@@ -3,8 +3,8 @@ import type { ImageMetadata } from "astro";
 // Service card photography. Imported rather than referenced by path so
 // astro:assets can resize and re-encode it at build time.
 import topographicSurveys from "../assets/services/topographic-surveys.png";
-import modelsAndPointClouds from "../assets/services/3d-models-and-point-clouds.png";
-import modelsAndPointCloudsHome from "../assets/services/3d-models-point-cloud-classified.png";
+import volumesAndSiteMonitoring from "../assets/services/volumes-and-site-monitoring.png";
+import modelsAndPointClouds from "../assets/services/3d-models-point-cloud-classified.png";
 import aerialImagery from "../assets/services/aerial-imagery-and-mapping.jpg";
 
 export interface SubService {
@@ -40,6 +40,10 @@ export interface Service {
    *
    * If you set this, set `homeImageAlt` too: the card will not borrow
    * `imageAlt`, because that describes a different picture.
+   *
+   * No service uses this at present - the one that did turned out to have
+   * been given the wrong photo. Kept because the crop difference that
+   * motivated it is real, but treat it as untested against a live page.
    */
   homeImage?: ImageMetadata;
   homeImageAlt?: string;
@@ -94,6 +98,9 @@ export const SERVICES: Service[] = [
     title: "Volumes & Site Monitoring",
     description:
       "Accurate volume measurement and change tracking across the site.",
+    image: volumesAndSiteMonitoring,
+    imageAlt:
+      "A point cloud coloured by elevation, showing long stockpiles and the terraced benches cut into the ground beside them.",
     subServices: [
       {
         title: "Stockpile Volumes",
@@ -152,9 +159,6 @@ export const SERVICES: Service[] = [
     description: "3D data you can measure from, design with and share.",
     image: modelsAndPointClouds,
     imageAlt:
-      "A point cloud coloured by elevation, showing long stockpiles and the terraced benches cut into the ground beside them.",
-    homeImage: modelsAndPointCloudsHome,
-    homeImageAlt:
       "A classified point cloud of a housing estate from above, the roofs picked out from the surrounding vegetation by colour.",
     subServices: [
       {
