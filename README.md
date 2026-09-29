@@ -220,28 +220,45 @@ client previews the real, in-progress site - there's no separate staging URL for
 - **To launch for real:** delete the whole "Pre-launch gate" block in
   `public/.htaccess` (both directives), then redeploy.
 
-### Leftover WordPress files - OUTSTANDING
+### Leftover WordPress - OUTSTANDING, and not where this file said it was
 
-The first deploy landed on 21 Sept 2026. The new site serves correctly, but the old
-WordPress install is **still present and still executing PHP**, because the deploy only
-removes files it uploaded itself. Probed live after that deploy:
+**Correction, 29 Sept 2026.** Every earlier probe in this section was a false
+positive. They tested the apex domain and read status codes without reading
+bodies. The pre-launch gate rewrites any URL it does not recognise to
+`/maintenance/`, which returns **200** - so `/xmlrpc.php`, `/wp-json/`,
+`/readme.html`, `/license.txt` and every `wp-*.php` all "responded", each with
+the same 3,568-byte maintenance page. `public_html` is clean and has been.
+`/wp-admin/` returning 404 while everything around it returned 200 was the
+tell, and it was not followed up.
 
-| Path | Status |
-| ---- | ------ |
-| `/xmlrpc.php` | 200 - brute-force amplification and pingback DDoS surface |
-| `/readme.html` | 200 - discloses the WordPress version |
-| `/wp-json/` | 200 - REST API live, allows user enumeration |
-| `/wp-admin/` | 302 - login still reachable |
+**The install is real, but it lives on `staging.pixelsurveys.com.au`**, a
+separate subdomain with its own document root, which the deploy never touches
+and the pre-launch gate never covers. Probed 29 Sept 2026:
 
-Re-probed 29 Sept 2026, eight days on: `/xmlrpc.php`, `/readme.html` and `/wp-json/`
-are all still 200, and `/license.txt` is too. `/wp-admin/` now returns 404. Three of
-the four original findings are unchanged.
+| Path on staging | Status | |
+| ---- | ------ | ------ |
+| `/wp-login.php` | 200 | real WordPress login form, publicly reachable |
+| `/wp-json/` | 200 | REST API live, 432kB route index |
+| `/wp-json/wp/v2/` | 200 | core routes exposed |
+| `/readme.html` | 200 | discloses the version |
+| `/wp-cron.php` | 200 | |
+| `/license.txt` | 200 | |
+| `/wp-admin/` | 302 | redirects to the login form |
+| `/xmlrpc.php` | 405 | rejects GET; POST is the attack path |
+| `/` | 200 | masked by a maintenance-mode plugin |
 
-Nobody is patching this install any more, which is the worst state to leave one in.
-Delete from `public_html`: `wp-admin/`, `wp-content/`, `wp-includes/`, `wp-*.php`,
-`index.php`, `xmlrpc.php`, `readme.html`, `license.txt`. Leave everything else - the
-deployed site's files and `.htaccess` are separate. Re-run the probes above afterwards;
-all four should 404.
+WordPress 7.1.2, per the generator meta tag. The maintenance plugin only covers
+the front end - every file above bypasses it. Nobody is patching this, which is
+the worst state to leave an install in.
+
+**To close it:** cPanel > Domains, remove the `staging.pixelsurveys.com.au`
+subdomain, then File Manager and delete its document root folder - removing the
+subdomain does not always delete the files behind it. A full cPanel backup was
+taken 29 Sept 2026 before this, so the old site's content and media are
+recoverable from there if anyone wants them.
+
+Afterwards the whole table should fail to resolve. Probe the staging hostname,
+not the apex, and check response **bodies**, not just status codes.
 
 ## Checklist after each deploy
 
