@@ -1,14 +1,13 @@
-// Provenance, so it is clear which answers are safe to quote back to a client
-// and which are still ours:
+// Provenance: every answer here is the client's own words. They supplied a
+// first set of four on 29 Sept 2026, then replaced the whole FAQ with this
+// nine-question set the same day. Nothing in this file is ours any more - the
+// earlier placeholders on price, turnaround, datum and airspace are gone.
 //
-//   - The first four are the client's own words, supplied 29 Sept 2026, and
-//     are reproduced verbatim. "How accurate is drone survey data?" replaced
-//     an earlier placeholder of ours that claimed 20-30 mm vertical; the
-//     client's figures (30 mm horizontal, 50 mm vertical with PPK) supersede
-//     it and are the only accuracy numbers the site should carry.
-//   - The rest are placeholders written during the build. They commit the
-//     business to a price model, a turnaround, a datum and an airspace
-//     process that nobody has confirmed. See README "Before launch".
+// Two of those placeholders were not carried across and now have no answer on
+// the site at all: how long delivery takes, and flying near Adelaide Airport
+// or Parafield. Airspace is touched on under "What kinds of sites can you
+// survey?"; turnaround is not mentioned anywhere. Worth confirming that the
+// omission is deliberate before launch.
 
 export interface FaqItem {
   question: string;
@@ -21,7 +20,7 @@ export const FAQ_ITEMS: FaqItem[] = [
   {
     question: "What is drone surveying?",
     answer:
-      "A drone flies a planned route over your site, capturing hundreds of overlapping photos. The data is tied to a known coordinate system through GPS/GNSS positioning and surveyed ground control. The result is accurate data you can measure from, including contours, terrain models and volumes.",
+      "At its core, drone surveying turns aerial data into accurate, measurable information. A drone flies a planned route over your site using the appropriate capture method. The data is then processed and tied to a known coordinate system using GNSS positioning and surveyed ground control. The result is detailed data that can be measured and used to create contours, terrain models, volumes and other deliverables. Drone surveying can provide a quicker, more cost-effective and safer way to capture detailed site information, while creating data that can be used for a wider range of measurements and analysis.",
   },
   {
     question: "How accurate is drone survey data?",
@@ -29,41 +28,41 @@ export const FAQ_ITEMS: FaqItem[] = [
       "Accuracy depends on the equipment, survey method, site conditions and how the results are checked. With PPK positioning and appropriate ground control, drone surveys can typically achieve around 30 mm horizontal and 50 mm vertical accuracy. Results vary with terrain and ground cover.",
   },
   {
-    question: "Where in Australia do you work?",
-    answer:
-      "Pixel Surveys is Adelaide based, servicing projects across South Australia and interstate. Travel costs are calculated and included in your quote.",
-  },
-  {
     question: "Can drone surveying replace traditional surveying?",
     answer: [
       "For some topographic, volumetric and monitoring surveys, yes. Drone surveying can provide a quicker, more cost-effective and safer way to capture detailed site information. Drones can cover larger areas in less time while providing greater detail and new opportunities to analyse the data.",
       "However, drone surveying does not replace traditional surveying in every situation and never will. Boundary, cadastral and certified surveys require a licensed surveyor, while traditional methods may also be required where higher accuracy is needed.",
-      "We work closely with surveyors and engineers where required and will always recommend the most appropriate approach for the project, whether that involves drone data, traditional survey methods or a combination of both.",
+      "Pixel Surveys works closely with surveyors and engineers where required and will always recommend the most appropriate approach for the project, whether that involves drone data, traditional survey methods or a combination of both.",
     ],
+  },
+  {
+    question: "What kinds of sites can you survey?",
+    answer:
+      "Most sites can be surveyed, from small construction sites to large earthworks, quarries and development areas. Large areas can be covered efficiently, subject to airspace, site conditions and safety requirements. Additional approvals may be required near airports or in restricted airspace, and drone operations must comply with requirements around people and property.",
   },
   {
     question: "How much does a survey cost?",
     answer:
-      "It depends on site size, access and the deliverables. Send a boundary and a short brief and you get a fixed fee, not an hourly rate.",
+      "Costs vary depending on the site, required accuracy, capture method and deliverables. Drone surveying can be a cost-effective alternative to traditional ground or manned aerial surveying, particularly for large or difficult to access areas, stockpiles, volume measurements and regular site monitoring. Each project is quoted individually based on the work required.",
   },
   {
-    question: "How long until I get the files?",
+    question: "Can drones survey large areas?",
     answer:
-      "Most sites are processed and sent within three working days. Urgent volume checks can go back the same day if we fly early.",
+      "Drones can cover much larger areas than many people expect, with large projects divided into multiple flight operations where required. Low-level drone capture can provide greater detail and accuracy than manned aerial surveys in some situations, while also offering potential cost savings. The approach is tailored to the site, required data and project timeframe.",
   },
   {
     question: "Do you need access to the site?",
     answer:
-      "Yes. We need to place control marks and launch from a safe point. Inductions and site rules are no problem, just tell us what is required.",
+      "Yes, but site access is generally minimal compared with traditional ground surveying. Access may be required to place ground control, verify results and collect any required ground measurements. Some projects can be completed using existing elevation data without requiring a site visit.",
   },
   {
-    question: "Which coordinate system do you deliver in?",
+    question: "Can you provide data in our local site grid?",
     answer:
-      "MGA2020 by default, or your project grid. The transformation used is stated in the survey report.",
+      "Yes. Data can be supplied in your nominated coordinate system and height datum and can be tied into existing site control where required. Deliverables are provided in file formats suited to your software and workflow. If you’re unsure what you need, assistance is available to determine the appropriate format.",
   },
   {
-    question: "Can you fly near the airport?",
+    question: "Where in Australia do you work?",
     answer:
-      "Usually yes. Controlled airspace around Adelaide Airport and Parafield needs an approval, which we arrange before the flight.",
+      "Pixel Surveys is Adelaide based, servicing projects across South Australia and interstate. Travel costs are calculated and included in your quote.",
   },
 ];

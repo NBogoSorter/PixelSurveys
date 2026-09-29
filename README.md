@@ -152,15 +152,19 @@ be live when the site opens to the public.
       `CONTACT_PHONE_DIAL` (`+61461370270`) so they dial correctly either way. Worth
       asking which they want displayed. (The "Monitoring & Progress" sentence that used to trail
       off was replaced by the client's own copy on 26 Sept 2026.)
-- [ ] **Four FAQ answers are still ours and still unverified.** The client supplied
-      four of the nine on 29 Sept 2026, and `src/data/faq.ts` now records which is
-      which at the top of the file. Their *"How accurate is drone survey data?"*
-      replaced our 20-30 mm claim, so accuracy is settled - around 30 mm horizontal
-      and 50 mm vertical with PPK and ground control is now the only accuracy figure
-      the site carries. Still unconfirmed, and each one a commitment: a fixed-fee
-      rather than hourly price model, turnaround *"within three working days"*,
-      *"MGA2020 by default"*, and that controlled-airspace approvals near Adelaide
-      Airport and Parafield are arranged before the flight.
+- [x] ~~**FAQ answers making unverified commitments.**~~ Closed 29 Sept 2026. The
+      client replaced the entire FAQ with their own nine-question set, so nothing
+      in `src/data/faq.ts` is ours any more. The placeholders on price, turnaround,
+      datum and airspace are gone, and accuracy is settled at around 30 mm
+      horizontal and 50 mm vertical with PPK and ground control - the only accuracy
+      figure the site carries.
+- [ ] **The site no longer states a turnaround anywhere.** Our *"within three
+      working days"* placeholder was dropped in that rewrite and nothing replaced
+      it, so a visitor cannot find out how long delivery takes. Safer than an
+      unverified promise, but check the omission is deliberate rather than an
+      oversight. (The other dropped question, flying near Adelaide Airport and
+      Parafield, is at least partly covered under *"What kinds of sites can you
+      survey?"*.)
 - [ ] **The FAQ is the only page claiming interstate work.** The client's own answer
       to *"Where in Australia do you work?"* says *"across South Australia and
       interstate"*, while the hero reads *"Adelaide based. Servicing sites across
