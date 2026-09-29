@@ -7,6 +7,7 @@
 // browser stops overlong input before a round trip - the server still enforces
 // them, since nothing client-side is trustworthy.
 import ServiceTypeField from "./ServiceTypeField.astro";
+import ContactIcon from "./ContactIcon.astro";
 import {
   CONTACT_EMAIL,
   CONTACT_PHONE,
@@ -41,11 +42,17 @@ const Heading = headingLevel === 1 ? "h1" : "h2";
         <h3 class="reach-title">Contact Details</h3>
         <div class="contact">
           <div class="k">Email</div>
-          <a class="v link" href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
+          <a class="v link" href={`mailto:${CONTACT_EMAIL}`}>
+            <ContactIcon name="email" class="ico" />
+            <span>{CONTACT_EMAIL}</span>
+          </a>
         </div>
         <div class="contact">
           <div class="k">Phone</div>
-          <a class="v link" href={`tel:${CONTACT_PHONE_DIAL}`}>{CONTACT_PHONE}</a>
+          <a class="v link" href={`tel:${CONTACT_PHONE_DIAL}`}>
+            <ContactIcon name="phone" class="ico" />
+            <span>{CONTACT_PHONE}</span>
+          </a>
         </div>
       </div>
 
@@ -213,12 +220,30 @@ const Heading = headingLevel === 1 ? "h1" : "h2";
     margin-top: 4px;
     font-size: 16.5px;
     font-weight: 600;
+    /* inline-flex, not flex: these are links, and a block-level one would
+       stretch its hit area and hover underline across the whole column. */
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+  }
+
+  .contact .ico {
+    flex-shrink: 0;
+    width: 17px;
+    height: 17px;
+    /* Dimmer than the value itself so it reads as a marker, not as part of
+       the address. It brightens with the text on hover. */
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  .contact .v.link:hover .ico {
+    color: #fff;
   }
 
   /* White like the heading above, not the accent green these carried while
      the email was the only one of the pair styled as a link. The underline on
      hover is what marks them as clickable now. */
-  .contact .v.link:hover {
+  .contact .v.link:hover span {
     text-decoration: underline;
   }
 

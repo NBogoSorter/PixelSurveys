@@ -1,8 +1,12 @@
 ---
-// Design B from the FAQ layout exploration: accordion, one question open at
-// a time via native <details>/<summary>. Full-bleed panel, same pattern as
+// Design B from the FAQ layout exploration: accordion built on native
+// <details>/<summary>. Full-bleed panel, same pattern as
 // CapabilitiesOpenGrid/TrustBar - background spans the page, content stays
 // at the normal container width.
+//
+// Every row starts closed, so the section opens as a clean list of questions
+// with no answer previewed. Opening one does not close the others: that would
+// need name="faq" on the <details>, and nothing has asked for it.
 import { FAQ_ITEMS } from "../data/faq";
 ---
 
@@ -12,8 +16,8 @@ import { FAQ_ITEMS } from "../data/faq";
     <h2 class="heading">FAQs</h2>
 
     <div class="list">
-      {FAQ_ITEMS.map((item, index) => (
-        <details class="row" open={index === 0}>
+      {FAQ_ITEMS.map((item) => (
+        <details class="row">
           <summary class="header">
             <span class="q">{item.question}</span>
             <span class="chev" aria-hidden="true">

@@ -1,4 +1,5 @@
 ---
+import ContactIcon from "./ContactIcon.astro";
 import {
   CONTACT_EMAIL,
   CONTACT_PHONE,
@@ -33,13 +34,19 @@ const SITE_LINKS = [
       </p>
       <ul class="contact">
         <li>
-          <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
+          <a href={`mailto:${CONTACT_EMAIL}`}>
+            <ContactIcon name="email" class="ico" />
+            <span>{CONTACT_EMAIL}</span>
+          </a>
         </li>
         <li>
           {/* The dial string, not the display one: stripping spaces out of
               "+61 0461 370 270" leaves the trunk 0 in, which some handsets
               refuse to dial. */}
-          <a href={`tel:${CONTACT_PHONE_DIAL}`}>{CONTACT_PHONE}</a>
+          <a href={`tel:${CONTACT_PHONE_DIAL}`}>
+            <ContactIcon name="phone" class="ico" />
+            <span>{CONTACT_PHONE}</span>
+          </a>
         </li>
       </ul>
     </div>
@@ -118,11 +125,30 @@ const SITE_LINKS = [
   .contact a {
     font-size: 15.5px;
     color: rgba(255, 255, 255, 0.9);
+    /* inline-flex so the hit area hugs the text rather than the column. */
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
   }
 
+  .contact .ico {
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    color: rgba(255, 255, 255, 0.55);
+  }
+
+  /* The underline belongs on the text, not dragged under the icon. */
   .contact a:hover {
     color: #fff;
+  }
+
+  .contact a:hover span {
     text-decoration: underline;
+  }
+
+  .contact a:hover .ico {
+    color: #fff;
   }
 
   .col-title {
