@@ -131,7 +131,12 @@ const SITE_LINKS = [
     gap: 9px;
   }
 
-  .contact .ico {
+  /* :global on the .ico part, because that <svg> comes from ContactIcon and
+     therefore carries that component's scope attribute, not this one's. A
+     plain `.ico` here compiles to `.ico[data-astro-cid-<this>]` and matches
+     nothing - which is exactly how both icons shipped unstyled. The ancestor
+     is still scoped, so this does not leak beyond this component. */
+  .contact :global(.ico) {
     flex-shrink: 0;
     width: 16px;
     height: 16px;
@@ -147,7 +152,7 @@ const SITE_LINKS = [
     text-decoration: underline;
   }
 
-  .contact a:hover .ico {
+  .contact a:hover :global(.ico) {
     color: #fff;
   }
 
