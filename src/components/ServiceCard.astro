@@ -13,13 +13,21 @@ interface Props {
 }
 
 const { service } = Astro.props;
+
+// A service can carry a separate homepage photo. Where it does, the alt text
+// comes from homeImageAlt rather than falling back to imageAlt - that one
+// describes the services page photo, which is a different picture.
+const photo = service.homeImage ?? service.image;
+const photoAlt = service.homeImage
+  ? (service.homeImageAlt ?? "")
+  : (service.imageAlt ?? "");
 ---
 
 <article class="card">
-  {service.image ? (
+  {photo ? (
     <Image
-      src={service.image}
-      alt={service.imageAlt ?? ""}
+      src={photo}
+      alt={photoAlt}
       widths={[320, 480, 640]}
       sizes="(max-width: 520px) 100vw, (max-width: 860px) 50vw, 280px"
       class="band"

@@ -4,6 +4,7 @@ import type { ImageMetadata } from "astro";
 // astro:assets can resize and re-encode it at build time.
 import topographicSurveys from "../assets/services/topographic-surveys.png";
 import modelsAndPointClouds from "../assets/services/3d-models-and-point-clouds.png";
+import modelsAndPointCloudsHome from "../assets/services/3d-models-point-cloud-classified.png";
 
 export interface SubService {
   title: string;
@@ -30,6 +31,17 @@ export interface Service {
    */
   image?: ImageMetadata;
   imageAlt?: string;
+  /**
+   * Homepage card only, when that card should show a different photo from the
+   * services page. The two cards crop very differently - 4:3 here against 16:9
+   * there - so a shot that works in one can lose its subject in the other.
+   * Falls back to `image` when unset, which is what most services do.
+   *
+   * If you set this, set `homeImageAlt` too: the card will not borrow
+   * `imageAlt`, because that describes a different picture.
+   */
+  homeImage?: ImageMetadata;
+  homeImageAlt?: string;
   /**
    * What photo this card needs. Shown inside the placeholder while `image` is
    * undefined, so the site itself doubles as the shot list for the client.
@@ -137,6 +149,9 @@ export const SERVICES: Service[] = [
     image: modelsAndPointClouds,
     imageAlt:
       "A point cloud coloured by elevation, showing long stockpiles and the terraced benches cut into the ground beside them.",
+    homeImage: modelsAndPointCloudsHome,
+    homeImageAlt:
+      "A classified point cloud of a housing estate from above, the roofs picked out from the surrounding vegetation by colour.",
     subServices: [
       {
         title: "Point Clouds",
