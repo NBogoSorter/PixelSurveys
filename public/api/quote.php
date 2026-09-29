@@ -320,20 +320,17 @@ $serviceLabel = match (count($services)) {
     default => $services[0] . ' +' . (count($services) - 1) . ' more',
 };
 
-// TEMPORARY: "[Site Location]" and "[Quote Number]" are literal placeholder
-// text, not variables. The agreed subject format is
+// The agreed format was "Quote Request: [Service] - [Site Location] | [Quote
+// Number]", locked in before either of those two values existed. Both were
+// dropped on 29 Sept 2026 rather than built: the site location field had been
+// removed from the form at the client's request, and a reference number needs
+// either a locked counter file or a scheme that would not match the client's
+// own quote register anyway. Until then the subject carried both as literal
+// bracketed text, which would have reached real customers looking broken.
 //
-//     Quote Request: [Service] - [Site Location] | [Quote Number]
-//
-// but the form collects neither value yet: the site location field was
-// removed at the client's request, and no reference numbering exists. The
-// format is locked in now so the client can see it; the placeholders are
-// filled in when those two features are built.
-//
-// MUST NOT SHIP TO A LIVE, PUBLIC SITE. A real customer enquiry arriving
-// with "[Site Location]" in the subject reads as broken. See README.md,
-// "Before launch".
-$subject = $config['subject_prefix'] . ' ' . $serviceLabel . ' – [Site Location] | [Quote Number]';
+// The service name alone is enough to triage an inbox. Everything the form
+// collects is in the body below, and Reply-To is the sender.
+$subject = $config['subject_prefix'] . ' ' . $serviceLabel;
 
 $body = implode("\n", [
     'New quote request from the website',

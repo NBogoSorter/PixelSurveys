@@ -128,18 +128,16 @@ Deploys only upload changed files, and only ever delete files a previous deploy 
 Things that are fine while only the client is previewing behind the gate, but must not
 be live when the site opens to the public.
 
-- [ ] **The quote email subject contains literal placeholder text.** It currently reads
-      `Quote Request: <service> – [Site Location] | [Quote Number]`, where those two
-      bracketed strings are literal, not values. The agreed format was locked in before
-      either existed. To finish it:
-      - **Site location** - the field was removed from the form at the client's request,
-        so it needs adding back (a "Site location / suburb" input) before it can appear.
-      - **Quote number** - no reference numbering exists. Decide sequential (a locked
-        counter file outside the web root) versus stateless (date + random). Worth
-        labelling it a reference rather than a quote number unless it's meant to match
-        the client's actual quote register in their accounting system.
-      - Until both are done, a real customer enquiry arrives with `[Site Location]`
-        visible in the subject line.
+- [x] ~~**Literal placeholder text in the quote email subject.**~~ Closed 29 Sept
+      2026. The agreed format was `Quote Request: <service> – [Site Location] |
+      [Quote Number]`, locked in before either value existed, and both were
+      shipping as literal bracketed text. Both dropped rather than built: the site
+      location field had been taken out of the form at the client's request, and a
+      reference number needs either a locked counter file or a scheme that would
+      not line up with the client's own quote register. The subject is now
+      `Quote Request: <service>`. Everything the form collects is in the body, and
+      Reply-To is the sender, so nothing is lost. If a location or reference is
+      wanted later, add the form field first and the subject second.
 - [ ] **The hero and service cards have no real photos.** Every other slot on the
       main pages now carries the client's own words. The `imageBrief` field on each
       entry in `src/data/services.ts` doubles as the shot list. (Phone number
