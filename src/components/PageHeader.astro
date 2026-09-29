@@ -17,10 +17,6 @@ const { title, lede } = Astro.props;
 <style>
   .page-header {
     padding-block: 56px 32px;
-    /* Explicit rather than inherited from <body>: on /about/ the <main> behind
-       this is painted navy to close the gap above the footer, and without this
-       the heading would sit dark-on-navy. */
-    background: var(--color-bg);
   }
 
   .title {

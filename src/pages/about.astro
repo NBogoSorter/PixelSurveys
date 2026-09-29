@@ -9,16 +9,9 @@ import TrustBar from "../components/TrustBar.astro";
 import Base from "../layouts/Base.astro";
 ---
 
-{/* mainBackground: this page is short, and <main> has flex: 1 so it stretches
-    to fill a tall viewport. The leftover space sat below the navy TrustBar and
-    above the navy footer, showing the body's white as a band between two navy
-    blocks - only on screens taller than the content, which is why it reached
-    the client and not us. Painting <main> the same navy closes it. Same fix as
-    /contact/. The white sections above declare their own background. */}
 <Base
   title="About"
   description="Pixel Surveys provides accurate, innovative and practical drone survey data solutions for a wide range of projects across South Australia."
-  mainBackground="var(--color-ink)"
 >
   <PageHeader title="About Pixel Surveys" />
   <IntroSection />

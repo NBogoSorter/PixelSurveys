@@ -62,7 +62,11 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     flex-direction: column;
   }
 
-  main {
-    flex: 1;
-  }
+  /* <main> deliberately does not grow. It carried flex: 1, so on a viewport
+     taller than the content the leftover space opened up inside main, between
+     the page's last section and the footer - and it looked wrong whatever
+     colour it took. White read as a gap; painting it navy to match made the
+     last section look like it had doubled in height. SiteFooter takes the
+     growth instead, where the extra height lands below the copyright line and
+     reads as page padding. */
 </style>

@@ -83,6 +83,12 @@ const SITE_LINKS = [
   .footer {
     background: var(--color-ink);
     color: #fff;
+    /* Soaks up the leftover space on a page shorter than the viewport. <body>
+       is a flex column with min-height: 100vh and this is its last child, so
+       the extra height lands under the copyright rather than above the footer.
+       flex-grow rather than flex: 1, which would also set flex-basis to 0 and
+       leave the footer's height depending on min-height: auto to clamp it. */
+    flex-grow: 1;
   }
 
   .rule {

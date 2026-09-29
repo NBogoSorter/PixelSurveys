@@ -10,9 +10,10 @@ import ContactFormB from "../../components/ContactFormB.astro";
 import Base from "../../layouts/Base.astro";
 ---
 
-{/* mainBackground: this page is one navy panel, and <main> stretches to fill
-    the viewport. Without it, a tall screen shows white between the panel and
-    the navy footer. */}
+{/* mainBackground: belt and braces now. <main> no longer stretches - the
+    footer absorbs leftover space instead - so there is no gap for this to
+    cover. It is kept because this page's <main> is a single navy panel edge
+    to edge, so painting it the same navy cannot show up anywhere. */}
 <Base
   title="Contact"
   description="Request a quote for drone survey and aerial mapping services."
