@@ -1,5 +1,9 @@
 import type { ImageMetadata } from "astro";
 
+// Service card photography. Imported rather than referenced by path so
+// astro:assets can resize and re-encode it at build time.
+import topographicSurveys from "../assets/services/topographic-surveys.png";
+
 export interface SubService {
   title: string;
   /** One line on what the client actually receives. Client-supplied copy. */
@@ -42,6 +46,9 @@ export const SERVICES: Service[] = [
     title: "Topographic Surveys",
     description:
       "Topographic surveys including accurate ground levels, contours and surface models.",
+    image: topographicSurveys,
+    imageAlt:
+      "A triangulated surface model built from drone survey data, the mesh picking out a gully and the terrain either side of it.",
     subServices: [
       {
         title: "Site Levels & Contours",
