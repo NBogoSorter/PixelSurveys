@@ -1,4 +1,6 @@
 ---
+import HeroContours from "./HeroContours.astro";
+
 interface Props {
   title?: string;
   location?: string;
@@ -18,6 +20,9 @@ const {
     */}
   <div class="image" aria-hidden="true"></div>
   <div class="overlay" aria-hidden="true"></div>
+  {/* Sits above the overlay but below .content, and to the right of the
+      heading's 640px column, so it never runs under the type. */}
+  <HeroContours class="contours" />
 
   <div class="container content">
     <h1 class="heading">{title}</h1>
@@ -83,6 +88,24 @@ const {
     background: var(--color-hero-overlay);
   }
 
+  /* Deliberately taller than the hero: .hero clips it, so the lines run off
+     the top and bottom edges and read as a detail of a larger map rather than
+     a graphic that happens to fit. */
+  /* :global on .contours - that <svg> is HeroContours' root, so it does not
+     carry this component's scope attribute and a plain .contours rule would
+     match nothing. The .hero ancestor is still scoped, so this stays local. */
+  .hero :global(.contours) {
+    position: absolute;
+    top: 50%;
+    right: -3%;
+    transform: translateY(-50%);
+    height: 145%;
+    width: auto;
+    color: rgba(255, 255, 255, 0.38);
+    stroke-width: 1.25;
+    pointer-events: none;
+  }
+
   .content {
     position: relative;
     z-index: 1;
@@ -127,6 +150,14 @@ const {
     width: 100%;
     height: 90px;
     display: block;
+  }
+
+  /* Below this the heading reflows into the space the contours occupy, and a
+     line drawing behind the type costs more legibility than it adds. */
+  @media (max-width: 860px) {
+    .hero :global(.contours) {
+      display: none;
+    }
   }
 
   @media (max-width: 640px) {
