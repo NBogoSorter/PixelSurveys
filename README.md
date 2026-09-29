@@ -259,6 +259,21 @@ all four should 404.
 
 ## Checklist after each deploy
 
+Run against production 29 Sept 2026, behind the pre-launch gate. Everything
+below passed except the email delivery line, which needs a real submission and
+so has still never been tested end to end. Two things worth knowing:
+
+- **`http://www.` takes two redirect hops**, not one: it goes to `https://www.`
+  first and only then to the apex, because the HTTPS rule runs before the
+  canonical-host rule. Harmless, but one hop is free if the rules are merged.
+- **The custom 404 page is masked while the gate is active.** The status code is
+  correct - a missing URL returns 404 - but the body anyone without the preview
+  cookie sees is the maintenance page, because `ErrorDocument` re-enters as an
+  internal request that carries no `?preview=` query string. With the cookie the
+  real page renders. This resolves itself when the gate block is deleted; re-check
+  it then.
+
+
 - [ ] Pages load over HTTPS; `www.` and `http://` redirect to `https://pixelsurveys.com.au`
 - [ ] `/services`, `/about`, `/contact` load (with and without trailing slash)
 - [ ] A made-up URL shows the custom 404 page
