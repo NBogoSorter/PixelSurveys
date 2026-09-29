@@ -3,6 +3,7 @@ import type { ImageMetadata } from "astro";
 // Service card photography. Imported rather than referenced by path so
 // astro:assets can resize and re-encode it at build time.
 import topographicSurveys from "../assets/services/topographic-surveys.png";
+import modelsAndPointClouds from "../assets/services/3d-models-and-point-clouds.png";
 
 export interface SubService {
   title: string;
@@ -133,6 +134,9 @@ export const SERVICES: Service[] = [
   {
     title: "3D Models & Point Clouds",
     description: "3D data you can measure from, design with and share.",
+    image: modelsAndPointClouds,
+    imageAlt:
+      "A point cloud coloured by elevation, showing long stockpiles and the terraced benches cut into the ground beside them.",
     subServices: [
       {
         title: "Point Clouds",
