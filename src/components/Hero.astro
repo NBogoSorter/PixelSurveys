@@ -68,20 +68,19 @@ const {
     overflow: hidden;
   }
 
+  /* Still the slot the hero photo will occupy. Until then it is flat brand
+     navy, at the client's request - they gave 0c538dff, which is exactly
+     --color-ink, so this uses the token rather than repeating the hex. It
+     replaced a green-and-tan gradient stand-ing in for an aerial field. */
   .image {
     position: absolute;
     inset: 0;
-    /* Placeholder aerial-field gradient - replace with the real photo. */
-    background: linear-gradient(
-      115deg,
-      #4a7c3f 0%,
-      #5d8f4a 35%,
-      #7a9a5e 55%,
-      #c9bd8f 80%,
-      #d8cba0 100%
-    );
+    background: var(--color-ink);
   }
 
+  /* Inert while the background above is flat navy: 20% navy over solid navy
+     changes nothing. Kept because it is what holds the heading legible once
+     a photo goes in behind it, and that is easy to forget to re-add. */
   .overlay {
     position: absolute;
     inset: 0;
