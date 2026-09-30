@@ -1,30 +1,92 @@
 ---
+import logo from "../assets/logo.png";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteHeader from "../components/SiteHeader.astro";
+import { CONTACT_EMAIL, CONTACT_PHONE_DIAL } from "../data/contact-info";
+import { SERVICES } from "../data/services";
 import "../styles/global.css";
 
 interface Props {
   title?: string;
   description?: string;
   /**
-   * Colour behind <main>. It has flex: 1 so it grows to fill the viewport when
-   * a page's content is shorter than the screen. On a page ending in a
-   * full-bleed coloured section that leftover space shows the body's white
-   * through, as a band between that section and the footer - which is what
-   * /contact/ does on a tall monitor: one navy panel, then white, then the
-   * navy footer. Setting this to the section's colour closes the seam.
+   * Colour behind <main>. Only needed on a page whose last section is a
+   * full-bleed colour, where any gap between that section and the footer would
+   * show the body's white through. <main> no longer grows to fill a tall
+   * viewport - SiteFooter does - so this is belt and braces rather than a fix.
    */
   mainBackground?: string;
+  /**
+   * Keeps the page out of search results. For pages that exist only as the
+   * far side of an action - the form's thanks and error pages - which are thin
+   * by design and useless as a search result.
+   */
+  noindex?: boolean;
 }
 
 const {
   title,
   description = "Drone survey & aerial mapping services - orthomosaics, terrain models, point clouds and site analysis.",
   mainBackground,
+  noindex = false,
 } = Astro.props;
 
 const fullTitle = title ? `${title} | Pixel Surveys` : "Pixel Surveys";
 const canonical = new URL(Astro.url.pathname, Astro.site);
+
+/**
+ * LocalBusiness markup, the same block on every page and keyed by a stable @id
+ * so search engines treat it as one business rather than eight.
+ *
+ * It is invisible to visitors and exists to answer two questions a page's prose
+ * only implies: what kind of business this is, and where it operates. That is
+ * what a search like "drone survey Adelaide" is actually asking.
+ *
+ * areaServed says South Australia, matching the hero, the footer and the intro.
+ * The FAQ answer "Where in Australia do you work?" also says "and interstate",
+ * and the two have not been reconciled - see README. If interstate work is real,
+ * this field needs it too, or the markup will contradict the page it sits on.
+ *
+ * Deliberately absent: streetAddress, because nobody has supplied one and a
+ * service-area business does not need it; openingHours and priceRange, because
+ * guessing either would be inventing a commitment.
+ */
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "@id": new URL("/#business", Astro.site).href,
+  name: "Pixel Surveys",
+  description,
+  url: new URL("/", Astro.site).href,
+  logo: new URL(logo.src, Astro.site).href,
+  image: new URL(logo.src, Astro.site).href,
+  email: CONTACT_EMAIL,
+  telephone: CONTACT_PHONE_DIAL,
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Adelaide",
+    addressRegion: "SA",
+    addressCountry: "AU",
+  },
+  areaServed: {
+    "@type": "State",
+    name: "South Australia",
+  },
+  // Built from the same SERVICES array the pages render, so the catalogue
+  // cannot fall out of step with what the site actually advertises.
+  hasOfferCatalog: {
+    "@type": "OfferCatalog",
+    name: "Drone survey and mapping services",
+    itemListElement: SERVICES.map((service) => ({
+      "@type": "Offer",
+      itemOffered: {
+        "@type": "Service",
+        name: service.title,
+        description: service.description,
+      },
+    })),
+  },
+};
 ---
 
 <!doctype html>
@@ -35,6 +97,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
@@ -45,6 +108,12 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
         on the client supplying photography. Twitter falls back to "summary"
         rather than claiming a large image that doesn't exist. */}
     <meta name="twitter:card" content="summary" />
+    {/* is:inline is explicit: this is data for crawlers, not code to bundle. */}
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify(structuredData)}
+    ></script>
   </head>
   <body>
     <SiteHeader />

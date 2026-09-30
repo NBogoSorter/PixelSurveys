@@ -40,6 +40,14 @@ ErrorDocument 404 /404.html
   RewriteCond %{REQUEST_URI} !^/maintenance/
   RewriteCond %{REQUEST_URI} !^/_astro/
   RewriteCond %{REQUEST_URI} !^/api/
+  # robots.txt and the sitemaps are excluded so they serve as themselves rather
+  # than as the maintenance page. Without this a crawler asking for /robots.txt
+  # gets 3.5kB of HTML with a 200 and tries to parse it as crawl directives.
+  # Letting them through changes nothing about what is indexable: robots.txt
+  # governs crawling, and every real page still serves the noindex page until
+  # this block is deleted.
+  RewriteCond %{REQUEST_URI} !^/robots\.txt$
+  RewriteCond %{REQUEST_URI} !^/sitemap
   RewriteRule ^ /maintenance/ [L]
 </IfModule>
 

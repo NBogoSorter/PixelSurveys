@@ -1,0 +1,16 @@
+# Pixel Surveys
+# Everything on the site is meant to be crawled. The coming-soon page at
+# /maintenance/ is not: it carries its own noindex, and this keeps crawlers
+# off it in the first place.
+#
+# While the pre-launch gate in .htaccess is active, every other URL serves
+# that same noindex page regardless of what this file allows - robots.txt
+# governs crawling, the meta tag governs indexing. Nothing here needs
+# changing when the gate is removed.
+
+User-agent: *
+Allow: /
+Disallow: /maintenance/
+Disallow: /api/
+
+Sitemap: https://pixelsurveys.com.au/sitemap-index.xml
