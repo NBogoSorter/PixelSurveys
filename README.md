@@ -174,7 +174,8 @@ be live when the site opens to the public.
       rather than links, so nothing points at a 404. A service becomes a link the
       moment you give it an `href` in `src/data/services.ts` - add the page first.
       `python scripts/linkcheck.py dist` re-checks every internal link after a build.
-- [ ] **Remove the pre-launch gate itself** - see below.
+- [x] ~~**Remove the pre-launch gate itself.**~~ Done 30 Sept 2026 - the site is
+      public. See below.
 
 ## Search engines
 
@@ -211,40 +212,32 @@ Not a code task, and bigger than all of the above: **Google Business Profile**.
 The local pack for "drone survey Adelaide" is served from GBP, not from these
 pages. It is free and only the client can set it up.
 
-## Pre-launch gate
+## Pre-launch gate - REMOVED 30 Sept 2026
 
-Until the site is ready to go public, `public/.htaccess` shows everyone the "coming
-soon" page at `/maintenance/` instead of the real site. Whoever opens
-`https://pixelsurveys.com.au/?preview=<token>` once gets a cookie that unlocks the real
-site in that browser from then on; the plain domain still shows the maintenance page
-for everyone else, including search engines (it's marked `noindex`). This is how the
-client previews the real, in-progress site - there's no separate staging URL for that.
+The site is public. Until that date `public/.htaccess` served the "coming soon" page
+at `/maintenance/` to everyone without a preview cookie, and both directives that did
+it - the `RewriteCond`/`RewriteRule` block and the paired `Set-Cookie` header - are
+gone. The `?preview=` token no longer does anything, and a cookie anyone still holds
+from before is inert because nothing reads it.
 
-- **Send the client the `?preview=` link, not the plain domain**, while this is active.
-- **The current preview link is**
-  `https://pixelsurveys.com.au/?preview=qRWAlfZm5naV5SY5QjBp6X2b`
-- **The cookie is per browser and per device.** A laptop that has it does nothing for
-  the same person's phone, and Chrome having it does nothing for Safari. It is also
-  lost when an incognito window closes, or when site data is cleared. Each device
-  they want to view the site on has to open the token link once. It lasts 180 days.
-- **The symptom when a device lacks it is confusing**, and cost a round trip with the
-  client on 29 Sept 2026: they reported *"I can't see the footer."* `RewriteRule ^
-  /maintenance/ [L]` is an **internal rewrite, not a redirect**, so the address bar
-  still shows `/contact/` or whatever was requested while the maintenance page is
-  served - and that page is the only one in the build with no header and no footer.
-  Quickest way to confirm it: ask what the top of the page says. "Something new is
-  on the way" settles it.
-- **Anything that checks the live site has to carry the token**, including scripts.
-  A `curl` of the plain domain returns the maintenance page every time, so a
-  post-deploy check written against the bare URL will never see a change land and
-  will report a failure that isn't real.
-- The token lives in `public/.htaccess` and therefore in this repo, so treat it as
-  readable by anyone with repo access. That's acceptable for what it does - it keeps
-  an unfinished site out of public view, it doesn't protect anything sensitive. To
-  change it, replace it in **both** places in `public/.htaccess` (the `RewriteCond`
-  and the `Set-Cookie` header) - they have to match - then redeploy.
-- **To launch for real:** delete the whole "Pre-launch gate" block in
-  `public/.htaccess` (both directives), then redeploy.
+The page itself is still at `/maintenance/`. It carries `noindex` and is filtered out
+of the sitemap, so it costs nothing to keep, and it is there to put back in front of
+the site for a future maintenance window.
+
+Two things the gate was hiding, both of which should now behave normally and are worth
+re-checking once:
+
+- **The custom 404 page.** While the gate was up, a missing URL returned the correct
+  404 status but the maintenance page as its body, because `ErrorDocument` re-enters
+  as an internal request carrying no `?preview=`. It should now render the real
+  "Page not found" page with the header and footer.
+- **`/robots.txt` and the sitemaps.** These had two explicit exclusions in the gate so
+  they served as themselves rather than as HTML. Those exclusions went with the gate,
+  which is correct - with nothing rewriting, they serve as static files.
+
+**If the site ever needs taking offline again**, restore the block from this file's
+history rather than writing a new one - the version there already handles the
+`/_astro/`, `/api/`, `/robots.txt` and sitemap exclusions that are easy to forget.
 
 ### Leftover WordPress - OUTSTANDING, and not where this file said it was
 

@@ -22,33 +22,10 @@ ErrorDocument 404 /404.html
   RewriteRule ^wp-admin/?  / [L,R=301]
   RewriteRule ^wp-login\.php$ / [L,R=301]
 
-  # ---- Pre-launch gate ----
-  # Public visitors get the "coming soon" page at /maintenance/. Whoever
-  # opens https://pixelsurveys.com.au/?preview=qRWAlfZm5naV5SY5QjBp6X2b once
-  # gets a cookie that unlocks the real site on every visit after that -
-  # send that link to the client, not the plain domain.
-  #
-  # This token is a "keep the unfinished site out of public view" measure,
-  # not a secret - it lives in this repo, so anyone with repo access can
-  # read it. That's fine for what it does. To change it, edit both this
-  # line and the Set-Cookie line below; the two have to stay in sync.
-  #
-  # Delete this whole "Pre-launch gate" block (both directives) once the
-  # site is ready to go fully public.
-  RewriteCond %{HTTP_COOKIE} !preview_access=qRWAlfZm5naV5SY5QjBp6X2b
-  RewriteCond %{QUERY_STRING} !(^|&)preview=qRWAlfZm5naV5SY5QjBp6X2b(&|$)
-  RewriteCond %{REQUEST_URI} !^/maintenance/
-  RewriteCond %{REQUEST_URI} !^/_astro/
-  RewriteCond %{REQUEST_URI} !^/api/
-  # robots.txt and the sitemaps are excluded so they serve as themselves rather
-  # than as the maintenance page. Without this a crawler asking for /robots.txt
-  # gets 3.5kB of HTML with a 200 and tries to parse it as crawl directives.
-  # Letting them through changes nothing about what is indexable: robots.txt
-  # governs crawling, and every real page still serves the noindex page until
-  # this block is deleted.
-  RewriteCond %{REQUEST_URI} !^/robots\.txt$
-  RewriteCond %{REQUEST_URI} !^/sitemap
-  RewriteRule ^ /maintenance/ [L]
+  # The pre-launch gate that served /maintenance/ to everyone without a preview
+  # cookie was removed on 30 Sept 2026, when the site went public. The page
+  # itself is still at /maintenance/ - noindex, and kept out of the sitemap - so
+  # it can be put back in front of the site for a future maintenance window.
 </IfModule>
 
 <IfModule mod_headers.c>
@@ -66,10 +43,9 @@ ErrorDocument 404 /404.html
     Header set Cache-Control "no-cache"
   </FilesMatch>
 
-  # Part of the pre-launch gate above: arriving with the right ?preview=
-  # token sets the bypass cookie so it isn't needed on every visit. Keep
-  # the token here in sync with the one in the mod_rewrite block.
-  Header always set Set-Cookie "preview_access=qRWAlfZm5naV5SY5QjBp6X2b; Path=/; Max-Age=15552000; Secure; SameSite=Lax" "expr=%{QUERY_STRING} =~ /(^|&)preview=qRWAlfZm5naV5SY5QjBp6X2b(&|$)/"
+  # The Set-Cookie that paired with the pre-launch gate went with it on
+  # 30 Sept 2026. Anyone who still holds a preview_access cookie from before
+  # then is unaffected: nothing reads it any more.
 </IfModule>
 
 <IfModule mod_deflate.c>
