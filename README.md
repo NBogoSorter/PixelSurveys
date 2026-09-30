@@ -177,6 +177,37 @@ be live when the site opens to the public.
 - [x] ~~**Remove the pre-launch gate itself.**~~ Done 30 Sept 2026 - the site is
       public. See below.
 
+## Favicons
+
+`media/favicon-master.png` is the source, supplied by the client 30 Sept 2026.
+Everything in `public/` is generated from it:
+
+| File | Size | What wants it |
+| ---- | ---- | ------------- |
+| `favicon.ico` | 16, 32, 48 | browser tabs, bookmarks, Google's search results (48) |
+| `apple-touch-icon.png` | 180 | iOS home screen |
+| `icon-192.png` | 192 | Android, high-DPI tabs |
+| `icon-512.png` | 512 | anything wanting a large one |
+
+To change the icon, replace the master and re-run:
+
+```bash
+node scripts/make-favicons.mjs media/favicon-master.png
+```
+
+The outputs are committed, so an ordinary build does not run this.
+
+They are static files rather than `astro:assets` imports on purpose: browsers
+and crawlers request `/favicon.ico` whether or not a tag points at it, and a
+content-hashed filename would break that.
+
+`favicon.ico` holds three PNGs in an ICO container rather than raw bitmaps -
+smaller, and read by every browser since Vista. The packing is in the script.
+
+The links are declared in `src/layouts/Base.astro`, and repeated in
+`src/pages/maintenance.astro`, which owns its own `<head>` and so inherits
+nothing from Base.
+
 ## Search engines
 
 Three things generated at build time. None is visible to a visitor; all three

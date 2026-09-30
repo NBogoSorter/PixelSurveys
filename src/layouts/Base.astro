@@ -94,6 +94,13 @@ const structuredData = {
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    {/* Static files in public/, not astro:assets, because these need fixed
+        URLs: browsers and crawlers request /favicon.ico whether or not a tag
+        points at it, and a hashed filename would break that. Regenerate them
+        all from the master with scripts/make-favicons.mjs. */}
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />

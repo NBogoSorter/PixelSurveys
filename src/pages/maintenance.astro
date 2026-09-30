@@ -1,10 +1,14 @@
 ---
-// Public-facing "coming soon" page shown to everyone except whoever has the
-// preview-access cookie (set via public/.htaccess when someone visits with
-// ?preview=<token>). See the "Pre-launch gate" section in README.md.
+// "Coming soon" page. Dormant since the pre-launch gate was removed on
+// 30 Sept 2026 - nothing routes here any more, and it stays noindex and out of
+// the sitemap - but it is kept so the site can be put behind a gate again for a
+// maintenance window. See the "Pre-launch gate" section in README.md for how to
+// restore that.
 //
-// Deliberately NOT using layouts/Base.astro - no header/nav/footer, so a
-// gated visitor can't browse into the rest of the unfinished site from here.
+// Deliberately NOT using layouts/Base.astro - no header/nav/footer, so someone
+// held here can't browse into the rest of the site from it. That means this
+// page owns its own <head>, so anything added to Base has to be repeated here
+// if it should apply: the favicon links below are the only such thing so far.
 import { Image } from "astro:assets";
 import logo from "../assets/logo.png";
 import { CONTACT_EMAIL } from "../data/contact-info";
@@ -16,6 +20,9 @@ import "../styles/global.css";
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <title>Pixel Surveys</title>
     <meta
       name="description"
