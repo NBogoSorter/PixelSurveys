@@ -66,7 +66,7 @@ export const SERVICES: Service[] = [
       "Topographic surveys including accurate ground levels, contours and surface models.",
     image: topographicSurveys,
     imageAlt:
-      "A triangulated surface model built from drone survey data, the mesh picking out a gully and the terrain either side of it.",
+      "Contour lines drawn over aerial imagery of a cleared hillside, the labelled contours running from 150 up to 190.",
     subServices: [
       {
         title: "Site Levels & Contours",
