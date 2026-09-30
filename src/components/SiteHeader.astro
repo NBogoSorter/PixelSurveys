@@ -16,7 +16,7 @@ const NAV_LINKS = [
 const currentPath = Astro.url.pathname;
 ---
 
-<header class="header">
+<header class="header" data-header>
   <div class="container inner">
     <a href="/" class="logo" aria-label="Pixel Surveys home">
       <Image
@@ -29,7 +29,43 @@ const currentPath = Astro.url.pathname;
       />
     </a>
 
-    <nav aria-label="Main">
+    {/* Phone only, and only once the script below has run - see .has-js. */}
+    <button
+      type="button"
+      class="menu-toggle"
+      aria-expanded="false"
+      aria-controls="site-nav"
+      aria-label="Open menu"
+      data-menu-toggle
+    >
+      <svg
+        class="menu-icon icon-open"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        aria-hidden="true"
+      >
+        <path d="M4 7h16"></path>
+        <path d="M4 12h16"></path>
+        <path d="M4 17h16"></path>
+      </svg>
+      <svg
+        class="menu-icon icon-close"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        aria-hidden="true"
+      >
+        <path d="M6 6l12 12"></path>
+        <path d="M18 6l-12 12"></path>
+      </svg>
+    </button>
+
+    <nav class="nav" id="site-nav" aria-label="Main" data-site-nav>
       <ul class="nav-list">
         {NAV_LINKS.map((link) => (
           <li>
@@ -46,6 +82,57 @@ const currentPath = Astro.url.pathname;
     </nav>
   </div>
 </header>
+
+<script>
+  // Progressive enhancement. The markup ships with the nav visible and the
+  // button hidden, so a visitor without JavaScript gets the nav it has always
+  // had. Adding .has-js is what turns the phone layout into a menu button, so
+  // the collapsed state can never strand someone with no way to navigate.
+  const header = document.querySelector<HTMLElement>("[data-header]");
+  const toggle = header?.querySelector<HTMLButtonElement>("[data-menu-toggle]");
+  const nav = header?.querySelector<HTMLElement>("[data-site-nav]");
+
+  if (header && toggle && nav) {
+    header.classList.add("has-js");
+
+    const isOpen = () => toggle.getAttribute("aria-expanded") === "true";
+
+    const setOpen = (open: boolean) => {
+      nav.classList.toggle("is-open", open);
+      toggle.setAttribute("aria-expanded", String(open));
+      toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+    };
+
+    toggle.addEventListener("click", () => setOpen(!isOpen()));
+
+    // Escape returns focus to the button, otherwise it is left on a control
+    // that has just been hidden.
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && isOpen()) {
+        setOpen(false);
+        toggle.focus();
+      }
+    });
+
+    document.addEventListener("click", (event) => {
+      if (isOpen() && !header.contains(event.target as Node)) setOpen(false);
+    });
+
+    // Tapping a link that only moves within the page would otherwise leave the
+    // panel sitting open over the thing it just navigated to.
+    nav.addEventListener("click", (event) => {
+      if ((event.target as HTMLElement).closest("a")) setOpen(false);
+    });
+
+    // Rotating to landscape past the breakpoint would otherwise carry the open
+    // state into the desktop layout, where the button is not even visible.
+    window
+      .matchMedia("(min-width: 641px)")
+      .addEventListener("change", (event) => {
+        if (event.matches) setOpen(false);
+      });
+  }
+</script>
 
 <style>
   .header {
@@ -73,6 +160,40 @@ const currentPath = Astro.url.pathname;
   .logo-image {
     height: 40px;
     width: auto;
+  }
+
+  /* Hidden everywhere by default. The phone breakpoint shows it, and only
+     inside .has-js - see the script. */
+  .menu-toggle {
+    display: none;
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    background: transparent;
+    border: 2px solid var(--color-ink);
+    border-radius: 999px;
+    color: var(--color-ink);
+    cursor: pointer;
+  }
+
+  .menu-toggle:hover {
+    background: var(--color-ink);
+    color: #fff;
+  }
+
+  .menu-icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  /* One button, two glyphs, swapped off the state the button already
+     publishes to assistive technology rather than a second class. */
+  .menu-toggle[aria-expanded="false"] .icon-close,
+  .menu-toggle[aria-expanded="true"] .icon-open {
+    display: none;
   }
 
   .nav-list {
@@ -125,24 +246,64 @@ const currentPath = Astro.url.pathname;
 
   @media (max-width: 640px) {
     .inner {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 12px;
-      padding-block: 14px;
-    }
-
-    .nav-list {
-      gap: 8px 20px;
+      /* Logo and button share row one; the nav wraps to row two at full width
+         when it is open. */
+      flex-wrap: wrap;
+      padding-block: 12px;
     }
 
     .logo-image {
       height: 32px;
     }
 
-    /* The header stacks tall on phones; sticky would eat most of the
-       viewport, so it scrolls away instead. */
-    .header {
-      position: static;
+    .has-js .menu-toggle {
+      display: flex;
+    }
+
+    /* Collapsed only where the script is running. Without it this rule never
+       applies and the nav stays where it has always been. */
+    .has-js .nav {
+      display: none;
+      flex-basis: 100%;
+    }
+
+    .has-js .nav.is-open {
+      display: block;
+    }
+
+    /* Four items across a phone need about 371px and there are 342, which is
+       what used to drop the Contact button onto a line of its own. In the
+       panel they stack instead, so the width stops mattering. */
+    .nav-list {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0;
+      padding-top: 6px;
+      padding-bottom: 10px;
+    }
+
+    .nav-link {
+      display: block;
+      padding-block: 15px;
+      font-size: 16px;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    /* Solid rather than outlined: in a stacked panel an outlined pill reads as
+       one more row, and this is the row that should not. */
+    .nav-cta {
+      margin-top: 18px;
+      padding: 15px 22px;
+      border-color: transparent;
+      background: var(--color-ink);
+      color: #fff;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .nav-cta,
+    .nav-cta[aria-current="page"] {
+      border-bottom-color: transparent;
     }
   }
 </style>
