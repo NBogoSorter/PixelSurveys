@@ -100,7 +100,7 @@ export const SERVICES: Service[] = [
       "Accurate volume measurement and change tracking across the site.",
     image: volumesAndSiteMonitoring,
     imageAlt:
-      "A point cloud coloured by elevation, showing long stockpiles and the terraced benches cut into the ground beside them.",
+      "A triangulated surface model seen from a low angle, the mesh picking out a row of stockpiles rising from flat ground.",
     subServices: [
       {
         title: "Stockpile Volumes",
