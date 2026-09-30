@@ -1,14 +1,17 @@
 export const CONTACT_EMAIL = "info@pixelsurveys.com.au";
 
 /**
- * As the client wrote it, so the page shows their preferred format.
+ * Domestic format, which is what almost every visitor to an Adelaide survey
+ * firm's site is dialling from.
  *
- * Note it mixes conventions: "+61" is the international prefix, but the "0"
- * after it is the domestic trunk prefix, which is dropped when dialling from
- * outside Australia. Written strictly it would be either "0461 370 270"
- * (domestic) or "+61 461 370 270" (international), not both.
+ * It was "+61 0461 370 270" until 30 Sept 2026, which mixed conventions: the
+ * "+61" is the international prefix, but the "0" after it is the domestic
+ * trunk prefix, dropped when dialling from outside Australia. It was valid
+ * neither way round. Dropping the "+61" leaves a correct domestic number, and
+ * CONTACT_PHONE_DIAL below still carries the international form for tel:
+ * links, so an overseas caller tapping it also connects.
  */
-export const CONTACT_PHONE = "+61 0461 370 270";
+export const CONTACT_PHONE = "0461 370 270";
 
 /**
  * The same number in E.164, for `tel:` links. Kept separate because stripping

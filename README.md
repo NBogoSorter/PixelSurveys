@@ -143,19 +143,12 @@ be live when the site opens to the public.
       entry in `src/data/services.ts` doubles as the shot list. (Phone number
       supplied 28 Sept 2026; About page copy written 28 Sept 2026 - it renders the
       same `IntroSection` as the homepage, so the two cannot drift.)
-- [ ] **The phone number mixes dialling conventions.** The client gave it as
-      `+61 0461 370 270`: "+61" is the international prefix but the "0" after it is the
-      domestic trunk prefix, dropped when dialling from overseas. Strictly it is either
-      `0461 370 270` or `+61 461 370 270`. The page shows their version; `tel:` links use
-      `CONTACT_PHONE_DIAL` (`+61461370270`) so they dial correctly either way. Worth
-      asking which they want displayed. (The "Monitoring & Progress" sentence that used to trail
-      off was replaced by the client's own copy on 26 Sept 2026.)
-- [x] ~~**FAQ answers making unverified commitments.**~~ Closed 29 Sept 2026. The
-      client replaced the entire FAQ with their own nine-question set, so nothing
-      in `src/data/faq.ts` is ours any more. The placeholders on price, turnaround,
-      datum and airspace are gone, and accuracy is settled at around 30 mm
-      horizontal and 50 mm vertical with PPK and ground control - the only accuracy
-      figure the site carries.
+- [x] ~~**The phone number mixes dialling conventions.**~~ Closed 30 Sept 2026.
+      It read `+61 0461 370 270`, which was valid neither way: `+61` is the
+      international prefix and the `0` after it is the domestic trunk prefix,
+      dropped when dialling from overseas. The `+61` came off, leaving the correct
+      domestic `0461 370 270`. `tel:` links still use `CONTACT_PHONE_DIAL`
+      (`+61461370270`), so an overseas caller tapping the number still connects.
 - [ ] **The site no longer states a turnaround anywhere.** Our *"within three
       working days"* placeholder was dropped in that rewrite and nothing replaced
       it, so a visitor cannot find out how long delivery takes. Safer than an
