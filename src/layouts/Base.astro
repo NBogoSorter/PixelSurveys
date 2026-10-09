@@ -2,6 +2,7 @@
 import logo from "../assets/logo.png";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteHeader from "../components/SiteHeader.astro";
+import { GA_MEASUREMENT_ID } from "../data/analytics";
 import { CONTACT_EMAIL, CONTACT_PHONE_DIAL } from "../data/contact-info";
 import { SERVICES } from "../data/services";
 import "../styles/global.css";
@@ -92,6 +93,33 @@ const structuredData = {
 <!doctype html>
 <html lang="en">
   <head>
+    {/* Google tag (gtag.js), immediately after <head> where Google's own
+        instructions put it.
+
+        is:inline on both: Astro would otherwise bundle them as ES modules, and
+        gtag.js works through genuine globals on window.
+
+        set:html rather than define:vars, which looks like the tidier way to
+        pass the id and is not. define:vars wraps the body in an IIFE, which
+        scopes `function gtag` to that closure. Page views would still arrive,
+        because dataLayer is assigned to window explicitly - but window.gtag
+        would never exist, so the first gtag('event', ...) call added later,
+        for a form conversion say, would fail with nothing to show why. This
+        emits Google's snippet exactly as given. */}
+    <script
+      is:inline
+      async
+      src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}></script>
+    <script
+      is:inline
+      set:html={`
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', '${GA_MEASUREMENT_ID}');
+`}
+    ></script>
+
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     {/* Static files in public/, not astro:assets, because these need fixed
