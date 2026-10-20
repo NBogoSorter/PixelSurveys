@@ -79,7 +79,7 @@ export const SERVICES: Service[] = [
           "Feature detail extraction of assets and structures covering large areas.",
       },
       {
-        title: "Terrain & Surface Models (DTM)",
+        title: "Terrain & Surface Models (DTM & DSM)",
         description:
           "Bare-earth or full-surface elevation models for design and earthworks.",
       },

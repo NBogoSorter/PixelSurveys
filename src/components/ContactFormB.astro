@@ -32,23 +32,23 @@ const Heading = headingLevel === 1 ? "h1" : "h2";
     <div class="heading">
       <Heading>Get In Touch</Heading>
       <p>
-        Fill in the form, call or email for an obligation-free quote or to discuss
+        Fill in the form, call or email for a free quote or to discuss
         your project.
       </p>
     </div>
 
     <div class="split">
       <div class="reach">
-        <h3 class="reach-title">Contact Details</h3>
+        {/* No "Contact Details" heading and no "Email"/"Phone" labels: the
+            icons already say which is which, and the section sits directly
+            under a heading that has just asked the visitor to get in touch. */}
         <div class="contact">
-          <div class="k">Email</div>
           <a class="v link" href={`mailto:${CONTACT_EMAIL}`}>
             <ContactIcon name="email" class="ico" />
             <span>{CONTACT_EMAIL}</span>
           </a>
         </div>
         <div class="contact">
-          <div class="k">Phone</div>
           <a class="v link" href={`tel:${CONTACT_PHONE_DIAL}`}>
             <ContactIcon name="phone" class="ico" />
             <span>{CONTACT_PHONE}</span>
@@ -195,30 +195,12 @@ const Heading = headingLevel === 1 ? "h1" : "h2";
     align-items: start;
   }
 
-  .reach-title {
-    font-size: 13.5px;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.6);
-    margin-bottom: 18px;
-  }
-
   .contact {
-    margin-bottom: 20px;
-  }
-
-  .contact .k {
-    font-size: 12.5px;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.55);
+    margin-bottom: 16px;
   }
 
   .contact .v {
-    margin-top: 4px;
-    font-size: 16.5px;
+    font-size: 20px;
     font-weight: 600;
     /* inline-flex, not flex: these are links, and a block-level one would
        stretch its hit area and hover underline across the whole column. */

@@ -173,20 +173,24 @@ const currentPath = Astro.url.pathname;
     justify-content: center;
     padding: 0;
     background: transparent;
-    border: 2px solid var(--color-ink);
-    border-radius: 999px;
+    /* No outline. The 44px box stays, because that is the touch target - it
+       is just no longer drawn. */
+    border: none;
     color: var(--color-ink);
     cursor: pointer;
   }
 
+  /* Without a shape to fill, hover is a colour change on the glyph itself. */
   .menu-toggle:hover {
-    background: var(--color-ink);
-    color: #fff;
+    color: var(--color-accent);
   }
 
+  /* 24px rather than the 20px it was inside the outline. With the circle
+     gone the glyph is the only thing drawn, and at 20 it read as small and
+     lost in a 44px tap target. */
   .menu-icon {
-    width: 20px;
-    height: 20px;
+    width: 24px;
+    height: 24px;
   }
 
   /* One button, two glyphs, swapped off the state the button already

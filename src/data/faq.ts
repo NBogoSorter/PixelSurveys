@@ -31,7 +31,7 @@ export const FAQ_ITEMS: FaqItem[] = [
     question: "Can drone surveying replace traditional surveying?",
     answer: [
       "For some topographic, volumetric and monitoring surveys, yes. Drone surveying can provide a quicker, more cost-effective and safer way to capture detailed site information. Drones can cover larger areas in less time while providing greater detail and new opportunities to analyse the data.",
-      "However, drone surveying does not replace traditional surveying in every situation and never will. Boundary, cadastral and certified surveys require a licensed surveyor, while traditional methods may also be required where higher accuracy is needed.",
+      "However, drone surveying does not replace traditional surveying in every situation. Boundary, cadastral and certified surveys require a licensed surveyor, while traditional methods may also be required where higher accuracy is needed.",
       "Pixel Surveys works closely with surveyors and engineers where required and will always recommend the most appropriate approach for the project, whether that involves drone data, traditional survey methods or a combination of both.",
     ],
   },
