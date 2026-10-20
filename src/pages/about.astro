@@ -1,19 +1,263 @@
 ---
-// The two paragraphs here are the same ones the homepage opens with, so this
-// renders IntroSection rather than repeating the copy. One source means the
-// two pages cannot drift apart, and it already carries the "Capabilities
-// include" correction.
-import IntroSection from "../components/IntroSection.astro";
-import PageHeader from "../components/PageHeader.astro";
+// Option F5 from the About layout exploration: the skyline behind the
+// heading with no wash over it, body paragraphs at a single uniform weight,
+// and the client's last paragraph pulled onto a tinted band with the call to
+// action beside it.
+//
+// This page used to render IntroSection, repeating the homepage's two
+// paragraphs verbatim. The client supplied its own copy on 20 Oct 2026, so
+// the two pages no longer say the same thing.
+import { Image } from "astro:assets";
+
+import aboutImage from "../assets/about-adelaide-avenue.jpg";
 import TrustBar from "../components/TrustBar.astro";
 import Base from "../layouts/Base.astro";
+
+/**
+ * Supporting photos, shown between the copy and the closing band.
+ *
+ * Empty until the client supplies them, and the grid below does not render
+ * while it is - a dashed placeholder box was fine on the services page while
+ * the site sat behind the pre-launch gate, but this page is public and an
+ * empty frame reads as broken rather than as pending.
+ *
+ * To add them: put the files in src/assets/, import them here and push
+ * { src, alt } objects. Two is the layout; one would sit at half width.
+ *
+ * The brief, from the client's chosen design: one of the team or equipment
+ * on site, one of a finished deliverable.
+ */
+const PHOTOS: { src: ImageMetadata; alt: string }[] = [];
 ---
 
 <Base
   title="About"
-  description="Pixel Surveys provides accurate, innovative and practical drone survey data solutions for a wide range of projects across South Australia."
+  description="Pixel Surveys combines professional surveying knowledge with drone technology to deliver accurate, practical spatial data. Based in Adelaide, South Australia."
 >
-  <PageHeader title="About Pixel Surveys" />
-  <IntroSection />
+  <section class="masthead">
+    {/* No overlay, at the client's request. The title sits low and left over
+        the shadowed avenue rather than the bright sky, and carries its own
+        shadow - see the note on .masthead-title. */}
+    <Image
+      src={aboutImage}
+      alt=""
+      width={1920}
+      widths={[768, 1200, 1600, 1920]}
+      sizes="100vw"
+      loading="eager"
+      fetchpriority="high"
+      class="masthead-image"
+    />
+    <div class="container masthead-inner">
+      <h1 class="masthead-title">About Pixel Surveys</h1>
+    </div>
+  </section>
+
+  <section class="body">
+    <div class="container">
+      <p class="para">
+        Pixel Surveys combines professional surveying knowledge with drone
+        technology to deliver accurate, practical spatial data for a wide range
+        of projects. Based in Adelaide, South Australia, Pixel Surveys works
+        with clients across the state and interstate, providing data solutions
+        customised to each project.
+      </p>
+      <p class="para">
+        With experience in surveying, drone operations and spatial data
+        processing, Pixel Surveys understands the importance of reliable
+        information that can be used confidently for planning, design,
+        measurement and monitoring. Each project is approached with attention to
+        detail, an understanding of surveying principles and a focus on
+        delivering useful, fit for purpose data.
+      </p>
+      <p class="para">
+        Drone technology provides an efficient way to capture detailed
+        information across large areas, complex sites and locations that can be
+        difficult to access using traditional methods. From aerial imagery and
+        terrain models to point clouds, volume calculations and repeat site
+        monitoring, data can be delivered in formats suited to each
+        project&rsquo;s requirements and existing workflows.
+      </p>
+
+      {PHOTOS.length > 0 && (
+        <div class="photos">
+          {PHOTOS.map((photo) => (
+            <Image
+              src={photo.src}
+              alt={photo.alt}
+              width={760}
+              widths={[380, 560, 760]}
+              sizes="(max-width: 760px) 100vw, 46vw"
+              class="photo"
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  </section>
+
+  <section class="closing">
+    <div class="container closing-inner">
+      <p class="closing-text">
+        Pixel Surveys is committed to providing a reliable service built around
+        technical expertise, clear communication and a detailed understanding of
+        each project&rsquo;s needs.
+      </p>
+      <a href="/contact/" class="cta">
+        <span>Get in touch</span>
+        <svg
+          class="cta-icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.4"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M5 12h14" />
+          <path d="M13 6l6 6l-6 6" />
+        </svg>
+      </a>
+    </div>
+  </section>
+
   <TrustBar />
 </Base>
+
+<style>
+  .masthead {
+    position: relative;
+    min-height: 300px;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+  }
+
+  .masthead-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* The avenue and its shadowed foreground sit below the skyline in a
+       2.8:1 frame. Favouring the lower half keeps the title off the bright
+       sky, which is what makes it readable without a wash over the photo. */
+    object-position: center 55%;
+  }
+
+  .masthead-inner {
+    position: relative;
+    padding-bottom: 34px;
+  }
+
+  /* Two shadows, not one: the tight one gives the letterforms an edge, the
+     wide one darkens the area behind them. Without a wash over the image
+     this pair is the only thing holding the title legible, so it is heavier
+     than the hero's. */
+  .masthead-title {
+    color: #fff;
+    font-size: clamp(32px, 5vw, 48px);
+    font-weight: 700;
+    text-wrap: balance;
+    text-shadow:
+      0 2px 6px rgb(8 40 68 / 85%),
+      0 6px 28px rgb(8 40 68 / 70%);
+  }
+
+  .body {
+    padding-block: 48px 8px;
+  }
+
+  .para {
+    max-width: 70ch;
+    font-size: 16.5px;
+    line-height: 1.75;
+    color: var(--color-text-muted);
+  }
+
+  /* Uniform weight and size throughout - the client asked for no emphasis on
+     the opening paragraph, so the only separation between them is space. */
+  .para + .para {
+    margin-top: 20px;
+  }
+
+  .photos {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+    margin-top: 34px;
+  }
+
+  .photo {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+  }
+
+  .closing {
+    background: var(--color-surface);
+    margin-top: 44px;
+    padding-block: 36px;
+  }
+
+  .closing-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 48px;
+  }
+
+  .closing-text {
+    max-width: 52ch;
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 1.6;
+    color: var(--color-ink);
+  }
+
+  .cta {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px 30px;
+    background: var(--color-ink);
+    border-radius: 999px;
+    color: #fff;
+    font-size: 13.5px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .cta:hover {
+    background: var(--color-accent);
+  }
+
+  .cta-icon {
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+  }
+
+  @media (max-width: 760px) {
+    .masthead {
+      min-height: 220px;
+    }
+
+    .photos {
+      grid-template-columns: 1fr;
+    }
+
+    /* Stacked, the button sits under the sentence it belongs to rather than
+       stretching across the page. */
+    .closing-inner {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 24px;
+    }
+  }
+</style>
