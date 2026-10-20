@@ -199,11 +199,14 @@ const Heading = headingLevel === 1 ? "h1" : "h2";
   }
 
   /* The details get an edge of their own rather than sitting as loose text
-     beside a bordered card. Black at 12% over the panel's navy rather than a
-     second hard-coded blue, so it still works if --color-ink ever moves. */
+     beside a bordered card. Tone alone draws that edge - the white outline
+     this had was doing a job the fill can do by itself, and the client did
+     not want the line. 16% rather than the 12% it sat at with the border,
+     since the fill is now the only thing defining the box.
+     Black over the panel's navy rather than a second hard-coded blue, so it
+     still works if --color-ink ever moves. */
   .reach {
-    background: rgb(0 0 0 / 12%);
-    border: 1px solid rgba(255, 255, 255, 0.22);
+    background: rgb(0 0 0 / 16%);
     padding: 28px;
   }
 
