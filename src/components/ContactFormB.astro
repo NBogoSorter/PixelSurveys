@@ -190,17 +190,33 @@ const Heading = headingLevel === 1 ? "h1" : "h2";
 
   .split {
     display: grid;
-    grid-template-columns: 260px 1fr;
+    /* 360px, not the 260 it was. At 20px the email needed about 290px, so it
+       was wrapping or pressing on the edge of its column with only 40px
+       between it and the card - which is what read as crowded. */
+    grid-template-columns: 360px 1fr;
     gap: 40px;
     align-items: start;
   }
 
+  /* The details get an edge of their own rather than sitting as loose text
+     beside a bordered card. Black at 12% over the panel's navy rather than a
+     second hard-coded blue, so it still works if --color-ink ever moves. */
+  .reach {
+    background: rgb(0 0 0 / 12%);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    padding: 28px;
+  }
+
   .contact {
-    margin-bottom: 16px;
+    margin-bottom: 22px;
+  }
+
+  .contact:last-child {
+    margin-bottom: 0;
   }
 
   .contact .v {
-    font-size: 20px;
+    font-size: 19px;
     font-weight: 600;
     /* inline-flex, not flex: these are links, and a block-level one would
        stretch its hit area and hover underline across the whole column. */
@@ -216,8 +232,8 @@ const Heading = headingLevel === 1 ? "h1" : "h2";
      is still scoped, so this does not leak beyond this component. */
   .contact :global(.ico) {
     flex-shrink: 0;
-    width: 17px;
-    height: 17px;
+    width: 19px;
+    height: 19px;
     /* Dimmer than the value itself so it reads as a marker, not as part of
        the address. It brightens with the text on hover. */
     color: rgba(255, 255, 255, 0.6);
@@ -362,6 +378,12 @@ const Heading = headingLevel === 1 ? "h1" : "h2";
     .split,
     .row2 {
       grid-template-columns: 1fr;
+    }
+
+    /* Stacked, the panel is full width and does not need to defend a column,
+       so it gives the padding back to the text. */
+    .reach {
+      padding: 22px;
     }
   }
 </style>
