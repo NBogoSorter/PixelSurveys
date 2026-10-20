@@ -1,5 +1,7 @@
 ---
-import HeroContours from "./HeroContours.astro";
+import { Image } from "astro:assets";
+
+import heroImage from "../assets/hero-adelaide-skyline.jpg";
 
 interface Props {
   title?: string;
@@ -13,16 +15,20 @@ const {
 ---
 
 <section class="hero">
-  {/*
-      Placeholder background - swap for the real aerial/drone photo.
-      Put it in src/assets/ and render it here with astro:assets <Image>
-      (class="image", object-fit: cover) in place of this div.
-    */}
-  <div class="image" aria-hidden="true"></div>
+  {/* width caps the variant that lands in src=: without it Astro emits one
+      at the source's full 3291px, which nothing in the srcset would choose
+      but which ships on every deploy. */}
+  <Image
+    src={heroImage}
+    alt=""
+    width={1920}
+    widths={[768, 1200, 1600, 1920]}
+    sizes="100vw"
+    loading="eager"
+    fetchpriority="high"
+    class="image"
+  />
   <div class="overlay" aria-hidden="true"></div>
-  {/* Sits above the overlay but below .content, and to the right of the
-      heading's 640px column, so it never runs under the type. */}
-  <HeroContours class="contours" />
 
   <div class="container content">
     <h1 class="heading">{title}</h1>
@@ -68,41 +74,26 @@ const {
     overflow: hidden;
   }
 
-  /* Still the slot the hero photo will occupy. Until then it is flat brand
-     navy, at the client's request - they gave 0c538dff, which is exactly
-     --color-ink, so this uses the token rather than repeating the hex. It
-     replaced a green-and-tan gradient stand-ing in for an aerial field. */
+  /* The hero photo, filling the band. It was flat navy standing in for this
+     until the client supplied the skyline on 20 Oct 2026. */
   .image {
     position: absolute;
     inset: 0;
-    background: var(--color-ink);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* The skyline sits in the upper third of a 3.36:1 frame, so a centred
+       crop loses it on a tall hero. Favour the top. */
+    object-position: center 32%;
   }
 
-  /* Inert while the background above is flat navy: 20% navy over solid navy
-     changes nothing. Kept because it is what holds the heading legible once
-     a photo goes in behind it, and that is easy to forget to re-add. */
+  /* Load-bearing again now there is a photo behind it. The heading is large
+     enough to carry on its own, but the 15px location line underneath is not
+     - that is what this is for, together with the text shadows below. */
   .overlay {
     position: absolute;
     inset: 0;
     background: var(--color-hero-overlay);
-  }
-
-  /* Deliberately taller than the hero: .hero clips it, so the lines run off
-     the top and bottom edges and read as a detail of a larger map rather than
-     a graphic that happens to fit. */
-  /* :global on .contours - that <svg> is HeroContours' root, so it does not
-     carry this component's scope attribute and a plain .contours rule would
-     match nothing. The .hero ancestor is still scoped, so this stays local. */
-  .hero :global(.contours) {
-    position: absolute;
-    top: 50%;
-    right: -3%;
-    transform: translateY(-50%);
-    height: 145%;
-    width: auto;
-    color: rgba(255, 255, 255, 0.38);
-    stroke-width: 1.25;
-    pointer-events: none;
   }
 
   .content {
@@ -149,14 +140,6 @@ const {
     width: 100%;
     height: 90px;
     display: block;
-  }
-
-  /* Below this the heading reflows into the space the contours occupy, and a
-     line drawing behind the type costs more legibility than it adds. */
-  @media (max-width: 860px) {
-    .hero :global(.contours) {
-      display: none;
-    }
   }
 
   @media (max-width: 640px) {
