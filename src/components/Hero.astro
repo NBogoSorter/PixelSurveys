@@ -28,7 +28,6 @@ const {
     fetchpriority="high"
     class="image"
   />
-  <div class="overlay" aria-hidden="true"></div>
 
   <div class="container content">
     <h1 class="heading">{title}</h1>
@@ -87,14 +86,9 @@ const {
     object-position: center 32%;
   }
 
-  /* Load-bearing again now there is a photo behind it. The heading is large
-     enough to carry on its own, but the 15px location line underneath is not
-     - that is what this is for, together with the text shadows below. */
-  .overlay {
-    position: absolute;
-    inset: 0;
-    background: var(--color-hero-overlay);
-  }
+  /* No tint over the photo - the client wants it at full strength. The text
+     shadows on the heading and location line are all that separate them from
+     it now. */
 
   .content {
     position: relative;
