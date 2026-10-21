@@ -117,6 +117,17 @@ const AREAS: { name: string; description: string; regions?: string[] }[] = [
         </g>
       </svg>
     </div>
+
+    {/* Acknowledgement of Country, under the map with no label - option P2
+        from the About layout exploration, as the client edited it on
+        21 Oct 2026. It replaces the band of its own that sat between the
+        trust bar and the footer. Wording is the client's. */}
+    <p class="acknowledgement">
+      Pixel Surveys acknowledges the Kaurna people as the Traditional Owners
+      of the Adelaide Plains, and the Traditional Owners of all the lands on
+      which we work. We recognise their continuing connection to Country,
+      land and waters, and pay our respects to Elders past and present.
+    </p>
   </div>
 
   <ul class="areas">
@@ -177,6 +188,13 @@ const AREAS: { name: string; description: string; regions?: string[] }[] = [
     display: block;
     width: 87.89%;
     height: auto;
+  }
+
+  .acknowledgement {
+    margin-top: 24px;
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--color-text-muted);
   }
 
   /* Stronger than --color-border on purpose: these rules are the rows'
