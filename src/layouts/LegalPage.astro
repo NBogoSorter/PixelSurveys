@@ -1,0 +1,120 @@
+---
+// Shared shell for /privacy/ and /terms/: a plain heading, the date the text
+// was last changed, and the client's text in one readable column. No hero or
+// accordions - legal text should be easy to read in full, link into and print.
+import Base from "./Base.astro";
+
+interface Props {
+  title: string;
+  description: string;
+  /** ISO date (YYYY-MM-DD) the client last revised the text. Omitted when
+      the client's text does not state one - never filled in with a guess. */
+  updated?: string;
+}
+
+const { title, description, updated } = Astro.props;
+
+// Formatted at build time in the client's own style ("16 October 2026").
+// timeZone: UTC because a bare ISO date parses as UTC midnight, and formatting
+// it in a timezone behind UTC would show the day before.
+const updatedLabel = updated
+  ? new Date(updated).toLocaleDateString("en-AU", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+      timeZone: "UTC",
+    })
+  : undefined;
+---
+
+<Base title={title} description={description}>
+  <article class="legal">
+    <div class="container">
+      <header class="legal-header">
+        <h1 class="title">{title}</h1>
+        {updated && (
+          <p class="updated">
+            Last updated: <time datetime={updated}>{updatedLabel}</time>
+          </p>
+        )}
+      </header>
+      <div class="prose">
+        <slot />
+      </div>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .legal {
+    padding-block: 56px 80px;
+  }
+
+  .legal-header {
+    padding-bottom: 28px;
+    margin-bottom: 8px;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .title {
+    font-size: clamp(34px, 5vw, 46px);
+    font-weight: 700;
+    color: var(--color-ink);
+  }
+
+  .updated {
+    margin-top: 10px;
+    font-size: 15px;
+    color: var(--color-text-muted);
+  }
+
+  .prose {
+    max-width: 72ch;
+  }
+
+  /* :global throughout - the headings, paragraphs and lists are written in
+     the page that fills the slot, so they carry that page's scope attribute,
+     not this layout's. The .prose ancestor keeps it from leaking. */
+  .prose :global(h2) {
+    margin-top: 36px;
+    font-size: 21px;
+    font-weight: 700;
+    color: var(--color-ink);
+  }
+
+  .prose :global(p),
+  .prose :global(ul) {
+    margin-top: 12px;
+    font-size: 16.5px;
+    line-height: 1.75;
+    color: var(--color-text-muted);
+  }
+
+  .prose :global(ul) {
+    padding-left: 22px;
+  }
+
+  .prose :global(li + li) {
+    margin-top: 8px;
+  }
+
+  .prose :global(strong) {
+    font-weight: 600;
+    color: var(--color-ink);
+  }
+
+  .prose :global(a) {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .prose :global(a:hover) {
+    color: var(--color-ink);
+  }
+
+  /* The closing contact block: name, email and phone on their own lines. */
+  .prose :global(.contact-block) {
+    line-height: 1.9;
+  }
+</style>

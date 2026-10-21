@@ -158,6 +158,13 @@ const Heading = headingLevel === 1 ? "h1" : "h2";
             <p class="status" role="status" aria-live="polite" data-quote-status>
             </p>
           </div>
+          {/* The collection notice, at the point of collection. It points at
+              the policy rather than summarising it, so it can't promise
+              anything narrower than what the policy actually says. */}
+          <p class="privacy-note">
+            How we handle your details is set out in our{" "}
+            <a href="/privacy/">Privacy Policy</a>.
+          </p>
         </form>
       </div>
     </div>
@@ -375,6 +382,22 @@ const Heading = headingLevel === 1 ? "h1" : "h2";
   .status[data-state="error"] {
     color: #b3432f;
     font-weight: 600;
+  }
+
+  .privacy-note {
+    margin: 0;
+    font-size: 14px;
+    color: var(--color-text-muted);
+  }
+
+  .privacy-note a {
+    color: var(--color-ink);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .privacy-note a:hover {
+    color: var(--color-accent);
   }
 
   @media (max-width: 760px) {

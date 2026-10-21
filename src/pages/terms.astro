@@ -1,0 +1,245 @@
+---
+// The client's Terms and Conditions, supplied 21 Oct 2026. Wording changes go
+// back to the client rather than being made here.
+//
+// Changed from the supplied text on 21 Oct 2026, at the client's request: the
+// opening no longer reads "trading as Pixel Surveys" after the ABN, and the
+// contact email is the site's own inbox, CONTACT_EMAIL, not the contact@
+// address the draft gave.
+//
+// No "Last updated" line: the client's text does not give a date for this
+// one, and LegalPage leaves it out rather than showing an invented one. Pass
+// updated="YYYY-MM-DD" once the client supplies it.
+import {
+  CONTACT_EMAIL,
+  CONTACT_PHONE,
+  CONTACT_PHONE_DIAL,
+} from "../data/contact-info";
+import LegalPage from "../layouts/LegalPage.astro";
+---
+
+<LegalPage
+  title="Terms and Conditions"
+  description="The terms that apply to drone surveying, aerial imagery, mapping and spatial data services provided by Pixel Surveys."
+>
+  <h2>General</h2>
+  <p>
+    These Terms apply to services provided by Pixel Surveys
+    ABN: 57 734 170 338, to the client. By accepting a quote in writing or
+    instructing Pixel Surveys to proceed, the Client agrees to these Terms and
+    to the scope, deliverables, fees and conditions in the accepted quote. Where
+    a quote contains conditions differing from these Terms, the quote
+    conditions apply to those services.
+  </p>
+
+  <h2>Services and scope of work</h2>
+  <p>
+    Pixel Surveys provides drone surveying, aerial imagery, mapping, spatial
+    data processing and related services as specified in the accepted quote,
+    which outlines the scope, deliverables, formats, fees and estimated
+    timeframes.
+  </p>
+  <p>
+    Work outside that scope, including additional processing, revised
+    deliverables or changed requirements, may incur additional fees and affect
+    delivery dates, and will be agreed before proceeding. The Client must
+    advise the intended use of the data, required coordinate system, datum,
+    accuracy requirements and file formats before work begins.
+  </p>
+
+  <h2>Site access and client responsibilities</h2>
+  <p>
+    The Client must provide accurate project information, arrange agreed site
+    access, and disclose relevant hazards, restrictions, site conditions and
+    induction requirements before attendance. The Client is responsible for
+    any landowner permissions or site access approvals allocated to them in the
+    quote; Pixel Surveys arranges the operational approvals required for its
+    drone operations.
+  </p>
+  <p>
+    Where access is unavailable, conditions differ materially from those
+    described, or work cannot proceed safely or lawfully, Pixel Surveys may
+    postpone, modify or cancel the work, and additional costs may be charged
+    where agreed or permitted under the booking terms.
+  </p>
+
+  <h2>Weather, safety and cancellations</h2>
+  <p>
+    Drone operations depend on suitable weather, visibility, airspace, site
+    conditions and regulatory requirements. Pixel Surveys determines whether
+    conditions are suitable for safe operations and acceptable data collection,
+    and may reschedule or agree an alternative arrangement where weather,
+    safety, airspace restrictions or circumstances beyond its reasonable
+    control prevent work proceeding.
+  </p>
+  <p>
+    Client cancellations or rescheduling may incur charges for work completed,
+    preparation, travel, accommodation and other reasonable costs incurred.
+    Applicable cancellation fees, notice periods and booking conditions are set
+    out in the quote or booking confirmation before the Client commits.
+  </p>
+
+  <h2>Accuracy and limitations</h2>
+  <p>
+    Accuracy, quality and coverage depend on equipment, survey method, ground
+    control, terrain, vegetation, weather and site conditions. The accuracy
+    achieved is recorded in the delivery report issued with the deliverables,
+    and that figure governs what the data may be relied upon for, in place of
+    any figure published on the Pixel Surveys website or stated in general
+    correspondence.
+  </p>
+  <p>
+    Deliverables are supplied for the purpose agreed in the quote. Aerial
+    imagery and photogrammetry represent visible surfaces; vegetation,
+    buildings, water and other obstructions may prevent the underlying ground
+    being measured directly, so some surfaces or elevations may be interpolated
+    or less reliable.
+  </p>
+  <p>
+    Where the services rely on data supplied by the Client, including design
+    surfaces, survey control or existing survey data, the Client warrants it is
+    accurate, complete and correctly referenced to the stated coordinate system
+    and datum. Pixel Surveys may rely on it without independent verification.
+  </p>
+  <p>
+    These services do not constitute a cadastral or boundary survey and do not
+    replace work that must legally be undertaken or certified by a registered
+    surveyor. They are not a substitute for specialist engineering,
+    geotechnical, environmental or other professional advice unless expressly
+    included in the agreed scope. The Client is responsible for ensuring the
+    deliverables suit their intended use and for obtaining any further survey
+    or professional verification required.
+  </p>
+
+  <h2>Fees and payment</h2>
+  <p>
+    Fees, payment dates and applicable expenses are set out in the quote or
+    invoice. Unless otherwise agreed, invoices are payable within 14 days of
+    issue. All fees are in Australian dollars, with GST shown separately where
+    applicable.
+  </p>
+  <p>
+    Additional expenses, including travel, accommodation, third-party data and
+    approval fees, will be identified in the quote or agreed with the Client
+    before being incurred, where practicable. Overdue payments may result in
+    work being suspended or deliverables withheld until outstanding amounts are
+    paid, subject to applicable law.
+  </p>
+  <p>
+    Where the services relate to construction work, claims for payment may be
+    made under the Building and Construction Industry Security of Payment Act
+    2009 (SA), and nothing in these Terms limits either party's rights under
+    that Act.
+  </p>
+
+  <h2>Deliverables and intellectual property</h2>
+  <p>
+    Unless otherwise agreed in writing, Pixel Surveys retains intellectual
+    property rights in its pre-existing materials, methods, workflows,
+    templates and processing techniques. Once full payment is received, the
+    Client is granted a licence to use the supplied deliverables for the
+    project and purpose specified in the accepted quote; use for other
+    projects, resale or broader redistribution may require written permission.
+  </p>
+  <p>
+    Deliverables are provided in the agreed formats and coordinate system, and
+    additional conversions, revisions or reprocessing outside the original
+    scope may incur additional fees. The Client is responsible for retaining
+    copies of delivered files, and any ongoing hosting, viewer access or
+    long-term storage is subject to the arrangements in the quote.
+  </p>
+
+  <h2>Privacy and confidentiality</h2>
+  <p>
+    Pixel Surveys takes reasonable steps to protect confidential project
+    information and handles personal information in accordance with applicable
+    privacy obligations and the{" "}
+    <a href="/privacy/">Pixel Surveys Privacy Policy</a>. Aerial data
+    collection may incidentally capture people, vehicles, buildings or
+    adjoining properties, and such information is handled accordingly.
+    Information may be disclosed where necessary to deliver the services, to
+    authorised project participants, or where required by law.
+  </p>
+  <p>
+    Unless the Client advises otherwise in writing before work commences, Pixel
+    Surveys may refer to the Client as a client and use project imagery and
+    data in its portfolio, website and marketing material. Confidential
+    information, pricing and commercially sensitive detail will not be
+    disclosed, and individuals and adjoining private property will be
+    de-identified where reasonably practicable.
+  </p>
+
+  <h2>Liability and client use</h2>
+  <p>
+    Pixel Surveys performs its services with reasonable care and skill. The
+    Client is responsible for providing accurate information and for decisions
+    made using the deliverables, including ensuring they are appropriate for
+    the intended purpose, and must notify Pixel Surveys in writing of any
+    defect within 6 months of delivery.
+  </p>
+  <p>
+    Pixel Surveys is not responsible for errors arising from inaccurate or
+    incomplete information supplied by the Client, unauthorised alterations to
+    deliverables, or use outside the agreed scope or stated limitations, to the
+    extent permitted by law.
+  </p>
+  <p>
+    To the extent permitted by law, Pixel Surveys' total liability arising from
+    or in connection with the services, however arising, is limited to the
+    fees paid for those services. Pixel Surveys is not liable for indirect or
+    consequential loss, including loss of profits, revenue, production,
+    contract, goodwill or data, delay or rework costs, or the cost of material
+    moved or not moved.
+  </p>
+  <p>
+    Nothing in these Terms excludes or restricts any consumer guarantee, right
+    or remedy that cannot legally be excluded under the Australian Consumer Law
+    or other applicable legislation. Where liability for breach of such a
+    guarantee cannot be excluded, it is limited to re-supplying the affected
+    services or paying the reasonable cost of having them re-supplied.
+  </p>
+  <p>
+    Pixel Surveys holds Public Liability and Professional Indemnity insurance.
+    Certificates of currency are available on request.
+  </p>
+
+  <h2>Delays, suspension and termination</h2>
+  <p>
+    Estimated timeframes may be affected by weather, site access, approvals,
+    equipment issues or other circumstances beyond reasonable control, and
+    Pixel Surveys will communicate material delays where practicable.
+  </p>
+  <p>
+    Either party may terminate where the other materially breaches the
+    agreement and fails to remedy it within a reasonable period after written
+    notice. Pixel Surveys may suspend or discontinue work where payment remains
+    overdue, necessary instructions or access are not provided, or continuing
+    would be unsafe or unlawful. The Client remains responsible for fees for
+    work completed and agreed costs incurred up to termination.
+  </p>
+
+  <h2>Disputes and general</h2>
+  <p>
+    Both parties will make reasonable efforts to resolve disputes through
+    discussion and good-faith negotiation. Where a dispute is not resolved
+    within a reasonable period, either party may refer it to mediation by a
+    single mediator with costs shared equally, the mediator nominated by the
+    Resolution Institute if the parties cannot agree. This does not prevent
+    either party seeking urgent relief or exercising rights under applicable
+    legislation.
+  </p>
+  <p>
+    Amendments to the agreed scope or these Terms must be recorded in writing.
+    If any provision is unenforceable, the remaining provisions continue to
+    apply to the extent permitted by law. These Terms are governed by the laws
+    of South Australia, subject to applicable Australian law.
+  </p>
+
+  <h2>Contact</h2>
+  <p class="contact-block">
+    Pixel Surveys<br />
+    Email:{" "}
+    <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a><br />
+    Phone: <a href={`tel:${CONTACT_PHONE_DIAL}`}>{CONTACT_PHONE}</a>
+  </p>
+</LegalPage>
