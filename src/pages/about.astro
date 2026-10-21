@@ -10,6 +10,7 @@
 import { Image } from "astro:assets";
 
 import aboutImage from "../assets/about-adelaide-avenue.jpg";
+import CoverageSection from "../components/CoverageSection.astro";
 import TrustBar from "../components/TrustBar.astro";
 import Base from "../layouts/Base.astro";
 
@@ -93,6 +94,14 @@ const PHOTOS: { src: ImageMetadata; alt: string }[] = [];
           ))}
         </div>
       )}
+
+      {/* Option N5 from the About layout exploration, added under the
+          client's copy on 21 Oct 2026. A wrapper because CoverageSection's
+          root carries that component's scope, not this page's - see the
+          :global note in SiteFooter. */}
+      <div class="coverage-wrap">
+        <CoverageSection />
+      </div>
     </div>
   </section>
 
@@ -215,6 +224,10 @@ const PHOTOS: { src: ImageMetadata; alt: string }[] = [];
     height: auto;
     aspect-ratio: 16 / 10;
     object-fit: cover;
+  }
+
+  .coverage-wrap {
+    margin-top: var(--space-section);
   }
 
   .closing {
