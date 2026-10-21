@@ -12,7 +12,9 @@ const { showCta = true } = Astro.props;
 
 <section class="section">
   <div class="container wide">
-    <h2 class="heading">Our Services</h2>
+    <h2 class="heading">
+      <a href="/services/" class="heading-link">Our Services</a>
+    </h2>
 
     <div class="grid">
       {SERVICES.map((service) => (
@@ -42,6 +44,19 @@ const { showCta = true } = Astro.props;
     color: var(--color-ink);
     margin-bottom: var(--space-heading);
     text-wrap: balance;
+  }
+
+  /* Matches the service titles' links in ServiceCard: no underline, just the
+     colour easing from navy to teal. */
+  .heading-link {
+    color: inherit;
+    transition: color 0.2s ease;
+  }
+
+  .heading-link:hover,
+  .heading-link:focus-visible,
+  .heading-link:active {
+    color: var(--color-accent);
   }
 
   /* Wider than the page's usual 1200px column, so the four category names sit
