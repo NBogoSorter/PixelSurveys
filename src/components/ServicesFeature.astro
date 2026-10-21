@@ -122,7 +122,9 @@ import { SERVICES } from "../data/services";
 
 <style>
   .section {
-    padding-block: 8px 80px;
+    /* Bottom padding as well as top: this is the page's last section, so
+       nothing after it owns the gap above the footer. */
+    padding-block: 8px var(--space-section);
   }
 
   .grid {

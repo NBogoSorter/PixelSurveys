@@ -33,8 +33,12 @@
 </section>
 
 <style>
+  /* Top only - the next section owns the gap below (see --space-section in
+     global.css). 56px rather than the token: the hero's wave already puts
+     90px of curve above this, so a full section gap on top of it would
+     strand the intro far from the hero it follows. */
   .section {
-    padding-block: 56px 80px;
+    padding-top: 56px;
   }
 
   .grid {

@@ -32,6 +32,26 @@
   --font-sans: "Poppins", system-ui, sans-serif;
 
   --container-width: 1200px;
+
+  /* Vertical spacing. Three values, so the page has one rhythm instead of a
+     number picked per component.
+
+     --space-section is the gap between two white sections. Each section owns
+     only the space ABOVE it (padding-top), never below, so a gap is never
+     the sum of two components' guesses - that is how "Our Services" to
+     "Industries & Applications" reached 136px while the gap above it was 104.
+     The one exception is a page's last section, which pads its bottom too
+     because there is no next section to do it.
+
+     --space-band is the padding inside a full-bleed coloured band (FAQ,
+     contact). A band brings its own background, so it needs less air than
+     the gap between two sections that share the white page.
+
+     Both scale with the viewport: the desktop value is the max, and phones
+     get the min - a 96px gap on a 390px screen is a quarter of the view. */
+  --space-section: clamp(64px, 8vw, 96px);
+  --space-band: clamp(48px, 6vw, 64px);
+  --space-heading: 28px; /* section heading to the content under it */
 }
 
 * {
