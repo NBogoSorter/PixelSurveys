@@ -122,30 +122,15 @@ const AREAS: { name: string; description: string; regions?: string[] }[] = [
   <ul class="areas">
     {AREAS.map((area) => (
       <li class="area">
-        <svg
-          class="pin"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.8"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          aria-hidden="true"
-        >
-          <path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z" />
-          <circle cx="12" cy="9.5" r="2.5" />
-        </svg>
-        <div class="area-body">
-          <h3 class="area-name">{area.name}</h3>
-          <p class="area-desc">{area.description}</p>
-          {area.regions && (
-            <ul class="regions" aria-label={`Regions covered from ${area.name}`}>
-              {area.regions.map((region) => (
-                <li class="region">{region}</li>
-              ))}
-            </ul>
-          )}
-        </div>
+        <h3 class="area-name">{area.name}</h3>
+        <p class="area-desc">{area.description}</p>
+        {area.regions && (
+          <ul class="regions" aria-label={`Regions covered from ${area.name}`}>
+            {area.regions.map((region) => (
+              <li class="region">{region}</li>
+            ))}
+          </ul>
+        )}
       </li>
     ))}
   </ul>
@@ -203,22 +188,11 @@ const AREAS: { name: string; description: string; regions?: string[] }[] = [
     border-top: 1px solid #b9d0d2;
   }
 
+  /* No pin in front of each name - removed at the client's request on
+     21 Oct 2026, so the names line up with the rule above them. */
   .area {
-    display: flex;
-    gap: 16px;
     padding-block: 22px;
     border-bottom: 1px solid #b9d0d2;
-  }
-
-  .pin {
-    flex-shrink: 0;
-    width: 22px;
-    height: 22px;
-    color: var(--color-ink);
-  }
-
-  .area-body {
-    min-width: 0;
   }
 
   .area-name {
