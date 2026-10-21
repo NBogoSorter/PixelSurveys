@@ -128,7 +128,27 @@ const PHOTOS: { src: ImageMetadata; alt: string }[] = [];
 <style>
   .masthead {
     position: relative;
-    min-height: 300px;
+    /* min-height, not height: the box still grows to fit the title if it
+       ever needs more room than this gives it (overflow: hidden below would
+       otherwise clip it). The value is vw-based, not a flat px number, which
+       is what the flat 300px here used to be and why the photo read as too
+       zoomed in on a wide desktop.
+
+       object-fit: cover scales the photo to the viewport's width, then crops
+       whatever height is left over. A fixed-px band crops a near-constant
+       NUMBER of pixels off the top and bottom regardless of viewport width -
+       so as the viewport gets wider, the photo is scaled up more, and that
+       same pixel crop throws away a growing share of its height. At 1920px
+       the old 300px band showed under half the photo; at 2560px, a third.
+
+       27.3vw holds the band at the same proportion of viewport width - and
+       so the same proportion of the photo's height - at every size: it is
+       300/1100, the band height over the viewport width of the mockup this
+       was designed against, so it reproduces that crop rather than a
+       tighter one. The floor keeps phones from losing the photo to a sliver;
+       the ceiling keeps an ultrawide monitor from turning this into a
+       banner far taller than a page header should be. */
+    min-height: clamp(220px, 27.3vw, 460px);
     display: flex;
     align-items: flex-end;
     overflow: hidden;
@@ -244,10 +264,6 @@ const PHOTOS: { src: ImageMetadata; alt: string }[] = [];
   }
 
   @media (max-width: 760px) {
-    .masthead {
-      min-height: 220px;
-    }
-
     .photos {
       grid-template-columns: 1fr;
     }
