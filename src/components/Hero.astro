@@ -1,7 +1,7 @@
 ---
 import { Image } from "astro:assets";
 
-import heroImage from "../assets/hero-adelaide-skyline.jpg";
+import heroImage from "../assets/hero-adelaide-parklands.jpg";
 
 interface Props {
   title?: string;
@@ -16,7 +16,7 @@ const {
 
 <section class="hero">
   {/* width caps the variant that lands in src=: without it Astro emits one
-      at the source's full 3291px, which nothing in the srcset would choose
+      at the source's full 4000px, which nothing in the srcset would choose
       but which ships on every deploy. */}
   <Image
     src={heroImage}
@@ -73,17 +73,22 @@ const {
     overflow: hidden;
   }
 
-  /* The hero photo, filling the band. It was flat navy standing in for this
-     until the client supplied the skyline on 20 Oct 2026. */
+  /* The hero photo, filling the band: the city skyline across the parklands,
+     supplied by the client on 21 Oct 2026, replacing the 20 Oct panorama. */
   .image {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    /* The skyline sits in the upper third of a 3.36:1 frame, so a centred
-       crop loses it on a tall hero. Favour the top. */
-    object-position: center 32%;
+    /* Favour the lower part of a 16:9 frame. The skyline sits at its middle
+       and the sun glare in its top-left corner is the brightest thing in it -
+       exactly where the white title sits. Cropping from the top pushes the
+       glare out of the band, lifts the skyline above the title and puts the
+       title over the darker treeline, which is what keeps it readable with
+       no wash. 60% was tried first: at 1280px the first line still sat on
+       the glare, and at 1920px the title ran across the buildings. */
+    object-position: center 80%;
   }
 
   /* No tint over the photo - the client wants it at full strength. The text
@@ -103,7 +108,14 @@ const {
     line-height: 1.25;
     max-width: 640px;
     text-wrap: balance;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    /* The About masthead title's pair, for the same reason: with no wash on
+       the photo these shadows are all that hold the title off the sky. The
+       tight one edges the letterforms, the wide one darkens behind them. The
+       old single 20% shadow was set when there was still a tint over the
+       photo, and left the first line faint against the pale horizon. */
+    text-shadow:
+      0 2px 6px rgb(8 40 68 / 85%),
+      0 6px 28px rgb(8 40 68 / 70%);
   }
 
   /* Sits straight on the image - no panel behind it - so the shadow is doing
@@ -139,6 +151,14 @@ const {
   @media (max-width: 640px) {
     .hero {
       min-height: 420px;
+    }
+
+    /* On a phone the band is taller than the photo is wide, so cover crops
+       the sides, not the top - the vertical position above does nothing
+       here. Shift right instead, off the glare on the left and onto the
+       bluer sky and the towers. */
+    .image {
+      object-position: 70% center;
     }
 
     .content {
