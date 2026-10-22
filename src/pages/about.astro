@@ -1,6 +1,6 @@
 ---
-// Option F5 from the About layout exploration: the skyline behind the
-// heading with no wash over it, body paragraphs at a single uniform weight,
+// Option F5 from the About layout exploration: a photo behind the heading
+// with no wash over it (the parklands aerial since 22 Oct 2026), body paragraphs at a single uniform weight,
 // and the client's last paragraph pulled onto a tinted band with the call to
 // action beside it.
 //
@@ -9,7 +9,7 @@
 // the two pages no longer say the same thing.
 import { Image } from "astro:assets";
 
-import aboutImage from "../assets/about-adelaide-avenue.jpg";
+import aboutImage from "../assets/about-parklands-aerial.jpg";
 import CoverageSection from "../components/CoverageSection.astro";
 import TrustBar from "../components/TrustBar.astro";
 import Base from "../layouts/Base.astro";
@@ -37,7 +37,7 @@ const PHOTOS: { src: ImageMetadata; alt: string }[] = [];
 >
   <section class="masthead">
     {/* No overlay, at the client's request. The title sits low and left over
-        the shadowed avenue rather than the bright sky, and carries its own
+        the green of the park rather than the bright sky, and carries its own
         shadow - see the note on .masthead-title. */}
     <Image
       src={aboutImage}
@@ -140,9 +140,9 @@ const PHOTOS: { src: ImageMetadata; alt: string }[] = [];
        was 27.3vw (300/1100, the band height over the viewport width of the
        mockup this was designed against), clamped 220px to 460px. The client
        asked for a smaller band on 22 Oct 2026, so it is now 20vw, clamped
-       180px to 340px: about 26% shorter, and showing a little over half the
-       photo's height between 900px and 1700px wide instead of three
-       quarters. The floor keeps phones from losing the photo to a sliver;
+       180px to 340px: about 26% shorter. With the 16:9 parklands photo that
+       went in the same day, the band shows about 36% of the photo's height
+       between 900px and 1700px wide. The floor keeps phones from losing the photo to a sliver;
        the ceiling keeps an ultrawide monitor from turning this into a
        banner far taller than a page header should be. */
     min-height: clamp(180px, 20vw, 340px);
@@ -157,19 +157,17 @@ const PHOTOS: { src: ImageMetadata; alt: string }[] = [];
     width: 100%;
     height: 100%;
     object-fit: cover;
-    /* The avenue and its shadowed foreground sit below the skyline in a
-       2.8:1 frame. Favouring the lower half keeps the title off the bright
-       sky, which is what makes it readable without a wash over the photo.
-       The shorter 20vw band still works at 55%: at 1280px the strip shown
-       runs from about 24% to 80% of the photo's height, the sky ends around
-       14%, and the title lands at roughly 60-72% - over the dark trees either
-       side of the avenue. Below 900px the band sits on its 180px floor,
-       which shows a growing share of the photo's height as the viewport
-       narrows; below about 500px (180 / 0.357, the photo being 2.8:1) the
-       floor is taller than the photo's own aspect, so cover crops the sides
-       instead and the whole height shows, the title still over the
-       shadowed foreground. */
-    object-position: center 55%;
+    /* The parklands aerial, supplied 22 Oct 2026 in place of the avenue
+       shot: a 16:9 frame with sky over its top third, the treeline and
+       grandstand at about 35-45% of its height, and open park below. 45%
+       takes the strip from about 29% to 65% at 1280px - a band of sky, the
+       treeline across the top and the park behind the title, which sits at
+       roughly 53-60%, on green rather than sky. That and the shadow pair on
+       .masthead-title are what keep it readable without a wash. Below 900px
+       the band sits on its 180px floor, which shows a growing share of the
+       photo's height as the viewport narrows - on a phone nearly all of it,
+       title still on the park. */
+    object-position: center 45%;
   }
 
   .masthead-inner {
