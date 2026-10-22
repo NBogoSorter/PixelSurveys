@@ -82,7 +82,10 @@ const LEGAL_LINKS = [
   </div>
 
   <div class="container bottom">
-    <p class="copyright">&copy; {year} Pixel Surveys</p>
+    {/* The name drops out on phones - see the note on .copyright-name. */}
+    <p class="copyright">
+      &copy; {year}<span class="copyright-name"> Pixel Surveys</span>
+    </p>
     <nav aria-label="Legal">
       <ul class="legal">
         {LEGAL_LINKS.map((link) => (
@@ -255,6 +258,32 @@ const LEGAL_LINKS = [
   @media (max-width: 460px) {
     .inner {
       grid-template-columns: 1fr;
+    }
+  }
+
+  /* Copyright and both legal links on one line on a phone, at the client's
+     request. Measured on the page in Poppins, the full set ran to 345px at
+     13px before gaps - wider than the 342px a 390px phone has inside its
+     gutters, and well past the 312px of a 360px one. Dropping the name from
+     the copyright is what makes it fit: the name already heads this footer
+     in bold, so the line loses nothing a reader needs. Narrower than any
+     current phone, the bar still wraps rather than overflowing. */
+  @media (max-width: 640px) {
+    .bottom {
+      gap: 8px 14px;
+    }
+
+    .copyright,
+    .legal a {
+      font-size: 13px;
+    }
+
+    .legal {
+      gap: 6px 14px;
+    }
+
+    .copyright-name {
+      display: none;
     }
   }
 </style>
