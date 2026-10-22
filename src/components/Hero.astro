@@ -27,17 +27,18 @@ const {
       sizes is not simply 100vw, because the band is not always as wide as
       the photo is drawn. object-fit: cover fills the band's HEIGHT too, so
       where the band is tall for its width the 16:9 photo is drawn wider
-      than the screen and cropped at the sides: a 420px phone band draws it
-      747px wide (420 x 16/9), and the 520px desktop floor draws it 925px
-      wide below 925px. Telling the browser 100vw there made a phone fetch a
-      file half the size it was drawn at - enlarged ~1.9x. Re-derive these
-      two numbers if the photo is ever swapped for one of another shape. */}
+      than the screen and cropped at the sides: the ~300px phone band draws
+      it about 540px wide (300 x 16/9) on screens narrower than that. On
+      desktop the band is always shallow enough that the photo is drawn at
+      the screen's width. Telling the browser 100vw there made a phone fetch a
+      file half the size it was drawn at - enlarged ~1.9x. Re-derive this
+      number if the band's phone height or the photo's shape changes. */}
   <Image
     src={heroImage}
     alt=""
     width={1920}
     widths={[768, 1200, 1600, 1920, 2560, 3200, 3840]}
-    sizes="(max-width: 640px) 747px, (max-width: 924px) 925px, 100vw"
+    sizes="(max-width: 540px) 540px, 100vw"
     loading="eager"
     fetchpriority="high"
     class="image"
@@ -69,14 +70,15 @@ const {
 <style>
   .hero {
     position: relative;
-    /* 520px up to a 1280px screen - the height the client signed off on -
-       then growing with the viewport (40.6vw is 520/1280) to 680px. A flat
-       520px on a wide monitor left a thin strip of a 16:9 photo: 48% of its
-       height at 1920px and 36% at 2560px, which reads as zoomed in and
-       stretched sideways. Scaling holds the crop closer to what a laptop
-       sees; the 680px ceiling stops it eating the whole first screen. The
-       phone height is set in the 640px block below. */
-    min-height: clamp(520px, 40.6vw, 680px);
+    /* A quarter taller than the About and Services banners (PageMasthead,
+       20vw clamped 180-340px) at every width: 320px on a 1280px laptop,
+       growing with the viewport to 420px. It was a 520-680px block, which
+       the client found too big for a banner on 22 Oct 2026 - they asked for
+       it to be just larger than the others. vw-based for the same reason
+       as theirs: a fixed height on a wide screen crops a 16:9 photo to a
+       thin strip that reads as zoomed in. The phone height is set in the
+       640px block below. */
+    min-height: clamp(320px, 25vw, 420px);
     display: flex;
     align-items: center;
     overflow: hidden;
@@ -90,24 +92,23 @@ const {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    /* Favour the lower part of a 16:9 frame. The skyline sits at its middle
-       and the sun glare across its top left is the brightest thing in it -
-       exactly where the white title sits. Cropping from the top pushes the
-       glare out of the band, lifts the skyline above the title and puts the
-       title over the city and the darker treeline, which is what keeps it
-       readable with no wash. 60% was tried first on an earlier photo: at
-       1280px the first line sat on the glare. */
-    object-position: center 80%;
+    /* The band shows a bit under half the 16:9 photo's height. 60% puts
+       the skyline (at about 36-48% of the photo) across the top of the
+       band, keeps the sun glare in the sky above it out of the frame, and
+       lands the title on the skyline's base and the rooftops below - busy
+       enough that the heading's shadow pair is doing real work, so check
+       it first if this photo is ever replaced. The crop was 80% when the
+       band was 520px tall and showed more of the photo. */
+    object-position: center 60%;
   }
 
-  /* Past 1700px the band has hit its 680px ceiling while the photo keeps
-     growing with the screen, so 80% would crop into the skyline - at
-     2560px it took the tops off the towers. The title sits further down
-     the photo at these widths, clear of the glare, so the crop can come up
-     to bring the whole skyline back. */
+  /* Past about 1700px the band stops at its 420px ceiling while the photo
+     keeps growing with the screen, so the band shows less and less of it
+     and 60% starts cutting into the skyline. 50% keeps the whole skyline
+     in frame on a 2560px monitor. */
   @media (min-width: 1700px) {
     .image {
-      object-position: center 65%;
+      object-position: center 50%;
     }
   }
 
@@ -118,7 +119,9 @@ const {
   .content {
     position: relative;
     z-index: 1;
-    padding-block: 100px;
+    /* Enough to keep the title off the band's edges; the band's own
+       min-height does the rest. */
+    padding-block: 56px;
   }
 
   .heading {
@@ -160,8 +163,10 @@ const {
   }
 
   @media (max-width: 640px) {
+    /* Sized by what it holds: the title wraps to three lines and the
+       location line to two at phone width, about 210px of text. */
     .hero {
-      min-height: 420px;
+      min-height: 300px;
     }
 
     /* On a phone the band is taller than the photo is wide, so cover crops
@@ -173,7 +178,7 @@ const {
     }
 
     .content {
-      padding-block: 70px;
+      padding-block: 40px;
     }
   }
 </style>
