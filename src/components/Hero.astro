@@ -1,7 +1,7 @@
 ---
 import { Image } from "astro:assets";
 
-import heroImage from "../assets/hero-adelaide-parklands.jpg";
+import heroImage from "../assets/hero-adelaide-city.jpg";
 
 interface Props {
   title?: string;
@@ -61,8 +61,8 @@ const {
     overflow: hidden;
   }
 
-  /* The hero photo, filling the band: the city skyline across the parklands,
-     supplied by the client on 21 Oct 2026, replacing the 20 Oct panorama. */
+  /* The hero photo, filling the band: the city skyline over the treetops
+     and the parklands, supplied by the client on 22 Oct 2026. */
   .image {
     position: absolute;
     inset: 0;
@@ -70,12 +70,15 @@ const {
     height: 100%;
     object-fit: cover;
     /* Favour the lower part of a 16:9 frame. The skyline sits at its middle
-       and the sun glare in its top-left corner is the brightest thing in it -
+       and the sun glare across its top left is the brightest thing in it -
        exactly where the white title sits. Cropping from the top pushes the
        glare out of the band, lifts the skyline above the title and puts the
-       title over the darker treeline, which is what keeps it readable with
-       no wash. 60% was tried first: at 1280px the first line still sat on
-       the glare, and at 1920px the title ran across the buildings. */
+       title over the city and the darker treeline, which is what keeps it
+       readable with no wash. 60% was tried first on the previous photo: at
+       1280px the first line sat on the glare. The current photo (22 Oct
+       2026) holds up at the same 80%; at 1920px the tallest towers lose
+       their tops, but going lower to save them puts the title's first line
+       back on the bright horizon at 1280px. */
     object-position: center 80%;
   }
 
