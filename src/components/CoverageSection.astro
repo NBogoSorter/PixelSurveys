@@ -117,17 +117,6 @@ const AREAS: { name: string; description: string; regions?: string[] }[] = [
         </g>
       </svg>
     </div>
-
-    {/* Acknowledgement of Country, under the map with no label - option P2
-        from the About layout exploration, as the client edited it on
-        21 Oct 2026. It replaces the band of its own that sat between the
-        trust bar and the footer. Wording is the client's. */}
-    <p class="acknowledgement">
-      Pixel Surveys acknowledges the Kaurna people as the Traditional Owners
-      of the Adelaide Plains, and the Traditional Owners of all the lands on
-      which we work. We recognise their continuing connection to Country,
-      land and waters, and pay our respects to Elders past and present.
-    </p>
   </div>
 
   <ul class="areas">
@@ -145,14 +134,44 @@ const AREAS: { name: string; description: string; regions?: string[] }[] = [
       </li>
     ))}
   </ul>
+
+  {/* Acknowledgement of Country, with no label - option P2 from the About
+      layout exploration, as the client edited it on 21 Oct 2026, replacing
+      the band of its own that sat between the trust bar and the footer.
+      Wording is the client's.
+
+      It sits after the areas in the markup and is placed by the grid: under
+      the map on desktop, and after "Australia wide" on a phone (the client's
+      call, 22 Oct 2026) rather than between the map and the areas. Source
+      order matches the phone order, so a screen reader hears it last on
+      every device. */}
+  <p class="acknowledgement">
+    Pixel Surveys acknowledges the Kaurna people as the Traditional Owners
+    of the Adelaide Plains, and the Traditional Owners of all the lands on
+    which we work. We recognise their continuing connection to Country,
+    land and waters, and pay our respects to Elders past and present.
+  </p>
 </section>
 
 <style>
+  /* Two columns on desktop, with the acknowledgement in the left column's
+     second row, under the map. The areas span both rows; the second row is
+     1fr so when the areas run taller, the spare height lands below the
+     acknowledgement rather than between the map and it. No row gap - the
+     acknowledgement's own margin sets the space under the map. */
   .coverage {
     display: grid;
     grid-template-columns: 320px minmax(0, 1fr);
-    gap: 64px;
+    grid-template-rows: auto 1fr;
+    grid-template-areas:
+      "intro areas"
+      "ack areas";
+    column-gap: 64px;
     align-items: start;
+  }
+
+  .intro {
+    grid-area: intro;
   }
 
   .heading {
@@ -191,6 +210,7 @@ const AREAS: { name: string; description: string; regions?: string[] }[] = [
   }
 
   .acknowledgement {
+    grid-area: ack;
     margin-top: 24px;
     font-size: 13px;
     line-height: 1.6;
@@ -200,6 +220,7 @@ const AREAS: { name: string; description: string; regions?: string[] }[] = [
   /* Stronger than --color-border on purpose: these rules are the rows'
      only structure, and the hairline value washes out at this length. */
   .areas {
+    grid-area: areas;
     list-style: none;
     margin: 0;
     padding: 0;
@@ -249,9 +270,20 @@ const AREAS: { name: string; description: string; regions?: string[] }[] = [
      short of full width - at phone width a full-bleed map would push the
      rows a whole screen down. */
   @media (max-width: 860px) {
+    /* One column: heading and map, the areas, then the acknowledgement. */
     .coverage {
       grid-template-columns: 1fr;
-      gap: 32px;
+      grid-template-rows: none;
+      grid-template-areas:
+        "intro"
+        "areas"
+        "ack";
+      row-gap: 32px;
+    }
+
+    /* The row gap spaces it from the last area's rule here. */
+    .acknowledgement {
+      margin-top: 0;
     }
 
     .map-tile {
