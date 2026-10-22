@@ -1,0 +1,103 @@
+---
+// A photo band with the page's <h1> low on the left: the header of the About
+// and Services pages. It started as the About page's own markup (option F5
+// from the About layout exploration) and moved here on 22 Oct 2026 when the
+// Services page got a photo of its own, so the two cannot drift apart.
+//
+// No overlay, at the client's request. Each page picks the part of its photo
+// that puts the title over something dark - see `position` - and the title
+// carries its own shadow pair, see .title below.
+import { Image } from "astro:assets";
+
+interface Props {
+  image: ImageMetadata;
+  title: string;
+  /**
+   * object-position for the photo. Which strip of the photo shows decides
+   * whether the title lands on sky or on something it can be read against,
+   * so every page sets this, with a note on why at the call site.
+   */
+  position?: string;
+}
+
+const { image, title, position = "center" } = Astro.props;
+---
+
+<section class="masthead" style={`--masthead-position: ${position};`}>
+  {/* width caps the variant that lands in src=: without it Astro emits one
+      at the source's full width, which nothing in the srcset would choose
+      but which ships on every deploy. */}
+  <Image
+    src={image}
+    alt=""
+    width={1920}
+    widths={[768, 1200, 1600, 1920]}
+    sizes="100vw"
+    loading="eager"
+    fetchpriority="high"
+    class="image"
+  />
+  <div class="container inner">
+    <h1 class="title">{title}</h1>
+  </div>
+</section>
+
+<style>
+  .masthead {
+    position: relative;
+    /* min-height, not height: the box still grows to fit the title if it
+       ever needs more room than this gives it (overflow: hidden below would
+       otherwise clip it). The value is vw-based, not a flat px number, which
+       is what the flat 300px here used to be and why the photo read as too
+       zoomed in on a wide desktop.
+
+       object-fit: cover scales the photo to the viewport's width, then crops
+       whatever height is left over. A fixed-px band crops a near-constant
+       NUMBER of pixels off the top and bottom regardless of viewport width -
+       so as the viewport gets wider, the photo is scaled up more, and that
+       same pixel crop throws away a growing share of its height. At 1920px
+       the old 300px band showed under half the photo; at 2560px, a third.
+
+       A vw value holds the band at the same proportion of viewport width -
+       and so the same proportion of the photo's height - at every size. It
+       was 27.3vw (300/1100, the band height over the viewport width of the
+       mockup this was designed against), clamped 220px to 460px. The client
+       asked for a smaller band on 22 Oct 2026, so it is now 20vw, clamped
+       180px to 340px: about 26% shorter. With a 16:9 photo, the band shows
+       about 36% of its height between 900px and 1700px wide. The floor keeps
+       phones from losing the photo to a sliver; the ceiling keeps an
+       ultrawide monitor from turning this into a banner far taller than a
+       page header should be. */
+    min-height: clamp(180px, 20vw, 340px);
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+  }
+
+  .image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: var(--masthead-position);
+  }
+
+  .inner {
+    position: relative;
+    padding-bottom: 34px;
+  }
+
+  /* Two shadows, not one: the tight one gives the letterforms an edge, the
+     wide one darkens the area behind them. Without a wash over the image
+     this pair is the main thing holding the title legible. */
+  .title {
+    color: #fff;
+    font-size: clamp(32px, 5vw, 48px);
+    font-weight: 700;
+    text-wrap: balance;
+    text-shadow:
+      0 2px 6px rgb(8 40 68 / 85%),
+      0 6px 28px rgb(8 40 68 / 70%);
+  }
+</style>

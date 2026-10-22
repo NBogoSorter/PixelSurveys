@@ -1,5 +1,6 @@
 ---
-import PageHeader from "../../components/PageHeader.astro";
+import servicesImage from "../../assets/services-parklands-aerial.jpg";
+import PageMasthead from "../../components/PageMasthead.astro";
 import ServicesFeature from "../../components/ServicesFeature.astro";
 import Base from "../../layouts/Base.astro";
 ---
@@ -8,9 +9,45 @@ import Base from "../../layouts/Base.astro";
   title="Services"
   description="Orthomosaic maps, digital terrain models, point clouds, 3D models and site analysis from drone survey data."
 >
-  <PageHeader
+  {/* The parklands aerial, supplied 22 Oct 2026: a 16:9 frame with sky over
+      its top third, the treeline and grandstand at about 35-45% of its
+      height, and open park below. 45% takes the strip from about 29% to 65%
+      at 1280px - a band of sky, the treeline across the top and the title
+      at roughly 53-60%, on the green of the park rather than the sky. */}
+  <PageMasthead
+    image={servicesImage}
     title="Drone Survey & Mapping Services"
-    lede="We can provide a range of survey and mapping deliverables to suit your project, from aerial imagery and contours to terrain models, 3D data and volumes. A single flight can produce multiple deliverables, supplied in your coordinate system and preferred file formats, with online viewing options available."
+    position="center 45%"
   />
+
+  {/* The lede that sat under the old text-only PageHeader, kept as it was -
+      the title moved onto the photo above, the paragraph did not. */}
+  <section class="intro">
+    <div class="container">
+      <p class="lede">
+        We can provide a range of survey and mapping deliverables to suit your
+        project, from aerial imagery and contours to terrain models, 3D data
+        and volumes. A single flight can produce multiple deliverables,
+        supplied in your coordinate system and preferred file formats, with
+        online viewing options available.
+      </p>
+    </div>
+  </section>
+
   <ServicesFeature />
 </Base>
+
+<style>
+  /* 48px over the lede to match the About page's text under its masthead;
+     32px under it, as the old PageHeader had above the cards. */
+  .intro {
+    padding-block: 48px 32px;
+  }
+
+  .lede {
+    max-width: 62ch;
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--color-text-muted);
+  }
+</style>
