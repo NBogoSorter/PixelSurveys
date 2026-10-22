@@ -16,13 +16,14 @@
   --color-bg: #ffffff;
   --color-border: #d7e3e4; /* neutral, biased toward the teal accent rather than flat grey */
   --color-surface: #f1f6f6; /* light panel tint, same bias as --color-border */
-  /* Darkened twice on 22 Oct 2026 at the client's request. Muted went
-     #57727a (5.1:1 on white) -> #48636b (6.4:1) -> #3e585f (7.6:1), close
-     to the navy headings' 8:1 but still grey, so body text stays distinct
-     from them by hue. Faint went #93a7ae (2.5:1) -> #6f878e (3.8:1) ->
-     #5f777e (4.7:1, now past the 4.5:1 AA line for normal text). */
-  --color-text-muted: #3e585f;
-  --color-text-faint: #5f777e; /* lighter still - de-emphasized helper text, e.g. a "required" tag */
+  /* Darkened three times on 22 Oct 2026 at the client's request, ending
+     almost black. Muted went #57727a (5.1:1 on white) -> #48636b (6.4:1)
+     -> #3e585f (7.6:1) -> #222e32 (14:1): near-black with a trace of the
+     palette's blue-green, so it sits with the navy rather than reading as
+     flat #000. Faint stays a clear step lighter so helper text still reads
+     as secondary: #93a7ae -> #6f878e -> #5f777e -> #48636b (6.4:1). */
+  --color-text-muted: #222e32;
+  --color-text-faint: #48636b; /* lighter still - de-emphasized helper text, e.g. a "required" tag */
 
   /* Full 5-stop logo gradient, for decorative use (dividers, accents) */
   --gradient-brand: linear-gradient(
