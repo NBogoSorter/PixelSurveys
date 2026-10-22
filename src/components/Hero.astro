@@ -50,18 +50,6 @@ const {
       <span>{location}</span>
     </p>
   </div>
-
-  <svg
-    class="wave"
-    viewBox="0 0 1600 120"
-    preserveAspectRatio="none"
-    aria-hidden="true"
-  >
-    <path
-      d="M0,40 C 260,110 480,10 760,55 C 1080,105 1320,15 1600,45 L1600,120 L0,120 Z"
-      fill="var(--color-bg)"
-    ></path>
-  </svg>
 </section>
 
 <style>
@@ -98,7 +86,7 @@ const {
   .content {
     position: relative;
     z-index: 1;
-    padding-block: 100px 140px;
+    padding-block: 100px;
   }
 
   .heading {
@@ -121,8 +109,8 @@ const {
   /* Sits straight on the image - no panel behind it - so the shadow is doing
      all the legibility work. It's heavier than the heading's for that reason:
      at 15px there's far less letter mass to stay readable over a busy photo.
-     Worth revisiting once the real hero image lands (see the note above the
-     placeholder) - a bright patch under this line would still beat it. */
+     The crop above keeps it over the treeline; if the photo is ever replaced,
+     check this line first - a bright patch under it would still beat it. */
   .location {
     display: flex;
     align-items: center;
@@ -139,15 +127,6 @@ const {
     filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.5));
   }
 
-  .wave {
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 100%;
-    height: 90px;
-    display: block;
-  }
-
   @media (max-width: 640px) {
     .hero {
       min-height: 420px;
@@ -162,7 +141,7 @@ const {
     }
 
     .content {
-      padding-block: 70px 100px;
+      padding-block: 70px;
     }
   }
 </style>

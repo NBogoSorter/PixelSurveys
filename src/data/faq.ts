@@ -9,8 +9,12 @@
 // survey?"; turnaround is not mentioned anywhere. Worth confirming that the
 // omission is deliberate before launch.
 //
+// The "Where in Australia do you work?" answer was replaced by the client on
+// 22 Oct 2026 to match the About page's Coverage section (Adelaide base plus a
+// secondary base in Wollongong, NSW).
+//
 // Order is the client's, set 21 Oct 2026. It matters more than it looks: the
-// accordion shows only the first four until "Show more questions" is pressed
+// accordion shows only the first four until "Show more" is pressed
 // (VISIBLE in FaqAccordion.astro).
 
 export interface FaqItem {
@@ -67,6 +71,6 @@ export const FAQ_ITEMS: FaqItem[] = [
   {
     question: "Where in Australia do you work?",
     answer:
-      "Pixel Surveys is Adelaide based, servicing projects across South Australia and interstate. Travel costs are calculated and included in your quote.",
+      "Operating from Adelaide, SA, with a secondary base in Wollongong, NSW. Servicing projects locally, regionally and across Australia. Travel costs are calculated and included in your quote.",
   },
 ];

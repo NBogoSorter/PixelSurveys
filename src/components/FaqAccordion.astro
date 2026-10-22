@@ -8,8 +8,8 @@
 // with no answer previewed. Opening one does not close the others: that would
 // need name="faq" on the <details>, and nothing has asked for it.
 //
-// Only the first VISIBLE questions show; the rest sit behind "Show more
-// questions". The client's concern was the height of the section with nine
+// Only the first VISIBLE questions show; the rest sit behind "Show more".
+// The client's concern was the height of the section with nine
 // questions in it, and this was the option they picked.
 import { FAQ_ITEMS } from "../data/faq";
 
@@ -42,7 +42,7 @@ const VISIBLE = 4;
     {FAQ_ITEMS.length > VISIBLE && (
       <div class="more-wrap">
         <button type="button" class="more" aria-expanded="false" data-faq-more>
-          <span data-faq-more-label>Show more questions</span>
+          <span data-faq-more-label>Show more</span>
           <svg
             class="more-icon"
             viewBox="0 0 24 24"
@@ -85,7 +85,7 @@ const VISIBLE = 4;
         row.classList.toggle("is-hidden", !expanded && index >= VISIBLE);
       });
       button.setAttribute("aria-expanded", String(expanded));
-      label.textContent = expanded ? "Show less" : "Show more questions";
+      label.textContent = expanded ? "Show less" : "Show more";
     };
 
     apply();
