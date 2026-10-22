@@ -53,10 +53,12 @@
   --space-band: clamp(48px, 6vw, 64px);
   --space-heading: 28px; /* section heading to the content under it */
 
-  /* Every button's corners - a square with rounded corners, the client's
-     choice on 22 Oct 2026 when the site had pills, sharp squares and an
-     outlined pill side by side. */
-  --radius-button: 8px;
+  /* Every button's corners. Square: the client first asked for one shape
+     throughout on 22 Oct 2026 (the site had pills, sharp squares and an
+     outlined pill side by side) and chose 8px rounded corners, then the
+     same day asked for plain squares instead. Every button reads this, so
+     a change here reaches them all. */
+  --radius-button: 0;
 }
 
 * {
