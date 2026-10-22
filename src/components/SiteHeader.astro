@@ -224,10 +224,10 @@ const currentPath = Astro.url.pathname;
   }
 
   /* Contact as the header's call to action. Uppercase like its siblings rather
-     than the title case the old quote button used, since it sits in their row.
-     Outlined and fully rounded - the only other curve on the site is the 12px
-     on the service card photos, so this is a second, larger departure from the
-     square corners everything else uses. */
+     than the title case the old quote button used, since it sits in their row,
+     and outlined so it doesn't outshout the page's own buttons. Its corners are
+     the site's button corners (--radius-button) - it was a full pill until the
+     client asked for one button shape throughout on 22 Oct 2026. */
   .nav-cta {
     background: transparent;
     color: var(--color-ink);
@@ -235,7 +235,7 @@ const currentPath = Astro.url.pathname;
        the padding gives back, so the button matches the nav row as before. */
     padding: 9px 22px;
     border: 2px solid var(--color-ink);
-    border-radius: 999px;
+    border-radius: var(--radius-button);
     white-space: nowrap;
   }
 

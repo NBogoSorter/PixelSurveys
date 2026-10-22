@@ -112,22 +112,7 @@ const PHOTOS: { src: ImageMetadata; alt: string }[] = [];
         technical expertise, clear communication and a detailed understanding of
         each project&rsquo;s needs.
       </p>
-      <a href="/contact/" class="cta">
-        <span>Contact Us</span>
-        <svg
-          class="cta-icon"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2.4"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          aria-hidden="true"
-        >
-          <path d="M5 12h14" />
-          <path d="M13 6l6 6l-6 6" />
-        </svg>
-      </a>
+      <a href="/contact/" class="button cta">Contact Us</a>
     </div>
   </section>
 
@@ -263,30 +248,13 @@ const PHOTOS: { src: ImageMetadata; alt: string }[] = [];
     color: var(--color-ink);
   }
 
+  /* Look comes from the global .button - this was a pill with an arrow and
+     uppercase text until the client asked for one button style throughout
+     on 22 Oct 2026. This only stops it squeezing beside the sentence. */
   .cta {
     flex-shrink: 0;
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    padding: 15px 30px;
-    background: var(--color-ink);
-    border-radius: 999px;
-    color: #fff;
-    font-size: 13.5px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
   }
 
-  .cta:hover {
-    background: var(--color-accent);
-  }
-
-  .cta-icon {
-    flex-shrink: 0;
-    width: 16px;
-    height: 16px;
-  }
   @media (max-width: 760px) {
     .photos {
       grid-template-columns: 1fr;

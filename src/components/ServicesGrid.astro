@@ -24,7 +24,7 @@ const { showCta = true } = Astro.props;
 
     {showCta && (
       <div class="cta">
-        <a href="/services/" class="cta-button">
+        <a href="/services/" class="button cta-button">
           View All Services
         </a>
       </div>
@@ -80,18 +80,6 @@ const { showCta = true } = Astro.props;
     display: flex;
     justify-content: flex-end;
     margin-top: 28px;
-  }
-
-  .cta-button {
-    background: var(--color-ink);
-    color: #fff;
-    font-size: 16px;
-    font-weight: 600;
-    padding: 13px 26px;
-  }
-
-  .cta-button:hover {
-    background: var(--color-ink-soft);
   }
 
   /* Drops to two columns at 1300px, not the old 860px: between those widths

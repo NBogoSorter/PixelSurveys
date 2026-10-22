@@ -152,7 +152,7 @@ const Heading = headingLevel === 1 ? "h1" : "h2";
           <input type="hidden" name="ts" value="" data-quote-ts />
 
           <div class="actions">
-            <button type="submit" class="submit" data-quote-submit>
+            <button type="submit" class="button submit" data-quote-submit>
               Submit
             </button>
             <p class="status" role="status" aria-live="polite" data-quote-status>
@@ -344,20 +344,7 @@ const Heading = headingLevel === 1 ? "h1" : "h2";
     gap: 12px 20px;
   }
 
-  .submit {
-    background: var(--color-ink);
-    color: #fff;
-    border: none;
-    font-size: 15.5px;
-    font-weight: 600;
-    padding: 13px 24px;
-    cursor: pointer;
-  }
-
-  .submit:hover {
-    background: var(--color-accent);
-  }
-
+  /* Look comes from the global .button; only the sending state is local. */
   .submit:disabled {
     opacity: 0.6;
     cursor: progress;

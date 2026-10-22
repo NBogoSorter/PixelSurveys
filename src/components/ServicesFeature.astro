@@ -115,7 +115,7 @@ import { SERVICES } from "../data/services";
           out the right deliverables with you.
         </p>
       </div>
-      <a href="/contact/" class="cta-button">Contact Us</a>
+      <a href="/contact/" class="button cta-button">Contact Us</a>
     </div>
   </div>
 </section>
@@ -273,17 +273,9 @@ import { SERVICES } from "../data/services";
     color: var(--color-text-muted);
   }
 
+  /* Look comes from the global .button; this only stops it squeezing. */
   .cta-button {
     flex-shrink: 0;
-    background: var(--color-ink);
-    color: #fff;
-    font-size: 16px;
-    font-weight: 600;
-    padding: 14px 28px;
-  }
-
-  .cta-button:hover {
-    background: var(--color-ink-soft);
   }
 
   @media (max-width: 760px) {
