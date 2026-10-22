@@ -80,7 +80,9 @@ const {
        640px block below. */
     min-height: clamp(320px, 25vw, 420px);
     display: flex;
-    align-items: center;
+    /* Title low in the band, like the About and Services banners
+       (PageMasthead) - the client's call on 22 Oct 2026; it was centred. */
+    align-items: flex-end;
     overflow: hidden;
   }
 
@@ -119,9 +121,10 @@ const {
   .content {
     position: relative;
     z-index: 1;
-    /* Enough to keep the title off the band's edges; the band's own
-       min-height does the rest. */
-    padding-block: 56px;
+    /* 34px under the location line matches the gap under the other
+       banners' titles; the top keeps the title off the band's edge when
+       its text is what sets the band's height. */
+    padding-block: 56px 34px;
   }
 
   .heading {
@@ -178,7 +181,7 @@ const {
     }
 
     .content {
-      padding-block: 40px;
+      padding-block: 40px 34px;
     }
   }
 </style>

@@ -16,8 +16,11 @@
   --color-bg: #ffffff;
   --color-border: #d7e3e4; /* neutral, biased toward the teal accent rather than flat grey */
   --color-surface: #f1f6f6; /* light panel tint, same bias as --color-border */
-  --color-text-muted: #57727a;
-  --color-text-faint: #93a7ae; /* lighter still - de-emphasized helper text, e.g. a "required" tag */
+  /* Both a step darker on 22 Oct 2026, at the client's request: muted was
+     #57727a (5.1:1 on white, now 6.4:1) and faint #93a7ae (2.5:1, now
+     3.8:1). */
+  --color-text-muted: #48636b;
+  --color-text-faint: #6f878e; /* lighter still - de-emphasized helper text, e.g. a "required" tag */
 
   /* Full 5-stop logo gradient, for decorative use (dividers, accents) */
   --gradient-brand: linear-gradient(
