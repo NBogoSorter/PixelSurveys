@@ -18,12 +18,21 @@ interface Props {
    * so every page sets this, with a note on why at the call site.
    */
   position?: string;
+  /**
+   * Pin the photo to the screen while the band and its title scroll up over
+   * it, so the photo appears to stay still and disappears under the header
+   * with the band. See .is-fixed below.
+   */
+  fixed?: boolean;
 }
 
-const { image, title, position = "center" } = Astro.props;
+const { image, title, position = "center", fixed = false } = Astro.props;
 ---
 
-<section class="masthead" style={`--masthead-position: ${position};`}>
+<section
+  class:list={["masthead", fixed && "is-fixed"]}
+  style={`--masthead-position: ${position};`}
+>
   {/* width caps the variant that lands in src=: without it Astro emits one
       at the source's full width, which nothing in the srcset would choose
       but which ships on every deploy.
@@ -75,7 +84,8 @@ const { image, title, position = "center" } = Astro.props;
        phones from losing the photo to a sliver; the ceiling keeps an
        ultrawide monitor from turning this into a banner far taller than a
        page header should be. */
-    min-height: clamp(180px, 20vw, 340px);
+    --masthead-height: clamp(180px, 20vw, 340px);
+    min-height: var(--masthead-height);
     display: flex;
     align-items: flex-end;
     overflow: hidden;
@@ -88,6 +98,52 @@ const { image, title, position = "center" } = Astro.props;
     height: 100%;
     object-fit: cover;
     object-position: var(--masthead-position);
+  }
+
+  /* The fixed photo: pinned to the screen exactly where the band sits when
+     the page loads - straight under the sticky header, at the band's own
+     height - so at the top of the page it looks no different from the
+     scrolling version, crop and all. As the page scrolls the band slides
+     up over it like a window, and clip-path: inset(0) on the band shows the
+     photo only through that window; overflow: hidden cannot do this, as it
+     does not clip a fixed-position child. The photo disappears under the
+     header as the band does. Added for the About page on 22 Oct 2026, at
+     the client's request.
+
+     top is the header's height: 72px, and 68px at 640px and under, where
+     the header's padding tightens (SiteHeader). Change both if the header's
+     height changes, or the photo will sit a few pixels off the band. */
+  .is-fixed {
+    clip-path: inset(0);
+  }
+
+  .is-fixed .image {
+    position: fixed;
+    inset: auto;
+    top: 72px;
+    left: 0;
+    height: var(--masthead-height);
+  }
+
+  @media (max-width: 640px) {
+    .is-fixed .image {
+      top: 68px;
+    }
+  }
+
+  /* People who have asked their device to cut down motion get the ordinary
+     scrolling band - a still layer sliding under moving content is the kind
+     of effect that setting exists for. */
+  @media (prefers-reduced-motion: reduce) {
+    .is-fixed {
+      clip-path: none;
+    }
+
+    .is-fixed .image {
+      position: absolute;
+      inset: 0;
+      height: 100%;
+    }
   }
 
   .inner {
