@@ -17,13 +17,27 @@ const {
 <section class="hero">
   {/* width caps the variant that lands in src=: without it Astro emits one
       at the source's full 4000px, which nothing in the srcset would choose
-      but which ships on every deploy. */}
+      but which ships on every deploy.
+
+      widths run to 3840 because a Retina laptop at 1440px needs 2880 real
+      pixels and a 2560px monitor 2560; with 1920 the largest on offer, both
+      were enlarging the photo 1.3-1.5x, which reads as soft and stretched.
+      Only those screens download the big files.
+
+      sizes is not simply 100vw, because the band is not always as wide as
+      the photo is drawn. object-fit: cover fills the band's HEIGHT too, so
+      where the band is tall for its width the 16:9 photo is drawn wider
+      than the screen and cropped at the sides: a 420px phone band draws it
+      747px wide (420 x 16/9), and the 520px desktop floor draws it 925px
+      wide below 925px. Telling the browser 100vw there made a phone fetch a
+      file half the size it was drawn at - enlarged ~1.9x. Re-derive these
+      two numbers if the photo is ever swapped for one of another shape. */}
   <Image
     src={heroImage}
     alt=""
     width={1920}
-    widths={[768, 1200, 1600, 1920]}
-    sizes="100vw"
+    widths={[768, 1200, 1600, 1920, 2560, 3200, 3840]}
+    sizes="(max-width: 640px) 747px, (max-width: 924px) 925px, 100vw"
     loading="eager"
     fetchpriority="high"
     class="image"
@@ -55,7 +69,14 @@ const {
 <style>
   .hero {
     position: relative;
-    min-height: 520px;
+    /* 520px up to a 1280px screen - the height the client signed off on -
+       then growing with the viewport (40.6vw is 520/1280) to 680px. A flat
+       520px on a wide monitor left a thin strip of a 16:9 photo: 48% of its
+       height at 1920px and 36% at 2560px, which reads as zoomed in and
+       stretched sideways. Scaling holds the crop closer to what a laptop
+       sees; the 680px ceiling stops it eating the whole first screen. The
+       phone height is set in the 640px block below. */
+    min-height: clamp(520px, 40.6vw, 680px);
     display: flex;
     align-items: center;
     overflow: hidden;
@@ -74,12 +95,20 @@ const {
        exactly where the white title sits. Cropping from the top pushes the
        glare out of the band, lifts the skyline above the title and puts the
        title over the city and the darker treeline, which is what keeps it
-       readable with no wash. 60% was tried first on the previous photo: at
-       1280px the first line sat on the glare. The current photo (22 Oct
-       2026) holds up at the same 80%; at 1920px the tallest towers lose
-       their tops, but going lower to save them puts the title's first line
-       back on the bright horizon at 1280px. */
+       readable with no wash. 60% was tried first on an earlier photo: at
+       1280px the first line sat on the glare. */
     object-position: center 80%;
+  }
+
+  /* Past 1700px the band has hit its 680px ceiling while the photo keeps
+     growing with the screen, so 80% would crop into the skyline - at
+     2560px it took the tops off the towers. The title sits further down
+     the photo at these widths, clear of the glare, so the crop can come up
+     to bring the whole skyline back. */
+  @media (min-width: 1700px) {
+    .image {
+      object-position: center 65%;
+    }
   }
 
   /* No tint over the photo - the client wants it at full strength. The text

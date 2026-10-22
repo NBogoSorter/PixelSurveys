@@ -26,12 +26,19 @@ const { image, title, position = "center" } = Astro.props;
 <section class="masthead" style={`--masthead-position: ${position};`}>
   {/* width caps the variant that lands in src=: without it Astro emits one
       at the source's full width, which nothing in the srcset would choose
-      but which ships on every deploy. */}
+      but which ships on every deploy.
+
+      widths run to 3840 for Retina laptops and wide monitors: with 1920 the
+      largest on offer, a 1440px Retina screen (2880 real pixels) or a 2560px
+      monitor was enlarging the photo 1.3-1.5x. Only those screens download
+      the big files. sizes can stay 100vw: this band is shallow enough that
+      the photo is drawn at the screen's width everywhere but the narrowest
+      phones. */}
   <Image
     src={image}
     alt=""
     width={1920}
-    widths={[768, 1200, 1600, 1920]}
+    widths={[768, 1200, 1600, 1920, 2560, 3200, 3840]}
     sizes="100vw"
     loading="eager"
     fetchpriority="high"
