@@ -1,11 +1,11 @@
 import type { ImageMetadata } from "astro";
 
-import topographicSurveys from "../assets/services/topographic-surveys.png";
-import volumesAndSiteMonitoring from "../assets/services/volumes-and-site-monitoring.png";
-import modelsAndPointClouds from "../assets/services/3d-models-point-cloud-classified.png";
-import aerialImagery from "../assets/services/aerial-imagery-and-mapping.jpg";
-import aboutPhoto from "../assets/about-avenue-dusk.jpg";
-import servicesPhoto from "../assets/services-parklands-aerial.jpg";
+import waterDsm from "../assets/who/water-dsm.png";
+import contours from "../assets/who/contours.png";
+import houses from "../assets/services/3d-models-point-cloud-classified.png";
+import powerlines from "../assets/who/powerlines-classified.png";
+import dig from "../assets/who/dig.jpg";
+import fence from "../assets/who/fence.jpg";
 
 export interface WhoWeWorkWithItem {
   name: string;
@@ -34,8 +34,8 @@ export const WHO_WE_WORK_WITH: WhoWeWorkWith[] = [
   {
     id: "civil",
     label: "Civil Construction & Earthworks",
-    image: volumesAndSiteMonitoring,
-    alt: "A triangulated surface model picking out a row of stockpiles.",
+    image: dig,
+    alt: "A drone view straight down on a screening plant working among stockpiles and tyre tracks.",
     text: "Volumes, progress and as-built data captured quickly and safely across the whole site.",
     items: [
       {
@@ -55,8 +55,8 @@ export const WHO_WE_WORK_WITH: WhoWeWorkWith[] = [
   {
     id: "land",
     label: "Land Development & Planning",
-    image: aerialImagery,
-    alt: "A vertical aerial photograph of graded earth meeting a braided watercourse.",
+    image: waterDsm,
+    alt: "A dense triangulated mesh of a watercourse cut into the ground, drawn in green on black.",
     text: "Understand the site before design begins, with detailed data on existing conditions to support feasibility, planning and design.",
     items: [
       {
@@ -76,8 +76,8 @@ export const WHO_WE_WORK_WITH: WhoWeWorkWith[] = [
   {
     id: "survey",
     label: "Surveying & GIS",
-    image: topographicSurveys,
-    alt: "Contour lines drawn over aerial imagery of a cleared hillside.",
+    image: contours,
+    alt: "Contour lines drawn over aerial imagery of a cleared hillside, labelled from 150 to 190.",
     text: "Capture large or hard to access areas quickly and safely, with data tied to survey control and delivered in your coordinate system.",
     items: [
       {
@@ -97,7 +97,7 @@ export const WHO_WE_WORK_WITH: WhoWeWorkWith[] = [
   {
     id: "eng",
     label: "Engineering & Design",
-    image: modelsAndPointClouds,
+    image: houses,
     alt: "A classified point cloud of a housing estate from above.",
     text: "Accurate surfaces and 3D models of current site conditions, ready to bring straight into your CAD or design software.",
     items: [
@@ -118,8 +118,8 @@ export const WHO_WE_WORK_WITH: WhoWeWorkWith[] = [
   {
     id: "infra",
     label: "Infrastructure & Utilities",
-    image: servicesPhoto,
-    alt: "Aerial drone imagery of a project site.",
+    image: powerlines,
+    alt: "A classified point cloud of powerlines running through dense tree canopy.",
     text: "Capture assets and corridors quickly and safely, with detailed data collected from the air.",
     items: [
       {
@@ -139,8 +139,8 @@ export const WHO_WE_WORK_WITH: WhoWeWorkWith[] = [
   {
     id: "env",
     label: "Environmental & Land Management",
-    image: aboutPhoto,
-    alt: "Aerial drone imagery of natural landscape.",
+    image: fence,
+    alt: "A drone view across dry grassland beside a sports field and fence line.",
     text: "Track vegetation, disturbance and landform change over time, with repeatable surveys that support environmental compliance reporting.",
     items: [
       {
