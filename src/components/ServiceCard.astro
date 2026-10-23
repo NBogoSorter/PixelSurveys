@@ -25,22 +25,27 @@ const photoAlt = service.homeImage
 ---
 
 <article class="card">
-  {photo ? (
-    <Image
-      src={photo}
-      alt={photoAlt}
-      width={640}
-      widths={[320, 480, 640]}
-      sizes="(max-width: 520px) 100vw, (max-width: 860px) 50vw, 280px"
-      class="band"
-    />
-  ) : (
-    <div
-      class="band band-placeholder"
-      style={`--band-from: ${service.bandFrom}; --band-to: ${service.bandTo};`}
-      aria-hidden="true"
-    />
-  )}
+  {/* The photo links to the services page like the title and "Learn more"
+      below it - the client's call, 23 Oct 2026. It is a third link to the
+      same place, so it is hidden from assistive tech and skipped by the Tab
+      key: keyboard and screen reader users already have the other two. */}
+  <a href={service.href} class="photo-link" tabindex="-1" aria-hidden="true">
+    {photo ? (
+      <Image
+        src={photo}
+        alt={photoAlt}
+        width={640}
+        widths={[320, 480, 640]}
+        sizes="(max-width: 520px) 100vw, (max-width: 860px) 50vw, 280px"
+        class="band"
+      />
+    ) : (
+      <div
+        class="band band-placeholder"
+        style={`--band-from: ${service.bandFrom}; --band-to: ${service.bandTo};`}
+      />
+    )}
+  </a>
 
   {/* Same destination as "Learn more" below, so the two can't disagree. */}
   <h3 class="title">
@@ -80,6 +85,10 @@ const photoAlt = service.homeImage
     display: flex;
     flex-direction: column;
     gap: 18px;
+  }
+
+  .photo-link {
+    display: block;
   }
 
   .band {
