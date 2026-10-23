@@ -141,7 +141,7 @@ export const SERVICES: Service[] = [
         // sub-service only becomes a link once a page exists behind it.
         title: "Aerial Imagery (Orthomosaic)",
         description:
-          "A single aerial image of the whole site corrected and georeferenced to your coordinate system.",
+          "A detailed aerial map of the whole site, georeferenced and to scale, ready to import into CAD or use as background imagery.",
       },
       {
         title: "Aerial Inspection Photography",
