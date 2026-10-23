@@ -82,7 +82,7 @@ export const WHO_WE_WORK_WITH: WhoWeWorkWith[] = [
     items: [
       {
         name: "Contours & surface models",
-        desc: "Ground spot levels and contours at your nominated interval, plus bare-earth or full-surface models generated from the same capture.",
+        desc: "Ground spot levels and contours at your nominated interval, plus bare-earth or full-surface models.",
       },
       {
         name: "Detail and feature extraction",
