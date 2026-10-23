@@ -15,7 +15,11 @@
   --color-accent-green: #63ba78; /* gradient endpoint, sparing use */
   --color-bg: #ffffff;
   --color-border: #d7e3e4; /* neutral, biased toward the teal accent rather than flat grey */
-  --color-surface: #f1f6f6; /* light panel tint, same bias as --color-border */
+  /* Light panel tint. Was #f1f6f6, a teal-leaning blue-grey; the client asked
+     on 23 Oct 2026 for the greyish-blue backgrounds to look less blue and more
+     grey, so it is now a near-neutral grey with only a trace of cool, still a
+     shade off the #eeeeee home bands so the two read as one family. */
+  --color-surface: #f2f3f3;
   /* Neutral grey for the full-width bands on the home page (Our Services and
      Common Questions), from the client's "consistent colours and layout"
      design on 23 Oct 2026. */
