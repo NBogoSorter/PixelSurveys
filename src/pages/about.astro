@@ -57,28 +57,21 @@ const PHOTOS: { src: ImageMetadata; alt: string }[] = [];
 
   <section class="body">
     <div class="container">
+      {/* The client's "Who We Are" copy, 23 Oct 2026, replacing the three
+          paragraphs that stood here. The heading matches "Coverage" below. */}
+      <h2 class="who-heading">Who We Are</h2>
       <p class="para">
-        Pixel Surveys combines professional surveying knowledge with drone
-        technology to deliver accurate, practical spatial data for a wide range
-        of projects. Based in Adelaide, South Australia, Pixel Surveys works
-        with clients across the state and interstate, providing data solutions
-        customised to each project.
+        Pixel Surveys combines skills, experience and qualifications in
+        surveying, drone operations and spatial data analysis. This combination
+        is what makes accurate drone surveys possible. We&rsquo;re not just a
+        drone capture service. We&rsquo;re a survey and mapping service that
+        uses drones, with surveying principles applied at every stage.
       </p>
       <p class="para">
-        With experience in surveying, drone operations and spatial data
-        processing, Pixel Surveys understands the importance of reliable
-        information that can be used confidently for planning, design,
-        measurement and monitoring. Each project is approached with attention to
-        detail, an understanding of surveying principles and a focus on
-        delivering useful, fit for purpose data.
-      </p>
-      <p class="para">
-        Drone technology provides an efficient way to capture detailed
-        information across large areas, complex sites and locations that can be
-        difficult to access using traditional methods. From aerial imagery and
-        terrain models to point clouds, volume calculations and repeat site
-        monitoring, data can be delivered in formats suited to each
-        project&rsquo;s requirements and existing workflows.
+        Based in Adelaide, SA, with a secondary base in Wollongong, NSW, we
+        service projects locally, regionally and across Australia.
+        CASA-certified and insured, we build long-term relationships through
+        clear communication, honest advice and results clients can depend on.
       </p>
 
       {PHOTOS.length > 0 && (
@@ -123,6 +116,14 @@ const PHOTOS: { src: ImageMetadata; alt: string }[] = [];
 <style>
   .body {
     padding-block: 48px 8px;
+  }
+
+  /* The same heading as Coverage (CoverageSection .heading). */
+  .who-heading {
+    margin-bottom: 14px;
+    font-size: clamp(29px, 3.6vw, 36px);
+    font-weight: 700;
+    color: var(--color-ink);
   }
 
   .para {
