@@ -12,7 +12,7 @@ import { Image } from "astro:assets";
 import { WHO_WE_WORK_WITH } from "../data/who-we-work-with";
 ---
 
-<section class="who" data-who>
+<section class="who" id="who-we-work-with" data-who>
   <div class="container">
     <h2 class="heading">Who We Work With</h2>
 
@@ -129,6 +129,9 @@ import { WHO_WE_WORK_WITH } from "../data/who-we-work-with";
   /* The page's last section, so it owns the gap above the footer; the cards
      section above has its own bottom padding for the gap between them. */
   .who {
+    /* "Who We Work With" in the homepage's Industries & Applications intro
+       links here; keeps the heading clear of the sticky header. */
+    scroll-margin-top: 96px;
     padding-bottom: var(--space-section);
   }
 
