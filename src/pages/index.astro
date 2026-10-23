@@ -29,11 +29,13 @@ import Base from "../layouts/Base.astro";
 
   {/* Full-bleed, and last before the footer: its navy background butts
       straight into the footer's gradient rule with no white gap. */}
-  <ContactFormB />
+  <ContactFormB showCoverage />
 </Base>
 
 <style>
+  /* Follows the grey Our Services band, so its top space matches the band's
+     own inner padding rather than the full gap between two white sections. */
   .capabilities {
-    padding-top: var(--space-section);
+    padding-top: clamp(56px, 6vw, 80px);
   }
 </style>

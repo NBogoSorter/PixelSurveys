@@ -55,7 +55,7 @@ const AREAS: { name: string; description: string; regions?: string[] }[] = [
 ];
 ---
 
-<section class="coverage" aria-labelledby="coverage-heading">
+<section class="coverage" id="coverage" aria-labelledby="coverage-heading">
   <div class="intro">
     <h2 class="heading" id="coverage-heading">Coverage</h2>
     <p class="lede">
@@ -140,11 +140,14 @@ const AREAS: { name: string; description: string; regions?: string[] }[] = [
       the band of its own that sat between the trust bar and the footer.
       Wording is the client's.
 
-      It sits after the areas in the markup and is placed by the grid: under
-      the map on desktop, and after "Australia wide" on a phone (the client's
-      call, 22 Oct 2026) rather than between the map and the areas. Source
-      order matches the phone order, so a screen reader hears it last on
-      every device. */}
+      Phones only, since 23 Oct 2026: from 768px up the site footer carries
+      the acknowledgement on every page (SiteFooter), so showing it here too
+      would put it on the About page twice. The footer hides its copy below
+      768px, which is where this one takes over - every screen size gets it
+      exactly once on this page.
+
+      It sits after the areas in the markup, which is where a phone shows it:
+      after "Australia wide" (the client's call, 22 Oct 2026). */}
   <p class="acknowledgement">
     Pixel Surveys acknowledges the Kaurna people as the Traditional Owners
     of the Adelaide Plains, and the Traditional Owners of all the lands on
@@ -168,6 +171,9 @@ const AREAS: { name: string; description: string; regions?: string[] }[] = [
       "ack areas";
     column-gap: 64px;
     align-items: start;
+    /* "View coverage" in the homepage's contact panel links here; this keeps
+       the heading clear of the sticky header when it lands. */
+    scroll-margin-top: 96px;
   }
 
   .intro {
@@ -215,6 +221,13 @@ const AREAS: { name: string; description: string; regions?: string[] }[] = [
     font-size: 13px;
     line-height: 1.6;
     color: var(--color-text-muted);
+  }
+
+  /* The footer's copy covers 768px and up - see the note in the markup. */
+  @media (min-width: 768px) {
+    .acknowledgement {
+      display: none;
+    }
   }
 
   /* Stronger than --color-border on purpose: these rules are the rows'

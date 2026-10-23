@@ -3,8 +3,9 @@
 // open cards (no border or panel), a rounded image, and a list whose items are
 // separated by rules rather than carrying bullets.
 //
-// The rules are the list's structure here, so they are a touch stronger than
-// the hairlines used elsewhere - #eef4f4 disappears at this size.
+// The rules are the list's structure here, so they use the site's standard
+// border colour rather than a fainter hairline - #eef4f4 disappears at this
+// size, and on the grey band behind these cards so did #e4eded.
 import { Image } from "astro:assets";
 import type { Service } from "../data/services";
 
@@ -128,15 +129,22 @@ const photoAlt = service.homeImage
     line-height: 1.45;
     color: var(--color-text-muted);
     padding-block: 9px;
-    border-top: 1px solid #e4eded;
+    border-top: 1px solid var(--color-border);
   }
 
+  /* Navy text with a teal arrow, at body size - the client's 23 Oct 2026
+     design, so the link reads with the rest of the card rather than as a
+     second accent colour. */
   .learn {
     display: flex;
     align-items: center;
     gap: 6px;
-    font-size: 17px;
+    font-size: 16px;
     font-weight: 600;
+    color: var(--color-ink);
+  }
+
+  .learn svg {
     color: var(--color-accent);
   }
 

@@ -17,7 +17,8 @@ const SERVICE_LINKS = [
   { label: "3D Models & Point Clouds", href: "/services/" },
 ];
 
-const SITE_LINKS = [
+// "Company" since the client's 23 Oct 2026 footer; it was "Site".
+const COMPANY_LINKS = [
   { label: "Services", href: "/services/" },
   { label: "About", href: "/about/" },
   { label: "Contact", href: "/contact/" },
@@ -33,32 +34,22 @@ const LEGAL_LINKS = [
 
 <footer class="footer">
   <div class="rule" aria-hidden="true"></div>
+  {/* The client's 23 Oct 2026 footer: the Acknowledgement of Country first,
+      then Services, Company and Contact. It replaced a brand column holding
+      the name, the "across South Australia and interstate" blurb and the
+      contact links - the contact links now have a column of their own. */}
   <div class="container inner">
-    <div class="col col-brand">
-      <p class="brand">Pixel Surveys</p>
-      <p class="blurb">
-        Drone survey and mapping services across South Australia and interstate.
-      </p>
-      <ul class="contact">
-        <li>
-          <a href={`mailto:${CONTACT_EMAIL}`}>
-            <ContactIcon name="email" class="ico" />
-            <span>{CONTACT_EMAIL}</span>
-          </a>
-        </li>
-        <li>
-          {/* The dial string, not the display one: stripping spaces out of
-              "+61 0461 370 270" leaves the trunk 0 in, which some handsets
-              refuse to dial. */}
-          <a href={`tel:${CONTACT_PHONE_DIAL}`}>
-            <ContactIcon name="phone" class="ico" />
-            <span>{CONTACT_PHONE}</span>
-          </a>
-        </li>
-      </ul>
-    </div>
+    {/* From 768px up only. Below that the About page carries it instead,
+        after its coverage areas (CoverageSection), so a phone does not end
+        every page on a paragraph of small print. */}
+    <p class="ack">
+      Pixel Surveys acknowledges the Kaurna people as the Traditional Owners
+      of the Adelaide Plains, and the Traditional Owners of all the lands on
+      which we work. We recognise their continuing connection to Country,
+      land and waters, and pay our respects to Elders past and present.
+    </p>
 
-    <nav class="col" aria-label="Services">
+    <nav class="col col-services" aria-label="Services">
       <h2 class="col-title">Services</h2>
       <ul class="links">
         {SERVICE_LINKS.map((link) => (
@@ -69,16 +60,37 @@ const LEGAL_LINKS = [
       </ul>
     </nav>
 
-    <nav class="col" aria-label="Footer">
-      <h2 class="col-title">Site</h2>
+    <nav class="col col-company" aria-label="Company">
+      <h2 class="col-title">Company</h2>
       <ul class="links">
-        {SITE_LINKS.map((link) => (
+        {COMPANY_LINKS.map((link) => (
           <li>
             <a href={link.href}>{link.label}</a>
           </li>
         ))}
       </ul>
     </nav>
+
+    <div class="col col-contact">
+      <h2 class="col-title">Contact</h2>
+      <ul class="links contact">
+        <li>
+          {/* The dial string, not the display one: stripping spaces out of
+              "+61 0461 370 270" leaves the trunk 0 in, which some handsets
+              refuse to dial. */}
+          <a href={`tel:${CONTACT_PHONE_DIAL}`}>
+            <ContactIcon name="phone" class="ico" />
+            <span>{CONTACT_PHONE}</span>
+          </a>
+        </li>
+        <li>
+          <a href={`mailto:${CONTACT_EMAIL}`}>
+            <ContactIcon name="email" class="ico" />
+            <span>{CONTACT_EMAIL}</span>
+          </a>
+        </li>
+      </ul>
+    </div>
   </div>
 
   <div class="container bottom">
@@ -115,45 +127,34 @@ const LEGAL_LINKS = [
     background: var(--gradient-brand);
   }
 
+  /* Four columns pushed to the edges of the container, each as wide as its
+     content; the acknowledgement is the only one with a set width. */
   .inner {
-    display: grid;
-    grid-template-columns: 1.4fr 1fr 1fr;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
     gap: 32px 40px;
     padding-block: 40px 32px;
   }
 
-  .col-brand {
+  .ack {
+    flex: 0 1 340px;
     max-width: 340px;
-  }
-
-  .brand {
-    font-weight: 700;
-    font-size: 18px;
-  }
-
-  .blurb {
-    margin-top: 8px;
-    font-size: 15.5px;
+    font-size: 14px;
     line-height: 1.6;
-    color: rgba(255, 255, 255, 0.72);
+    color: rgba(255, 255, 255, 0.78);
   }
 
-  .contact {
-    margin: 14px 0 0;
-    padding: 0;
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
+  .col {
+    flex: 0 0 auto;
   }
 
   .contact a {
-    font-size: 15.5px;
-    color: rgba(255, 255, 255, 0.9);
     /* inline-flex so the hit area hugs the text rather than the column. */
     display: inline-flex;
     align-items: center;
     gap: 9px;
+    color: rgba(255, 255, 255, 0.9);
   }
 
   /* :global on the .ico part, because that <svg> comes from ContactIcon and
@@ -168,9 +169,11 @@ const LEGAL_LINKS = [
     color: rgba(255, 255, 255, 0.55);
   }
 
-  /* The underline belongs on the text, not dragged under the icon. */
-  .contact a:hover {
+  /* The underline belongs on the text, not dragged under the icon - .links.
+     to outrank the plain .links a:hover underline further down. */
+  .links.contact a:hover {
     color: #fff;
+    text-decoration: none;
   }
 
   .contact a:hover span {
@@ -186,7 +189,8 @@ const LEGAL_LINKS = [
     font-weight: 700;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.55);
+    /* 75%, up from 55%: the client's 23 Oct 2026 footer. */
+    color: rgba(255, 255, 255, 0.75);
     margin-bottom: 12px;
   }
 
@@ -244,20 +248,22 @@ const LEGAL_LINKS = [
     text-decoration: underline;
   }
 
-  @media (max-width: 760px) {
+  /* Phones: no acknowledgement (see the markup), Services and Company side
+     by side, Contact across the full width under them - the client's phone
+     design. */
+  @media (max-width: 767px) {
     .inner {
-      grid-template-columns: 1fr 1fr;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 32px 24px;
     }
 
-    .col-brand {
+    .ack {
+      display: none;
+    }
+
+    .col-contact {
       grid-column: 1 / -1;
-      max-width: none;
-    }
-  }
-
-  @media (max-width: 460px) {
-    .inner {
-      grid-template-columns: 1fr;
     }
   }
 
@@ -265,9 +271,9 @@ const LEGAL_LINKS = [
      request. Measured on the page in Poppins, the full set ran to 345px at
      13px before gaps - wider than the 342px a 390px phone has inside its
      gutters, and well past the 312px of a 360px one. Dropping the name from
-     the copyright is what makes it fit: the name already heads this footer
-     in bold, so the line loses nothing a reader needs. Narrower than any
-     current phone, the bar still wraps rather than overflowing. */
+     the copyright is what makes it fit; the logo heads every page in the
+     header. Narrower than any current phone, the bar still wraps rather
+     than overflowing. */
   @media (max-width: 640px) {
     .bottom {
       gap: 8px 14px;

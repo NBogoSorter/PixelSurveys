@@ -8,6 +8,7 @@
 // them, since nothing client-side is trustworthy.
 import ServiceTypeField from "./ServiceTypeField.astro";
 import ContactIcon from "./ContactIcon.astro";
+import CoverageMapOutline from "./CoverageMapOutline.astro";
 import {
   CONTACT_EMAIL,
   CONTACT_PHONE,
@@ -21,9 +22,15 @@ interface Props {
    * this the page would have no top-level heading at all.
    */
   headingLevel?: 1 | 2;
+  /**
+   * The coverage map and its line under the contact details, linking to the
+   * About page's Coverage section. On for the homepage (the client's 23 Oct
+   * 2026 design); /contact/ leaves it off, as its own design does.
+   */
+  showCoverage?: boolean;
 }
 
-const { headingLevel = 2 } = Astro.props;
+const { headingLevel = 2, showCoverage = false } = Astro.props;
 const Heading = headingLevel === 1 ? "h1" : "h2";
 ---
 
@@ -38,22 +45,36 @@ const Heading = headingLevel === 1 ? "h1" : "h2";
     </div>
 
     <div class="split">
-      <div class="reach">
-        {/* No "Contact Details" heading and no "Email"/"Phone" labels: the
-            icons already say which is which, and the section sits directly
-            under a heading that has just asked the visitor to get in touch. */}
-        <div class="contact">
-          <a class="v link" href={`mailto:${CONTACT_EMAIL}`}>
-            <ContactIcon name="email" class="ico" />
-            <span>{CONTACT_EMAIL}</span>
-          </a>
+      <div class="side">
+        <div class="reach">
+          {/* No "Contact Details" heading and no "Email"/"Phone" labels: the
+              icons already say which is which, and the section sits directly
+              under a heading that has just asked the visitor to get in touch.
+              Phone first, then email - the client's order, 23 Oct 2026. */}
+          <div class="contact">
+            <a class="v link" href={`tel:${CONTACT_PHONE_DIAL}`}>
+              <ContactIcon name="phone" class="ico" />
+              <span>{CONTACT_PHONE}</span>
+            </a>
+          </div>
+          <div class="contact">
+            <a class="v link" href={`mailto:${CONTACT_EMAIL}`}>
+              <ContactIcon name="email" class="ico" />
+              <span>{CONTACT_EMAIL}</span>
+            </a>
+          </div>
         </div>
-        <div class="contact">
-          <a class="v link" href={`tel:${CONTACT_PHONE_DIAL}`}>
-            <ContactIcon name="phone" class="ico" />
-            <span>{CONTACT_PHONE}</span>
-          </a>
-        </div>
+
+        {showCoverage && (
+          <figure class="coverage">
+            <CoverageMapOutline clipId="contact-coverage-land" />
+            <figcaption class="coverage-text">
+              Based in Adelaide, SA, with a secondary base in Wollongong, NSW.
+              Servicing projects locally, regionally and across Australia.{" "}
+              <a href="/about/#coverage">View coverage</a>
+            </figcaption>
+          </figure>
+        )}
       </div>
 
       <div class="card">
@@ -184,7 +205,9 @@ const Heading = headingLevel === 1 ? "h1" : "h2";
 
   .heading h1,
   .heading h2 {
-    font-size: clamp(29px, 4.2vw, 38px);
+    /* The same scale as the page's other section headings - it ran a size
+       larger until the client's 23 Oct 2026 design evened them out. */
+    font-size: clamp(29px, 3.6vw, 36px);
     font-weight: 700;
     text-wrap: balance;
   }
@@ -387,10 +410,51 @@ const Heading = headingLevel === 1 ? "h1" : "h2";
     color: var(--color-accent);
   }
 
+  .side {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .coverage {
+    margin: 64px 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .coverage-text {
+    font-size: 15px;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  .coverage-text a {
+    color: #fff;
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
   @media (max-width: 760px) {
     .split,
     .row2 {
       grid-template-columns: 1fr;
+    }
+
+    /* Stacked, the map would push the form a screen down. The side column
+       dissolves into the grid so the map can follow the form instead. */
+    .side {
+      display: contents;
+    }
+
+    .card {
+      order: 1;
+    }
+
+    .coverage {
+      order: 2;
+      margin-top: 8px;
     }
 
     /* Stacked, the panel is full width and does not need to defend a column,

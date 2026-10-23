@@ -16,6 +16,10 @@
   --color-bg: #ffffff;
   --color-border: #d7e3e4; /* neutral, biased toward the teal accent rather than flat grey */
   --color-surface: #f1f6f6; /* light panel tint, same bias as --color-border */
+  /* Neutral grey for the full-width bands on the home page (Our Services and
+     Common Questions), from the client's "consistent colours and layout"
+     design on 23 Oct 2026. */
+  --color-band: #eeeeee;
   /* Darkened three times on 22 Oct 2026 at the client's request, ending
      almost black. Muted went #57727a (5.1:1 on white) -> #48636b (6.4:1)
      -> #3e585f (7.6:1) -> #222e32 (14:1): near-black with a trace of the

@@ -43,6 +43,7 @@ const {
     fetchpriority="high"
     class="image"
   />
+  <div class="fade" aria-hidden="true"></div>
 
   <div class="container content">
     <h1 class="heading">{title}</h1>
@@ -114,9 +115,22 @@ const {
     }
   }
 
-  /* No tint over the photo - the client wants it at full strength. The text
-     shadows on the heading and location line are all that separate them from
-     it now. */
+  /* A navy fade rising from the bottom of the band, behind the title and
+     location line, clear by three quarters of the way up so the skyline and
+     sky stay at full strength. From the client's "consistent colours and
+     layout" design, 23 Oct 2026. It is what lets the text shadows below be
+     light - before it the photo had no wash at all and the heading needed a
+     heavy two-layer shadow to hold off the sky. */
+  .fade {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to top,
+      rgb(8 40 68 / 60%) 0%,
+      rgb(8 40 68 / 30%) 45%,
+      rgb(8 40 68 / 0%) 75%
+    );
+  }
 
   .content {
     position: relative;
@@ -134,21 +148,13 @@ const {
     line-height: 1.25;
     max-width: 640px;
     text-wrap: balance;
-    /* The About masthead title's pair, for the same reason: with no wash on
-       the photo these shadows are all that hold the title off the sky. The
-       tight one edges the letterforms, the wide one darkens behind them. The
-       old single 20% shadow was set when there was still a tint over the
-       photo, and left the first line faint against the pale horizon. */
-    text-shadow:
-      0 2px 6px rgb(8 40 68 / 85%),
-      0 6px 28px rgb(8 40 68 / 70%);
+    /* Light: the fade above does the heavy lifting now. */
+    text-shadow: 0 1px 3px rgb(8 40 68 / 45%);
   }
 
-  /* Sits straight on the image - no panel behind it - so the shadow is doing
-     all the legibility work. It's heavier than the heading's for that reason:
-     at 15px there's far less letter mass to stay readable over a busy photo.
-     The crop above keeps it over the treeline; if the photo is ever replaced,
-     check this line first - a bright patch under it would still beat it. */
+  /* Sits on the darkest part of the fade, so the same light shadow as the
+     heading is enough. If the photo is ever replaced, check this line first:
+     at 15px it has far less letter mass than the heading to hold its own. */
   .location {
     display: flex;
     align-items: center;
@@ -157,12 +163,12 @@ const {
     color: #fff;
     font-size: 15px;
     font-weight: 500;
-    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.55);
+    text-shadow: 0 1px 3px rgb(8 40 68 / 45%);
   }
 
   .pin {
     flex-shrink: 0;
-    filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.5));
+    filter: drop-shadow(0 1px 3px rgb(8 40 68 / 45%));
   }
 
   @media (max-width: 640px) {

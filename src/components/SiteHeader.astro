@@ -1,6 +1,8 @@
 ---
 import { Image } from "astro:assets";
 import logo from "../assets/logo.png";
+import ContactIcon from "./ContactIcon.astro";
+import { CONTACT_PHONE, CONTACT_PHONE_DIAL } from "../data/contact-info";
 
 const NAV_LINKS = [
   { label: "Home", href: "/" },
@@ -27,6 +29,17 @@ const currentPath = Astro.url.pathname;
         loading="eager"
         class="logo-image"
       />
+    </a>
+
+    {/* Phones only: the number as a 44px icon beside the menu button, from
+        the client's 23 Oct 2026 phone design. Wider screens show it written
+        out at the end of the nav instead (.nav-phone). */}
+    <a
+      href={`tel:${CONTACT_PHONE_DIAL}`}
+      class="call-icon"
+      aria-label={`Call ${CONTACT_PHONE}`}
+    >
+      <ContactIcon name="phone" class="call-ico" />
     </a>
 
     {/* Phone only, and only once the script below has run - see .has-js. */}
@@ -78,6 +91,15 @@ const currentPath = Astro.url.pathname;
             </a>
           </li>
         ))}
+        {/* After Contact, written out with its icon - the client's 23 Oct
+            2026 design. Hidden in the phone menu, where the header's own
+            call icon does this job. */}
+        <li class="nav-phone-item">
+          <a href={`tel:${CONTACT_PHONE_DIAL}`} class="nav-phone">
+            <ContactIcon name="phone" class="phone-ico" />
+            <span>{CONTACT_PHONE}</span>
+          </a>
+        </li>
       </ul>
     </nav>
   </div>
@@ -247,7 +269,65 @@ const currentPath = Astro.url.pathname;
     color: #fff;
   }
 
+  /* The phone number after Contact: navy like the links but in its own case
+     and spacing, since it is a number, not a page. :global on the icon because
+     it comes from ContactIcon and carries that component's scope. */
+  /* 40px tall, level with the Contact button. 44px would push the header to
+     76px, and the About page's fixed photo is pinned under a 72px header
+     (PageMasthead) - this only shows on desktop, where pointer targets are
+     fine at 40. */
+  .nav-phone {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 40px;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--color-ink);
+    white-space: nowrap;
+  }
+
+  .nav-phone:hover {
+    color: var(--color-accent);
+  }
+
+  .nav-phone :global(.phone-ico) {
+    width: 18px;
+    height: 18px;
+  }
+
+  /* Phones only - see the 640px block. */
+  .call-icon {
+    display: none;
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-ink);
+  }
+
+  .call-icon:hover {
+    color: var(--color-accent);
+  }
+
+  .call-icon :global(.call-ico) {
+    width: 22px;
+    height: 22px;
+  }
+
   @media (max-width: 640px) {
+    /* Pushed right, beside the menu button, with the logo alone on the left. */
+    .call-icon {
+      display: flex;
+      margin-left: auto;
+    }
+
+    .nav-phone-item {
+      display: none;
+    }
+
     .inner {
       /* Logo and button share row one; the nav wraps to row two at full width
          when it is open. */

@@ -20,17 +20,18 @@ import { CAPABILITIES } from "../data/capabilities";
 </section>
 
 <style>
-  /* Full-bleed: the tinted background runs edge to edge, the card grid
-     inside stays at the normal container width via the global .container. */
+  /* On the white page - it sat on the tinted surface panel until the
+     client's 23 Oct 2026 design took that away, leaving the grey bands above
+     and below as the page's only fills. The bottom padding is the gap down to
+     the trust bar. */
   .panel {
-    background: var(--color-surface);
-    padding-block: 30px;
+    padding-block: 8px var(--space-section);
   }
 
   .grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 26px 30px;
+    gap: 28px;
   }
 
   .card {
@@ -77,7 +78,7 @@ import { CAPABILITIES } from "../data/capabilities";
   }
 
   .desc {
-    font-size: 15px;
+    font-size: 16px;
     line-height: 1.6;
     color: var(--color-text-muted);
   }

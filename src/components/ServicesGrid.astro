@@ -11,7 +11,7 @@ const { showCta = true } = Astro.props;
 ---
 
 <section class="section">
-  <div class="container wide">
+  <div class="container">
     <h2 class="heading">
       <a href="/services/" class="heading-link">Our Services</a>
     </h2>
@@ -33,9 +33,14 @@ const { showCta = true } = Astro.props;
 </section>
 
 <style>
-  /* Top only; the section after this owns the gap below it. */
+  /* A full-width grey band, from the client's "consistent colours and
+     layout" design on 23 Oct 2026 - the same grey as the FAQ band further
+     down. The gap above is the usual section gap; inside, 80px on desktop,
+     tightening on phones. The section after it owns its own top space. */
   .section {
-    padding-top: var(--space-section);
+    margin-top: var(--space-section);
+    padding-block: clamp(56px, 6vw, 80px);
+    background: var(--color-band);
   }
 
   .heading {
@@ -59,15 +64,6 @@ const { showCta = true } = Astro.props;
     color: var(--color-accent);
   }
 
-  /* Wider than the page's usual 1200px column, so the four category names sit
-     on one line each. The longest ("Volumes & Site Monitoring", 25 characters)
-     needs about 292px at 22px; a 1400px container gives each card 317px.
-     NOTE: this makes the section wider than every other section on the page -
-     the hero, capabilities, FAQ and contact all sit in the 1200px column. */
-  .wide {
-    max-width: 1400px;
-  }
-
   .grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -82,10 +78,11 @@ const { showCta = true } = Astro.props;
     margin-top: 28px;
   }
 
-  /* Drops to two columns at 1300px, not the old 860px: between those widths
-     four columns give each card under 292px and the titles wrap again, which
-     is the thing this layout is trying to avoid. Two columns are far wider
-     than needed, so nothing wraps from here up. */
+  /* The page's usual 1200px column - it was 1400px, to keep each category
+     name on one line, until the client's 23 Oct 2026 design brought it in
+     line with every other section. At four columns a card is now about
+     267px, so the longer names wrap to two lines; accepted for the aligned
+     edges. Two columns below 1300px, where four would squeeze further. */
   @media (max-width: 1300px) {
     .grid {
       grid-template-columns: repeat(2, 1fr);
