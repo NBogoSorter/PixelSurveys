@@ -50,7 +50,7 @@ const PHOTOS: { src: ImageMetadata; alt: string }[] = [];
       it - the client's request, 22 Oct 2026, for this page only. */}
   <PageMasthead
     image={aboutImage}
-    title="About Pixel Surveys"
+    title="About Us"
     position="center 55%"
     fixed
   />
@@ -58,8 +58,8 @@ const PHOTOS: { src: ImageMetadata; alt: string }[] = [];
   <section class="body">
     <div class="container">
       {/* The client's "About Us" copy, 23 Oct 2026, replacing the three
-          paragraphs that stood here. The heading matches "Coverage" below. */}
-      <h2 class="who-heading">About Us</h2>
+          paragraphs that stood here. No heading of its own: the banner
+          title above already says "About Us". */}
       <p class="para">
         Pixel Surveys combines skills, experience and qualifications in
         surveying, drone operations and spatial data analysis. This combination
@@ -116,14 +116,6 @@ const PHOTOS: { src: ImageMetadata; alt: string }[] = [];
 <style>
   .body {
     padding-block: 48px 8px;
-  }
-
-  /* The same heading as Coverage (CoverageSection .heading). */
-  .who-heading {
-    margin-bottom: 14px;
-    font-size: clamp(29px, 3.6vw, 36px);
-    font-weight: 700;
-    color: var(--color-ink);
   }
 
   .para {
