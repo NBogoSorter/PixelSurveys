@@ -11,7 +11,7 @@ const { showCta = true } = Astro.props;
 ---
 
 <section class="section">
-  <div class="container">
+  <div class="container wide">
     <h2 class="heading">
       <a href="/services/" class="heading-link">Our Services</a>
     </h2>
@@ -78,11 +78,17 @@ const { showCta = true } = Astro.props;
     margin-top: 28px;
   }
 
-  /* The page's usual 1200px column - it was 1400px, to keep each category
-     name on one line, until the client's 23 Oct 2026 design brought it in
-     line with every other section. At four columns a card is now about
-     267px, so the longer names wrap to two lines; accepted for the aligned
-     edges. Two columns below 1300px, where four would squeeze further. */
+  /* Back to 1400px, at the client's request on 23 Oct 2026: the 1200px column
+     from their consistent-layout design made the cards about 267px and the
+     longer names wrap to two lines, and they wanted the services larger and
+     more spread out as before. The longest name ("Volumes & Site
+     Monitoring") needs about 292px at 22px; 1400px gives each card 317px.
+     This is the one section wider than the rest of the page. Two columns
+     below 1300px, where four would squeeze the names again. */
+  .wide {
+    max-width: 1400px;
+  }
+
   @media (max-width: 1300px) {
     .grid {
       grid-template-columns: repeat(2, 1fr);
